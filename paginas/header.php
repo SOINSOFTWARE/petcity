@@ -1,6 +1,6 @@
 <header class="header">
-    <a href="../../index.php" class="logo">
+    <a href="../../" class="logo">
         Pet City
     </a>
-    <?php include 'logged-user.php'; ?>
+    <?php include '../logged-user.php'; ?>
 </header>

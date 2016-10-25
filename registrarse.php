@@ -12,7 +12,7 @@ if (isset($_POST['register'])) {
 	$phone = $_POST['phone'];
 	$email = $_POST['email'];
 	$password = $_POST['password'];
-	
+
 	$document = str_replace("_", "", $document);
 
 	$company = new CompanyTable();
@@ -59,67 +59,55 @@ if (isset($_POST['register'])) {
 	<body class="bg-black">
 		<br />
 		<?php
-			if (isset($companySaved) && isset($userSaved) && $companySaved && $userSaved) {
-				echo '<div class="alert alert-success alert-dismissable">
+		if (isset($companySaved) && isset($userSaved) && $companySaved && $userSaved) {
+			echo '<div class="alert alert-success alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
 <b>Registro completado!</b> Su registro fue completado con &eacute;xito!, a partir de ahora puede usar Pet City gratis durante 30 <a href="login.php">Inicie sesi&oacute;n</a>.
 </div>';
-			}
-		?>
-		<?php
-			if (isset($companySaved) && !$companySaved) {
-				echo '<div class="alert alert-danger alert-dismissable">
+		}
+		if (isset($companySaved) && !$companySaved) {
+			echo '<div class="alert alert-danger alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
 <b>Error!</b> Ocurri&oacute; un error al intentar guardar los datos de la veterinaria, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
 </div>';
-			}
-		?>
-		<?php
-			if (isset($userSaved) && !$userSaved) {
-				echo '<div class="alert alert-danger alert-dismissable">
+		}
+		if (isset($userSaved) && !$userSaved) {
+			echo '<div class="alert alert-danger alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
 <b>Error!</b> Ocurri&oacute; un error al intentar guardar los datos del usuario, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
 </div>';
-			}
-		?>
-		<?php
-			if (isset($isValidNit) && !$isValidNit) {
-				echo '<div class="alert alert-danger alert-dismissable">
+		}
+		if (isset($isValidNit) && !$isValidNit) {
+			echo '<div class="alert alert-danger alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
 <b>Error!</b> El NIT ' . $nit . ' ya ha sido registrado.
 </div>';
-			}
-		?>
-		<?php
-			if (isset($isValidCC) && !$isValidCC) {
-				echo '<div class="alert alert-danger alert-dismissable">
+		}
+		if (isset($isValidCC) && !$isValidCC) {
+			echo '<div class="alert alert-danger alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
 <b>Error!</b> El n&uacute;mero de documento ' . $document . ' ya ha sido registrado.
 </div>';
-			}
-		?>
-		<?php
-			if (isset($isValidEmail) && !$isValidEmail) {
-				echo '<div class="alert alert-danger alert-dismissable">
+		}
+		if (isset($isValidEmail) && !$isValidEmail) {
+			echo '<div class="alert alert-danger alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
 <b>Error!</b> El email ' . $email . ' ya ha sido registrado.
 </div>';
-			}
-		?>
-		<?php
-			if (isset($delivered) && !$delivered) {
-				echo '<div class="alert alert-warning alert-dismissable">
+		}
+		if (isset($delivered) && !$delivered) {
+			echo '<div class="alert alert-warning alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
 <b>Advertencia!</b> No fue posible enviar el correo de confirmaci&oacute;n, un asesor de Soin Software se comunicar&aacute; con usted en breve.
 </div>';
-			}
+		}
 		?>
 		<div class="form-box" id="new-user-box">
 			<div class="header">
@@ -129,39 +117,75 @@ if (isset($_POST['register'])) {
 				<div class="body bg-gray">
 					<div class="form-group">
 						<label for="nit">NIT</label>
-						<input type="text" class="form-control" id="nit" name="nit" placeholder="NIT" data-inputmask='"mask": "999999999-9"' value="<?php if (isset($nit)) { echo $nit; } ?>" required data-mask>
+						<input type="text" class="form-control" id="nit" name="nit" placeholder="NIT" data-inputmask='"mask": "999999999-9"' value="<?php
+						if (isset($nit)) {
+							echo $nit;
+						}
+						?>" required data-mask>
 					</div>
 					<div class="form-group">
 						<label for="companyname">Nombre de la veterinaria</label>
-						<input type="text" class="form-control" id="companyname" name="companyname" placeholder="Nombre inscrito en la C&aacute;mara de Comercio" maxlength="100" value="<?php if (isset($companyName)) { echo $companyName; } ?>" required>
+						<input type="text" class="form-control" id="companyname" name="companyname" placeholder="Nombre inscrito en la C&aacute;mara de Comercio" maxlength="100" value="<?php
+						if (isset($companyName)) {
+							echo $companyName;
+						}
+						?>" required>
 					</div>
 					<div class="form-group">
 						<label for="document">N&uacute;mero de cedula</label>
-						<input type="text" class="form-control" id="document" name="document" placeholder="N&uacute;mero de documento" data-inputmask='"mask": "9999999999"' value="<?php if (isset($document)) { echo $document; } ?>" required data-mask>
+						<input type="text" class="form-control" id="document" name="document" placeholder="N&uacute;mero de documento" data-inputmask='"mask": "9999999999"' value="<?php
+						if (isset($document)) {
+							echo $document;
+						}
+						?>" required data-mask>
 					</div>
 					<div class="form-group">
 						<label for="name">Nombre(s)</label>
-						<input type="text" class="form-control" id="name" name="name" placeholder="Nombre(s)" maxlength="50" value="<?php if (isset($name)) { echo $name; } ?>" required>
+						<input type="text" class="form-control" id="name" name="name" placeholder="Nombre(s)" maxlength="50" value="<?php
+						if (isset($name)) {
+							echo $name;
+						}
+						?>" required>
 					</div>
 					<div class="form-group">
 						<label for="lastname">Apellido(s)</label>
-						<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Apellido(s)" maxlength="50" value="<?php if (isset($lastName)) { echo $lastName; } ?>" required>
+						<input type="text" class="form-control" id="lastname" name="lastname" placeholder="Apellido(s)" maxlength="50" value="<?php
+						if (isset($lastName)) {
+							echo $lastName;
+						}
+						?>" required>
 					</div>
 					<div class="form-group">
 						<label for="phone">N&uacute;mero celular</label>
-						<input type="text" class="form-control" id="phone" name="phone" placeholder="Celular" data-inputmask='"mask": "9999999999"' value="<?php if (isset($phone)) { echo $phone; } ?>" required data-mask>
+						<input type="text" class="form-control" id="phone" name="phone" placeholder="Celular" data-inputmask='"mask": "9999999999"' value="<?php
+						if (isset($phone)) {
+							echo $phone;
+						}
+						?>" required data-mask>
 					</div>
 					<div class="form-group">
 						<label for="email">Email</label>
-						<input type="email" class="form-control" id="email" name="email" placeholder="email@email.com" maxlength="150" value="<?php if (isset($email)) { echo $email; } ?>" required>
+						<input type="email" class="form-control" id="email" name="email" placeholder="ejemplo@email.com" maxlength="150" value="<?php
+						if (isset($email)) {
+							echo $email;
+						}
+						?>" required>
 					</div>
 					<div class="form-group">
 						<label for="password">Contrase&ntilde;a</label>
-						<input type="password" class="form-control" id="password" name="password" placeholder="Contrase&ntilde;a" maxlength="30" value="<?php if (isset($password)) { echo $password; } ?>" required/>
+						<input type="password" class="form-control" id="password" name="password" placeholder="Contrase&ntilde;a" maxlength="30" value="<?php
+						if (isset($password)) {
+							echo $password;
+						}
+						?>" required/>
 					</div>
 					<div class="form-group">
 						<label for="repassword">Repetir contrase&ntilde;a</label>
-						<input type="password" class="form-control" id="repassword" name="repassword" placeholder="Repetir contrase&ntilde;a" maxlength="30" value="<?php if (isset($password)) { echo $password; } ?>" required/>
+						<input type="password" class="form-control" id="repassword" name="repassword" placeholder="Repetir contrase&ntilde;a" maxlength="30" value="<?php
+						if (isset($password)) {
+							echo $password;
+						}
+						?>" required/>
 					</div>
 				</div>
 				<div class="footer">

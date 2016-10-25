@@ -1,11 +1,11 @@
 <ul class="sidebar-menu">
-	<li>
-	    <a id="refclihistory" href="#">
+	<li id="refclihistory" class="active">
+	    <a href="#">
 	        <i class="fa fa-medkit"></i> <span>Historias cl&iacute;nicas</span>
 	    </a>
 	</li>
-	<li class="treeview">
-	    <a id="refconfiguration" href="#">
+	<li id="refconfiguration" class="treeview">
+	    <a href="#">
 	        <i class="fa fa-gears"></i>
 	        <span>Configuraci&oacute;n</span>
 	        <i class="fa fa-angle-left pull-right"></i>
