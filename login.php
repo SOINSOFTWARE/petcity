@@ -23,8 +23,8 @@
                 </div>
                 <div class="footer">                                                               
                     <button type="submit" class="btn bg-olive btn-block">Ingresar</button>                    
-                    <p><a href="#" class="text-center">Olvide mi contrase&ntilde;a</a></p>
-                	<a href="register.php" class="text-center">Nuevo usuario</a>
+                    <p><a href="olvidecontrasena.php" class="text-center">Olvide mi contrase&ntilde;a</a></p>
+                	<p><a href="registrarse.php" class="text-center">Nuevo usuario</a></p>
                 </div>
             </form>
         </div>

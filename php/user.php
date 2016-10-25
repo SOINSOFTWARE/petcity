@@ -1,0 +1,79 @@
+<?php
+	include_once 'connection.php';
+
+	class UserTable {
+		
+		private $conn = null;
+			
+		function __construct() {
+			$this->conn = mysqli_connect(DB_SERVER, DB_USER, DB_PASS);
+			if (mysqli_connect_errno()) {
+				echo "Failed to connect to MySQL: " . mysqli_connect_error();
+			}
+			mysqli_select_db($this->conn, DB_NAME);
+		}
+		
+		public function insert($document, $name, $lastName, $phone, $email, $password, $idCompany) {
+			$sql = "INSERT user(document,name,lastname,phone,email,password,idcompany) " . 
+					"VALUES('$document','$name','$lastName','$phone','$email','$password',$idCompany)";
+			return $this->conn->query($sql);
+		}
+		
+		public function select() {
+			$sql = "SELECT * FROM user";
+			return $this->conn->query($sql);
+		}
+		
+		public function selectIdByDocument($document) {
+			$id = 0;
+			$sql = "SELECT * FROM user WHERE document = '$document'";
+			$results = mysqli_query($this->conn, $sql);
+			if ($rows = mysqli_fetch_array($results)) {
+				$id = $rows["id"];
+			}
+			return $id;
+		}
+		
+		public function selectIdByEmail($email) {
+			$id = 0;
+			$sql = "SELECT * FROM user WHERE email = '$email'";
+			$results = mysqli_query($this->conn, $sql);
+			if ($rows = mysqli_fetch_array($results)) {
+				$id = $rows["id"];
+			}
+			return $id;
+		}
+		
+		public function getError() {
+			return $this->conn->error;
+		}
+		
+		public function sendMail($email, $nit, $companyName, $document, $fullUserName) {
+			$to  = $email . ', ' . 'crodriguez@soinsoftware.com';		
+			$subject = 'Registro en PetCity';		
+			$message = '
+			<html>
+			<head>
+			  <title>Gracias por registrarte en PetCity!</title>
+			</head>
+			<body>
+			  <p>Un asesor de Soin Software SAS se comunicar&aacute; contigo en breve</p>
+			  <table>
+			    <tr>
+			      <th>NIT</th><th>Veterinaria</th><th>C.C</th><th>Nombre</th>
+			    </tr>
+			    <tr>
+			      <td>' . $nit . '</td><td>' . $companyName . '</td><td>' . $document . '</td><td>' . $fullUserName . '</td>
+			    </tr>
+			  </table>
+			</body>
+			</html>
+			';		
+			$headers  = 'MIME-Version: 1.0' . "\r\n";
+			$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+			$headers .= 'From: crodriguez@soinsoftware.com' . "\r\n";
+			
+			return mail($to, $subject, $message, $headers);
+		} 
+	}
+?>
