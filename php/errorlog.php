@@ -14,6 +14,7 @@
 		}
 		
 		public function insert($log) {
+			$log = str_replace("'", "", $log);
 			$sql = "INSERT errorlog(log) VALUES('$log')";
 			return $this->conn->query($sql);
 		}

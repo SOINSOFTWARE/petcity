@@ -1,5 +1,9 @@
 <?php session_start();
 include_once 'session.php';
+include_once 'php/clinichistory.php';
+
+$clinichistory = new ClinicHistoryTable();
+$results = $clinichistory -> select($companyId);
 ?>
 <!DOCTYPE html>
 <html>
@@ -61,13 +65,32 @@ include_once 'session.php';
 									<table id="tableData" class="table table-bordered table-hover">
 										<thead>
 											<tr>
-												<th>Mascota</th>
-												<th># Documento</th>
-												<th>Propietario</th>
-												<th></th>
+												<th style="text-align:center; width: 10%">Mascota</th>
+												<th style="text-align:center; width: 15%">Tipo</th>
+												<th style="text-align:center; width: 16%">Raza</th>
+												<th style="text-align:center; width: 10%">Documento</th>
+												<th style="text-align:center; width: 25%">Propietario</th>
+												<th style="text-align:center; width: 10%">Celular</th>
+												<th style="text-align:center; width: 7%">Consulta</th>
+												<th style="text-align:center; width: 7%">Historial</th>
 											</tr>
 										</thead>
-										<tbody></tbody>
+										<tbody>
+											<?php
+											while ($rows = mysqli_fetch_array($results)) {
+												echo "<tr>";
+												echo '<td>' . $rows["petname"] . '</td>';
+												echo '<td>' . $rows["pettypename"] . '</td>';
+												echo '<td>' . $rows["breedname"] . '</td>';
+												echo '<td>' . $rows["document"] . '</td>';
+												echo '<td>' . $rows["ownername"] . ' ' . $rows["lastname"] . '</td>';
+												echo '<td>' . $rows["phone2"] . '</td>';
+												echo '<td style="text-align:center"><form action="paginas/historias/historia.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $rows["id"] . '" /><button type="submit" id="newvisit" name="newvisit" class="btn btn-info"><i class="fa fa-stethoscope"></i></button></form></td>';
+												echo '<td style="text-align:center"><form action="paginas/historias/consultas.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $rows["id"] . '" /><button type="submit" id="history" name="history" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';
+												echo "</tr>";
+											}
+											?>
+										</tbody>
 									</table>
 								</div>
 							</div>

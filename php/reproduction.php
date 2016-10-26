@@ -1,7 +1,7 @@
 <?php
 include_once 'connection.php';
 
-class BreedTable {
+class ReproductionTable {
 
 	private $conn = null;
 
@@ -13,23 +13,23 @@ class BreedTable {
 		mysqli_select_db($this -> conn, DB_NAME);
 	}
 
-	public function insert($name, $idpettype, $idcompany) {
-		$sql = "INSERT breed(name,idpettype,idcompany) VALUES('$name',$idpettype,$idcompany)";
+	public function insert($name, $idcompany) {
+		$sql = "INSERT reproduction(name,idcompany) VALUES('$name',$idcompany)";
 		return $this -> conn -> query($sql);
 	}
 
 	public function update($id, $name) {
-		$sql = "UPDATE breed SET name = '$name' WHERE id = $id";
+		$sql = "UPDATE reproduction SET name = '$name' WHERE id = $id";
 		return $this -> conn -> query($sql);
 	}
 
 	public function delete($id) {
-		$sql = "UPDATE breed SET enabled = 0 WHERE id = $id";
+		$sql = "UPDATE reproduction SET enabled = 0 WHERE id = $id";
 		return $this -> conn -> query($sql);
 	}
 
 	public function select($idcompany) {
-		$sql = "SELECT br.id AS id, br.name AS breed, ty.id AS idpettype, ty.name AS pettype, br.idcompany AS idcompany FROM breed br JOIN pettype ty ON br.idpettype = ty.id WHERE (br.idcompany IS NULL OR br.idcompany = $idcompany) AND br.enabled = 1 AND ty.enabled = 1 ORDER BY ty.name, br.name ASC";
+		$sql = "SELECT * FROM reproduction WHERE (idcompany IS NULL OR idcompany = $idcompany) AND enabled = 1 ORDER BY name ASC";
 		return mysqli_query($this -> conn, $sql);
 	}
 

@@ -1,4 +1,5 @@
-<div class="tab-pane" id="tab_2">
+<?php if (isset($idclinichistory)) { ?>
+<div class="tab-pane active" id="tab_2">
 	<form method="post" role="form">
     	<div class="row">
 			<div class="col-xs-12">
@@ -232,3 +233,4 @@
 		</div>
 	</form>
 </div>
+<?php } ?>
