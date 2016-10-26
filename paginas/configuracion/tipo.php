@@ -5,25 +5,25 @@ include_once '../../php/pettype.php';
 $petType = new PetTypeTable();
 if (isset($_POST['newtype'])) {
 	$name = $_POST['name'];
-	$typeSaved = $petType -> insert($name, $companyId);
-	if ($typeSaved === FALSE) {
+	$saved = $petType -> insert($name, $companyId);
+	if ($saved === FALSE) {
 		$errorLog = new ErrorLogTable();
 		$errorLog -> insert($petType -> getError());
 	}
 }
 if (isset($_POST['update'])) {
-	$id = $_POST['type'];
+	$id = $_POST['idtable'];
 	$name = $_POST['name'];
-	$typeUpdated = $petType -> update($id, $name);
-	if ($typeUpdated === FALSE) {
+	$updated = $petType -> update($id, $name);
+	if ($updated === FALSE) {
 		$errorLog = new ErrorLogTable();
 		$errorLog -> insert($petType -> getError());
 	}
 }
 if (isset($_POST['delete'])) {
-	$id = $_POST['type'];
-	$typeDelete = $petType -> delete($id);
-	if ($typeDelete === FALSE) {
+	$id = $_POST['idtable'];
+	$deleted = $petType -> delete($id);
+	if ($deleted === FALSE) {
 		$errorLog = new ErrorLogTable();
 		$errorLog -> insert($petType -> getError());
 	}
@@ -83,8 +83,8 @@ $results = $petType -> select($companyId);
 											<div class="box">
 												<br />
 												<?php
-												if (isset($typeUpdated)) {
-													if ($typeUpdated) {
+												if (isset($updated)) {
+													if ($updated) {
 														echo '<div class="alert alert-success alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
@@ -98,8 +98,8 @@ $results = $petType -> select($companyId);
 </div>';
 													}
 												}
-												if (isset($typeDelete)) {
-													if ($typeDelete) {
+												if (isset($deleted)) {
+													if ($deleted) {
 														echo '<div class="alert alert-success alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
@@ -131,8 +131,8 @@ $results = $petType -> select($companyId);
 																if (is_null($rows["idcompany"])) {
 																	echo "<td></td><td></td>";
 																} else {
-																	echo '<td><form action="tipo.php" method="post" role="form"><input type="hidden" id="type" name="type" value="' . $rows["id"] . '" /><div class="input-group input-group-sm"><input type="text" class="form-control" id="name" name="name" maxlength="100" required /><span class="input-group-btn"><button type="submit" id="update" name="update" class="btn btn-success"><i class="fa fa-edit"></i></button></span></div></form></td>';
-																	echo '<td style="text-align:center"><form action="tipo.php" method="post" role="form"><input type="hidden" id="type" name="type" value="' . $rows["id"] . '" /><button type="submit" id="delete" name="delete" class="btn btn-danger"><i class="fa fa-times"></i></button></form></td>';
+																	echo '<td><form action="tipo.php" method="post" role="form"><input type="hidden" id="idtable" name="idtable" value="' . $rows["id"] . '" /><div class="input-group input-group-sm"><input type="text" class="form-control" id="name" name="name" maxlength="100" required /><span class="input-group-btn"><button type="submit" id="update" name="update" class="btn btn-success"><i class="fa fa-edit"></i></button></span></div></form></td>';
+																	echo '<td style="text-align:center"><form action="tipo.php" method="post" role="form"><input type="hidden" id="idtable" name="idtable" value="' . $rows["id"] . '" /><button type="submit" id="delete" name="delete" class="btn btn-danger"><i class="fa fa-times"></i></button></form></td>';
 																}
 																echo "</tr>";
 															}
@@ -149,10 +149,9 @@ $results = $petType -> select($companyId);
 						<form action="tipo.php" method="post" role="form">
 							<div class="col-xs-5">
 								<div class="box">
-									<br />
 									<?php
-									if (isset($typeSaved)) {
-										if ($typeSaved) {
+									if (isset($saved)) {
+										if ($saved) {
 											echo '<div class="alert alert-success alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
