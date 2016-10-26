@@ -63,7 +63,10 @@ $results = $petType -> select($companyId);
 					<h1> Tipos de mascotas </h1>
 					<ol class="breadcrumb">
 						<li>
-							<a href="#"><i class="fa fa-dashboard"></i> Pet City</a>
+							<a href="#"><i class="fa fa-gears"></i> Pet City</a>
+						</li>
+						<li>
+							<a href="#"> Configuraci&oacute;n</a>
 						</li>
 						<li class="active">
 							Tipos de mascotas
