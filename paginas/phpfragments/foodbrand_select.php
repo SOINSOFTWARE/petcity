@@ -1,10 +1,10 @@
 <?php
-include_once '../../php/reproduction.php';
+include_once '../../php/foodbrand.php';
 
-$reproduction = new ReproductionTable();
-$results = $reproduction -> select($companyId);
+$foodbrandtable = new FoodBrandTable();
+$results = $foodbrandtable -> select($companyId);
 while ($rows = mysqli_fetch_array($results)) {
-	if (isset($idreproduction) && $idreproduction == $rows["id"]) {
+	if (isset($idfoodbrand) && $idfoodbrand == $rows["id"]) {
 		$selected = "selected";
 	} else {
 		$selected = "";

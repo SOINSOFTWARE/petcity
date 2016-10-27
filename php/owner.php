@@ -33,14 +33,8 @@ class OwnerTable {
 		return mysqli_query($this -> conn, $sql);
 	}
 	
-	public function selectIdByDocument($document, $idcompany) {
-		$id = 0;
-		$sql = "SELECT * FROM owner WHERE document = '$document' AND idcompany = $idcompany";
-		$results = mysqli_query($this -> conn, $sql);
-		if ($rows = mysqli_fetch_array($results)) {
-			$id = $rows["id"];
-		}
-		return $id;
+	public function selectLastInsertId() {
+		return mysqli_insert_id($this -> conn);
 	}
 
 	public function getConnection() {

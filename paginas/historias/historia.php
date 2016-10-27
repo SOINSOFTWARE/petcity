@@ -1,10 +1,12 @@
 <?php session_start();
 include_once '../session.php';
 include_once '../../php/clinichistory.php';
+include_once '../../php/medicalconsultationxdrenching.php';
+include_once '../../php/medicalconsultationxvaccine.php';
 
 $clinichistory = new ClinicHistoryTable();
 
-if (isset($_POST['newvisit'])) {
+if (isset($_POST['idclinichistory'])) {
 
 	$idclinichistory = $_POST['idclinichistory'];
 	$results = $clinichistory -> selectById($idclinichistory);
@@ -79,14 +81,16 @@ if (isset($_POST['basicdata'])) {
 	}
 
 	if ($ownersaved === TRUE) {
-		$idowner = $owner -> selectIdByDocument($document, $companyId);
+		if ($idowner == 0) {
+			$idowner = $owner -> selectLastInsertId();
+		}
 		if ($idpet == 0) {
 			$petsaved = $pet -> insert($petname, $color, $sex, $fullborndate, $bornplace, $idreproduction, $idpettype, $idbreed, $idowner, $companyId);
 			if ($petsaved === TRUE) {
-				$idpet = $pet -> selectIdByOwner($petname, $idowner, $companyId);
+				$idpet = $pet -> selectLastInsertId();
 				$clinichistorysaved = $clinichistory -> insert($idpet, $companyId);
 				if ($clinichistorysaved === TRUE) {
-					$idclinichistory = $clinichistory -> selectIdByPet($idpet, $companyId);
+					$idclinichistory = $clinichistory -> selectLastInsertId();
 				} else {
 					saveError($clinichistorysaved -> getError());
 				}
@@ -107,6 +111,16 @@ if (isset($_POST['basicdata'])) {
 function saveError($log) {
 	$errorLog = new ErrorLogTable();
 	$errorLog -> insert($log);
+}
+
+function saveMedicalConsultationXVaccine($idmedicalconsultation, $idvaccine) {
+	$mcvaccinetable = new MedicalConsultationXVaccineTable();
+	return $mcvaccinetable -> insert($idmedicalconsultation, $idvaccine);
+}
+
+function saveMedicalConsultationXDrenching($idmedicalconsultation, $iddrenching) {
+	$mcdrenchingtable = new MedicalConsultationXDrenchingTable();
+	return $mcdrenchingtable -> insert($idmedicalconsultation, $iddrenching);
 }
 ?>
 <!DOCTYPE html>
@@ -207,6 +221,82 @@ function saveError($log) {
 				});
 				$("[data-mask]").inputmask();
 			});
+
+			function changeVisibility(input, displayVal) {
+				input.css("display", displayVal);
+			}
+			
+			$('#vaccineapplication').on("ifChecked", function(event) {
+				changeVisibility($('#divvaccinequantity'), "block");
+				changeVisibility($('#divvaccine1'), "block");
+				$('#vaccinenumber').val("1");
+			});
+
+			$("#vaccineapplication").on("ifUnchecked", function(event) {
+				changeVisibility($('#divvaccinequantity'), "none");
+				hideVaccineSelects();
+			});
+			
+			function afterChangeVaccineNumber() {
+				hideVaccineSelects();
+				var quantity = $('#vaccinenumber').val();
+				while (quantity > 0) {
+					changeVisibility($('#divvaccine' + quantity), "block");
+					quantity -= 1;
+				}
+			}
+			
+			function hideVaccineSelects() {
+				changeVisibility($('#divvaccine1'), "none");
+				changeVisibility($('#divvaccine2'), "none");
+				changeVisibility($('#divvaccine3'), "none");
+				changeVisibility($('#divvaccine4'), "none");
+				changeVisibility($('#divvaccine5'), "none");
+				changeVisibility($('#divvaccine6'), "none");
+				changeVisibility($('#divvaccine7'), "none");
+				changeVisibility($('#divvaccine8'), "none");
+			}
+			
+			$('#drenchingapplication').on("ifChecked", function(event) {
+				changeVisibility($('#divdrenchingquantity'), "block");
+				changeVisibility($('#divdrenching1'), "block");
+				$('#drenchingnumber').val("1");
+			});
+
+			$("#drenchingapplication").on("ifUnchecked", function(event) {
+				changeVisibility($('#divdrenchingquantity'), "none");
+				hideDrenchingSelects();
+			});
+			
+			function afterChangeDrenchingNumber() {
+				hideDrenchingSelects();
+				var quantity = $('#drenchingnumber').val();
+				while (quantity > 0) {
+					changeVisibility($('#divdrenching' + quantity), "block");
+					quantity -= 1;
+				}
+			}
+			
+			function hideDrenchingSelects() {
+				changeVisibility($('#divdrenching1'), "none");
+				changeVisibility($('#divdrenching2'), "none");
+				changeVisibility($('#divdrenching3'), "none");
+				changeVisibility($('#divdrenching4'), "none");
+				changeVisibility($('#divdrenching5'), "none");
+				changeVisibility($('#divdrenching6'), "none");
+				changeVisibility($('#divdrenching7'), "none");
+				changeVisibility($('#divdrenching8'), "none");
+			}
+			
+			function validateConsultation() {
+				if ($.trim($('#foodbrand').val()) === '0') {
+					$("#divfoodbrand").addClass("has-error");
+					showDivDialog($("#foodbrand-dialog"));
+					return false;
+				} else {
+					$("#divfoodbrand").removeClass("has-error");
+				}
+			}
 
 			function showDivDialog(divDialog) {
 				divDialog.dialog({
