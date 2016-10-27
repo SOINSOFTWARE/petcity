@@ -156,10 +156,10 @@ function saveMedicalConsultationXDrenching($idmedicalconsultation, $iddrenching)
 					<h1> Historia cl&iacute;nica </h1>
 					<ol class="breadcrumb">
 						<li>
-							<a href="#"><i class="fa fa-dashboard"></i> Pet City</a>
+							<a href="#"><i class="fa fa-medkit"></i> Pet City</a>
 						</li>
 						<li>
-							<a href="../../index.php">Historias cl&iacute;nicas</a>
+							<a href="../../">Historias cl&iacute;nicas</a>
 						</li>
 						<li class="active">
 							Historia cl&iacute;nica
@@ -168,6 +168,21 @@ function saveMedicalConsultationXDrenching($idmedicalconsultation, $iddrenching)
 				</section>
 				<section class="content">
 					<div class="row">
+						<?php if (isset($_POST['idconsultation'])) {
+						?>
+						<div class="col-md-12">
+							<div class="box">
+								<div class="box-body">
+									<form action="consultas.php" method="post" role="form">
+										<input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo $idclinichistory; ?>" />
+										<button type="submit" id="backward" name="backward" class="btn btn-success">
+											<i class="fa fa-reply"></i>
+										</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						<?php } ?>
 						<div class="col-md-12">
 							<div class="nav-tabs-custom">
 								<ul class="nav nav-tabs">
@@ -225,7 +240,8 @@ function saveMedicalConsultationXDrenching($idmedicalconsultation, $iddrenching)
 			function changeVisibility(input, displayVal) {
 				input.css("display", displayVal);
 			}
-			
+
+
 			$('#vaccineapplication').on("ifChecked", function(event) {
 				changeVisibility($('#divvaccinequantity'), "block");
 				changeVisibility($('#divvaccine1'), "block");
@@ -236,7 +252,7 @@ function saveMedicalConsultationXDrenching($idmedicalconsultation, $iddrenching)
 				changeVisibility($('#divvaccinequantity'), "none");
 				hideVaccineSelects();
 			});
-			
+
 			function afterChangeVaccineNumber() {
 				hideVaccineSelects();
 				var quantity = $('#vaccinenumber').val();
@@ -245,7 +261,7 @@ function saveMedicalConsultationXDrenching($idmedicalconsultation, $iddrenching)
 					quantity -= 1;
 				}
 			}
-			
+
 			function hideVaccineSelects() {
 				changeVisibility($('#divvaccine1'), "none");
 				changeVisibility($('#divvaccine2'), "none");
@@ -256,7 +272,8 @@ function saveMedicalConsultationXDrenching($idmedicalconsultation, $iddrenching)
 				changeVisibility($('#divvaccine7'), "none");
 				changeVisibility($('#divvaccine8'), "none");
 			}
-			
+
+
 			$('#drenchingapplication').on("ifChecked", function(event) {
 				changeVisibility($('#divdrenchingquantity'), "block");
 				changeVisibility($('#divdrenching1'), "block");
@@ -267,7 +284,7 @@ function saveMedicalConsultationXDrenching($idmedicalconsultation, $iddrenching)
 				changeVisibility($('#divdrenchingquantity'), "none");
 				hideDrenchingSelects();
 			});
-			
+
 			function afterChangeDrenchingNumber() {
 				hideDrenchingSelects();
 				var quantity = $('#drenchingnumber').val();
@@ -276,7 +293,7 @@ function saveMedicalConsultationXDrenching($idmedicalconsultation, $iddrenching)
 					quantity -= 1;
 				}
 			}
-			
+
 			function hideDrenchingSelects() {
 				changeVisibility($('#divdrenching1'), "none");
 				changeVisibility($('#divdrenching2'), "none");
@@ -287,7 +304,7 @@ function saveMedicalConsultationXDrenching($idmedicalconsultation, $iddrenching)
 				changeVisibility($('#divdrenching7'), "none");
 				changeVisibility($('#divdrenching8'), "none");
 			}
-			
+
 			function validateConsultation() {
 				if ($.trim($('#foodbrand').val()) === '0') {
 					$("#divfoodbrand").addClass("has-error");

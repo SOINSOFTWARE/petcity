@@ -137,6 +137,10 @@ if (isset($idclinichistory)) {
 		}
 	}
 
+	if (isset($_POST['idconsultation'])) {
+		$idconsultation = $_POST['idconsultation'];
+	} 
+
 	if (isset($idconsultation) && $idconsultation > 0) {
 		$results = $mdconsultable -> selectById($idconsultation);
 		if ($rows = mysqli_fetch_array($results)) {

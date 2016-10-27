@@ -41,6 +41,11 @@ class MedicalConsultationTable {
 		return mysqli_query($this -> conn, $sql);
 	}
 	
+	public function selectByIdClinicHistory($idclinichistory) {
+		$sql = "SELECT * FROM medicalconsultation WHERE idclinichistory = $idclinichistory ORDER BY consultationdate DESC";
+		return mysqli_query($this -> conn, $sql);
+	}
+	
 	public function selectLastInsertId() {
 		return mysqli_insert_id($this -> conn);
 	}

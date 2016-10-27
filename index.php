@@ -37,7 +37,7 @@ $results = $clinichistory -> select($companyId);
 					<h1> Historias cl&iacute;nicas </h1>
 					<ol class="breadcrumb">
 						<li>
-							<a href="#"><i class="fa fa-dashboard"></i> Pet City</a>
+							<a href="#"><i class="fa fa-medkit"></i> Pet City</a>
 						</li>
 						<li class="active">
 							Historias cl&iacute;nicas
@@ -50,7 +50,7 @@ $results = $clinichistory -> select($companyId);
 							<div class="box">
 								<div class="box-body">
 									<form action="paginas/historias/historia.php" method="post" role="form">
-										<button type="submit" name="submit" name="submit" class="btn btn-primary">
+										<button type="submit" id="submit" name="submit" class="btn btn-primary">
 											<i class="fa fa-plus"></i>
 										</button>
 									</form>
