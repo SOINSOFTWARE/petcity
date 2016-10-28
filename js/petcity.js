@@ -3,7 +3,7 @@ $(function() {
         "bPaginate": true,
         "bLengthChange": false,
         "bFilter": true,
-        "bSort": true,
+        "bSort": false,
         "bInfo": true,
         "bAutoWidth": false
     });
