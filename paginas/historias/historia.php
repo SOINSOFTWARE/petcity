@@ -1,7 +1,6 @@
 <?php session_start();
 include_once '../session.php';
 include_once '../../php/clinichistory.php';
-include_once '../../php/medicalconsultationxdrenching.php';
 include_once '../../php/medicalconsultationxvaccine.php';
 
 $clinichistory = new ClinicHistoryTable();
@@ -116,11 +115,6 @@ function saveError($log) {
 function saveMedicalConsultationXVaccine($idmedicalconsultation, $idvaccine) {
 	$mcvaccinetable = new MedicalConsultationXVaccineTable();
 	return $mcvaccinetable -> insert($idmedicalconsultation, $idvaccine);
-}
-
-function saveMedicalConsultationXDrenching($idmedicalconsultation, $iddrenching) {
-	$mcdrenchingtable = new MedicalConsultationXDrenchingTable();
-	return $mcdrenchingtable -> insert($idmedicalconsultation, $iddrenching);
 }
 ?>
 <!DOCTYPE html>
@@ -271,38 +265,6 @@ function saveMedicalConsultationXDrenching($idmedicalconsultation, $iddrenching)
 				changeVisibility($('#divvaccine6'), "none");
 				changeVisibility($('#divvaccine7'), "none");
 				changeVisibility($('#divvaccine8'), "none");
-			}
-
-
-			$('#drenchingapplication').on("ifChecked", function(event) {
-				changeVisibility($('#divdrenchingquantity'), "block");
-				changeVisibility($('#divdrenching1'), "block");
-				$('#drenchingnumber').val("1");
-			});
-
-			$("#drenchingapplication").on("ifUnchecked", function(event) {
-				changeVisibility($('#divdrenchingquantity'), "none");
-				hideDrenchingSelects();
-			});
-
-			function afterChangeDrenchingNumber() {
-				hideDrenchingSelects();
-				var quantity = $('#drenchingnumber').val();
-				while (quantity > 0) {
-					changeVisibility($('#divdrenching' + quantity), "block");
-					quantity -= 1;
-				}
-			}
-
-			function hideDrenchingSelects() {
-				changeVisibility($('#divdrenching1'), "none");
-				changeVisibility($('#divdrenching2'), "none");
-				changeVisibility($('#divdrenching3'), "none");
-				changeVisibility($('#divdrenching4'), "none");
-				changeVisibility($('#divdrenching5'), "none");
-				changeVisibility($('#divdrenching6'), "none");
-				changeVisibility($('#divdrenching7'), "none");
-				changeVisibility($('#divdrenching8'), "none");
 			}
 
 			function validateConsultation() {
