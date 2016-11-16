@@ -1,7 +1,6 @@
 <?php session_start();
 include_once '../session.php';
 include_once '../../php/clinichistory.php';
-include_once '../../php/medicalconsultationxvaccine.php';
 
 $clinichistory = new ClinicHistoryTable();
 
@@ -110,11 +109,6 @@ if (isset($_POST['basicdata'])) {
 function saveError($log) {
 	$errorLog = new ErrorLogTable();
 	$errorLog -> insert($log);
-}
-
-function saveMedicalConsultationXVaccine($idmedicalconsultation, $idvaccine) {
-	$mcvaccinetable = new MedicalConsultationXVaccineTable();
-	return $mcvaccinetable -> insert($idmedicalconsultation, $idvaccine);
 }
 ?>
 <!DOCTYPE html>
@@ -233,38 +227,6 @@ function saveMedicalConsultationXVaccine($idmedicalconsultation, $idvaccine) {
 
 			function changeVisibility(input, displayVal) {
 				input.css("display", displayVal);
-			}
-
-
-			$('#vaccineapplication').on("ifChecked", function(event) {
-				changeVisibility($('#divvaccinequantity'), "block");
-				changeVisibility($('#divvaccine1'), "block");
-				$('#vaccinenumber').val("1");
-			});
-
-			$("#vaccineapplication").on("ifUnchecked", function(event) {
-				changeVisibility($('#divvaccinequantity'), "none");
-				hideVaccineSelects();
-			});
-
-			function afterChangeVaccineNumber() {
-				hideVaccineSelects();
-				var quantity = $('#vaccinenumber').val();
-				while (quantity > 0) {
-					changeVisibility($('#divvaccine' + quantity), "block");
-					quantity -= 1;
-				}
-			}
-
-			function hideVaccineSelects() {
-				changeVisibility($('#divvaccine1'), "none");
-				changeVisibility($('#divvaccine2'), "none");
-				changeVisibility($('#divvaccine3'), "none");
-				changeVisibility($('#divvaccine4'), "none");
-				changeVisibility($('#divvaccine5'), "none");
-				changeVisibility($('#divvaccine6'), "none");
-				changeVisibility($('#divvaccine7'), "none");
-				changeVisibility($('#divvaccine8'), "none");
 			}
 
 			function validateConsultation() {

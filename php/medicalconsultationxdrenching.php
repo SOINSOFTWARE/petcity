@@ -19,7 +19,7 @@ class MedicalConsultationXDrenchingTable {
 	}
 
 	public function update($id, $iddrenching, $drenchingdate, $weight, $dose, $administration) {
-		$sql = "UPDATE medicalconsultationxdrenching SET iddrenching = $iddrenching, drenchingdate = '$drenchingdate', weight = $weight, dose = '$dose', administration = '$administration'";
+		$sql = "UPDATE medicalconsultationxdrenching SET iddrenching = $iddrenching, drenchingdate = '$drenchingdate', weight = $weight, dose = '$dose', administration = '$administration' WHERE id = $id";
 		return $this -> conn -> query($sql);
 	}
 

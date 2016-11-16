@@ -1,14 +1,5 @@
 <?php
 if (isset($idclinichistory)) {
-	$vaccineapplication = FALSE;
-	$vaccine1 = 0;
-	$vaccine2 = 0;
-	$vaccine3 = 0;
-	$vaccine4 = 0;
-	$vaccine5 = 0;
-	$vaccine6 = 0;
-	$vaccine7 = 0;
-	$vaccine8 = 0;
 	
 	include_once '../../php/medicalconsultation.php';		
 	$mdconsultable = new MedicalConsultationTable();
@@ -26,24 +17,11 @@ if (isset($idclinichistory)) {
 		$anamnesis = $_POST['anamnesis'];
 		$findings = $_POST['findings'];
 		$control = $_POST['control'];
-		$vaccineapplication = (isset($_POST['vaccineapplication'])) ? $_POST['vaccineapplication'] : FALSE;
 		
 		$external = $consultationdate . ' 00:00:00';
 		$format = "d/m/Y H:i:s";
 		$dateobj = DateTime::createFromFormat($format, $external);
 		$consultationdateToSQL = $dateobj -> format("Y-m-d");
-		
-		if ($vaccineapplication || $vaccineapplication === TRUE) {
-			$vaccinenumber = $_POST['vaccinenumber'];
-			$vaccine1 = $_POST['vaccine1'];
-			$vaccine2 = $_POST['vaccine2'];
-			$vaccine3 = $_POST['vaccine3'];
-			$vaccine4 = $_POST['vaccine4'];
-			$vaccine5 = $_POST['vaccine5'];
-			$vaccine6 = $_POST['vaccine6'];
-			$vaccine7 = $_POST['vaccine7'];
-			$vaccine8 = $_POST['vaccine8'];
-		}
 		
 		if ($idconsultation == 0) {
 			$mdsaved = $mdconsultable -> insert($idclinichistory, $idfoodbrand, $weight, $corporalcondition, $consultationdateToSQL, $motive, $anamnesis, $illness, $findings, $diagnosis, $treatment, $control, $companyId);
@@ -51,38 +29,7 @@ if (isset($idclinichistory)) {
 			$mdsaved = $mdconsultable -> update($idconsultation, $idfoodbrand, $weight, $corporalcondition, $consultationdateToSQL, $motive, $anamnesis, $illness, $findings, $diagnosis, $treatment, $control);
 		}
 		
-		if ($mdsaved === TRUE) {
-			if ($idconsultation == 0) {
-				$idconsultation = $mdconsultable -> selectLastInsertId();
-				if ($vaccineapplication || $vaccineapplication === TRUE) {
-					$index = $vaccinenumber;
-					while ($index > 0) {
-						$idvaccine = 0;
-						if ($index == 1) {
-							$idvaccine = $vaccine1;
-						} else if ($index == 2) {
-							$idvaccine = $vaccine2;
-						} else if ($index == 3) {
-							$idvaccine = $vaccine3;
-						} else if ($index == 4) {
-							$idvaccine = $vaccine4;
-						} else if ($index == 5) {
-							$idvaccine = $vaccine5;
-						} else if ($index == 6) {
-							$idvaccine = $vaccine6;
-						} else if ($index == 7) {
-							$idvaccine = $vaccine7;
-						} else if ($index == 8) {
-							$idvaccine = $vaccine8;
-						}
-						if ($idvaccine > 0) {
-							saveMedicalConsultationXVaccine($idconsultation, $idvaccine);
-						}
-						$index -= 1;
-					}
-				}
-			}
-		} else {
+		if ($mdsaved === FALSE) {
 			saveError($mdconsultable -> getError());
 		}
 	}
@@ -115,43 +62,6 @@ if (isset($idclinichistory)) {
 				$weight = '0' . $weight . '';
 			}
 		}
-		$mcvaccinetable = new MedicalConsultationXVaccineTable();
-		$results = $mcvaccinetable -> select($idconsultation);
-		$vaccinenumber = mysqli_num_rows($results);
-		if ($vaccinenumber > 0) {
-			$vaccineapplication = TRUE;
-			$index = 1;
-			while ($rows = mysqli_fetch_array($results)) {
-				if ($index == 1) {
-					$vaccine1 = $rows['idvaccine'];
-				} else if ($index == 2) {
-					$vaccine2 = $rows['idvaccine'];
-				} else if ($index == 3) {
-					$vaccine3 = $rows['idvaccine'];
-				} else if ($index == 4) {
-					$vaccine4 = $rows['idvaccine'];
-				} else if ($index == 5) {
-					$vaccine5 = $rows['idvaccine'];
-				} else if ($index == 6) {
-					$vaccine6 = $rows['idvaccine'];
-				} else if ($index == 7) {
-					$vaccine7 = $rows['idvaccine'];
-				} else if ($index == 8) {
-					$vaccine8 = $rows['idvaccine'];
-				}
-				$index += 1;
-			}
-		}
-	}
-
-	include_once '../../php/vaccine.php';
-	include_once '../phpfragments/vaccine_select.php';
-	
-	$vaccinetable = new VaccineTable();
-	$results = $vaccinetable -> select($companyId);
-	$vaccineresults = array();
-	while ($rows = mysqli_fetch_array($results)) {
-		$vaccineresults[] = $rows;
 	}
 ?>
 <div class="tab-pane active" id="tab_2">
@@ -312,231 +222,6 @@ if (isset($idclinichistory)) {
 							if (isset($control)) { echo $control;
 							}
  ?></textarea>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="box">
-					<div class="box-header">
-						<h4 class="box-title">Vacunaci&oacute;n</h4>
-					</div>
-					<div class="box-body">
-						<div class="row">
-							<div class="col-xs-2">
-								<div class="checkbox">
-									<label> &iquest;Se aplicaron vacunas?
-										<input type="checkbox" id="vaccineapplication" name="vaccineapplication"
-										<?php
-										if ($vaccineapplication || $vaccineapplication === TRUE) {
-											echo "checked";
-										}
-										if (isset($idconsultation) && $idconsultation > 0) {
-											echo ' disabled ';
-										}
-										?>
-										/></label>
-								</div>
-							</div>
-							<div id="divvaccinequantity" class="col-xs-2" style="display: <?php
-							if ($vaccineapplication || $vaccineapplication === TRUE) {
-								echo 'block';
-							} else {
-								echo 'none';
-							}
-							?>;">
-								<label for="vaccinenumber">&iquest;Cu&aacute;ntas?</label>
-								<select class="form-control" id="vaccinenumber" name="vaccinenumber" onchange="afterChangeVaccineNumber()" <?php
-								if (isset($idconsultation) && $idconsultation > 0) {
-									echo ' disabled ';
-								}
-								?>
-									> <option value="1" <?php
-									if (($vaccineapplication || $vaccineapplication === TRUE) && (int)$vaccinenumber == 1) {
-										echo "selected";
-									}
-									?>>1</option>
-									<option value="2" <?php
-									if (($vaccineapplication || $vaccineapplication === TRUE) && (int)$vaccinenumber == 2) {
-										echo "selected";
-									}
-									?>>2</option>
-									<option value="3" <?php
-									if (($vaccineapplication || $vaccineapplication === TRUE) && (int)$vaccinenumber == 3) {
-										echo "selected";
-									}
-									?>>3</option>
-									<option value="4" <?php
-									if (($vaccineapplication || $vaccineapplication === TRUE) && (int)$vaccinenumber == 4) {
-										echo "selected";
-									}
-									?>>4</option>
-									<option value="5" <?php
-									if (($vaccineapplication || $vaccineapplication === TRUE) && (int)$vaccinenumber == 5) {
-										echo "selected";
-									}
-									?>>5</option>
-									<option value="6" <?php
-									if (($vaccineapplication || $vaccineapplication === TRUE) && (int)$vaccinenumber == 6) {
-										echo "selected";
-									}
-									?>>6</option>
-									<option value="7" <?php
-									if (($vaccineapplication || $vaccineapplication === TRUE) && (int)$vaccinenumber == 7) {
-										echo "selected";
-									}
-									?>>7</option>
-									<option value="8" <?php
-									if (($vaccineapplication || $vaccineapplication === TRUE) && (int)$vaccinenumber == 8) {
-										echo "selected";
-									}
-									?>>8</option>
-								</select>
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div id="divvaccine1" class="col-xs-3" style="display: <?php
-							if (($vaccineapplication || $vaccineapplication === TRUE) && ((int)$vaccinenumber - 1) >= 0) {
-								echo 'block';
-							} else {
-								echo 'none';
-							}
-							?>;">
-								<label for="vaccine1">Vacuna #1</label>
-								<select id="vaccine1" name="vaccine1" class="form-control" <?php
-								if (isset($idconsultation) && $idconsultation > 0) {
-									echo ' disabled ';
-								}
-								?>
-									> <option value="0">Seleccione uno...</option>
-									<?php createVaccineOptions($vaccineresults, $vaccine1) ?>
-								</select>
-							</div>
-							<div id="divvaccine2" class="col-xs-3" style="display: <?php
-							if (($vaccineapplication || $vaccineapplication === TRUE) && ((int)$vaccinenumber - 2) >= 0) {
-								echo 'block';
-							} else {
-								echo 'none';
-							}
-							?>;">
-								<label for="vaccine2">Vacuna #2</label>
-								<select id="vaccine2" name="vaccine2" class="form-control" <?php
-								if (isset($idconsultation) && $idconsultation > 0) {
-									echo ' disabled ';
-								}
-								?>
-									> <option value="0">Seleccione uno...</option>
-									<?php createVaccineOptions($vaccineresults, $vaccine2) ?>
-								</select>
-							</div>
-							<div id="divvaccine3" class="col-xs-3" style="display: <?php
-							if (($vaccineapplication || $vaccineapplication === TRUE) && ((int)$vaccinenumber - 3) >= 0) {
-								echo 'block';
-							} else {
-								echo 'none';
-							}
-							?>;">
-								<label for="vaccine3">Vacuna #3</label>
-								<select id="vaccine3" name="vaccine3" class="form-control" <?php
-								if (isset($idconsultation) && $idconsultation > 0) {
-									echo ' disabled ';
-								}
-								?>
-									> <option value="0">Seleccione uno...</option>
-									<?php createVaccineOptions($vaccineresults, $vaccine3) ?>
-								</select>
-							</div>
-							<div id="divvaccine4" class="col-xs-3" style="display: <?php
-							if (($vaccineapplication || $vaccineapplication === TRUE) && ((int)$vaccinenumber - 4) >= 0) {
-								echo 'block';
-							} else {
-								echo 'none';
-							}
-							?>;">
-								<label for="vaccine4">Vacuna #4</label>
-								<select id="vaccine4" name="vaccine4" class="form-control" <?php
-								if (isset($idconsultation) && $idconsultation > 0) {
-									echo ' disabled ';
-								}
-								?>
-									> <option value="0">Seleccione uno...</option>
-									<?php createVaccineOptions($vaccineresults, $vaccine4) ?>
-								</select>
-							</div>
-						</div>
-						<br />
-						<div class="row">
-							<div id="divvaccine5" class="col-xs-3" style="display: <?php
-							if (($vaccineapplication || $vaccineapplication === TRUE) && ((int)$vaccinenumber - 5) >= 0) {
-								echo 'block';
-							} else {
-								echo 'none';
-							}
-							?>;">
-								<label for="vaccine5">Vacuna #5</label>
-								<select id="vaccine5" name="vaccine5" class="form-control" <?php
-								if (isset($idconsultation) && $idconsultation > 0) {
-									echo ' disabled ';
-								}
-								?>
-									> <option value="0">Seleccione uno...</option>
-									<?php createVaccineOptions($vaccineresults, $vaccine5) ?>
-								</select>
-							</div>
-							<div id="divvaccine6" class="col-xs-3" style="display: <?php
-							if (($vaccineapplication || $vaccineapplication === TRUE) && ((int)$vaccinenumber - 6) >= 0) {
-								echo 'block';
-							} else {
-								echo 'none';
-							}
-							?>;">
-								<label for="vaccine6">Vacuna #6</label>
-								<select id="vaccine6" name="vaccine6" class="form-control" <?php
-								if (isset($idconsultation) && $idconsultation > 0) {
-									echo ' disabled ';
-								}
-								?>
-									> <option value="0">Seleccione uno...</option>
-									<?php createVaccineOptions($vaccineresults, $vaccine6) ?>
-								</select>
-							</div>
-							<div id="divvaccine7" class="col-xs-3" style="display: <?php
-							if (($vaccineapplication || $vaccineapplication === TRUE) && ((int)$vaccinenumber - 7) >= 0) {
-								echo 'block';
-							} else {
-								echo 'none';
-							}
-							?>;">
-								<label for="vaccine7">Vacuna #7</label>
-								<select id="vaccine7" name="vaccine7" class="form-control" <?php
-								if (isset($idconsultation) && $idconsultation > 0) {
-									echo ' disabled ';
-								}
-								?>
-									> <option value="0">Seleccione uno...</option>
-									<?php createVaccineOptions($vaccineresults, $vaccine7) ?>
-								</select>
-							</div>
-							<div id="divvaccine8" class="col-xs-3" style="display: <?php
-							if (($vaccineapplication || $vaccineapplication === TRUE) && ((int)$vaccinenumber - 8) >= 0) {
-								echo 'block';
-							} else {
-								echo 'none';
-							}
-							?>;">
-								<label for="vaccine8">Vacuna #8</label>
-								<select id="vaccine8" name="vaccine8" class="form-control" <?php
-								if (isset($idconsultation) && $idconsultation > 0) {
-									echo ' disabled ';
-								}
-								?>
-									> <option value="0">Seleccione uno...</option>
-									<?php createVaccineOptions($vaccineresults, $vaccine8) ?>
-								</select>
-							</div>
 						</div>
 					</div>
 				</div>
