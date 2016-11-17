@@ -1,15 +1,15 @@
 <?php session_start();
 include_once '../session.php';
 include_once '../../php/generaldata.php';
-include_once '../../php/medicalconsultation.php';
 include_once '../../php/medicalcontrol.php';
 include_once '../../php/errorlog.php';
 
-$idclinichistory = $_POST['idclinichistory'];
 $generalDataTable = new GeneralDataTable();
-$mdconsultable = new MedicalConsultationTable();
+$mdControltable = new MedicalControlTable();
 
 if (isset($_POST['save'])) {
+	$idclinichistory = $_POST['idclinichistory'];
+	$idconsultation = $_POST['idconsultation'];
 	$id = $_POST['id'];
 	$idgeneraldata = $_POST['idgeneraldata'];
 	$generaldatadate = $_POST['generaldatadate'];
@@ -39,14 +39,10 @@ if (isset($_POST['save'])) {
 	$dh = str_replace("_", "0", $dh);
 	$formulanumber = str_replace("_", "0", $formulanumber);
 
-	$motive = $_POST['motive'];
-	$presumptivediagnosis = $_POST['presumptivediagnosis'];
-	$differentialdiagnosis = $_POST['differentialdiagnosis'];
+	$evolution = $_POST['evolution'];
 	$diagnosisrecomendations = $_POST['diagnosisrecomendations'];
 	$diagnosissamples = $_POST['diagnosissamples'];
 	$diagnosisexams = $_POST['diagnosisexams'];
-	$definitivediagnosis = $_POST['definitivediagnosis'];
-	$forecast = $_POST['forecast'];
 	$nextdate = $_POST['nextdate'];
 	$nextdateToSQL = null;
 
@@ -54,7 +50,7 @@ if (isset($_POST['save'])) {
 	$format = "d/m/Y H:i:s";
 	$dateobj = DateTime::createFromFormat($format, $external);
 	$generaldatadateToSQL = $dateobj -> format("Y-m-d");
-
+	
 	if ($nextdate != '') {
 		$external = $nextdate . ' 00:00:00';
 		$dateobj = DateTime::createFromFormat($format, $external);
@@ -66,12 +62,12 @@ if (isset($_POST['save'])) {
 		if ($generaldatasaved === TRUE) {
 			$idgeneraldata = $generalDataTable -> selectLastInsertId();
 			if ($nextdate != '') {
-				$saved = $mdconsultable -> insert($idclinichistory, $idgeneraldata, $motive, $presumptivediagnosis, $differentialdiagnosis, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $definitivediagnosis, $forecast, $nextdateToSQL, $companyId);
+				$saved = $mdControltable -> insert($idconsultation, $idgeneraldata, $evolution, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $nextdateToSQL);
 			} else {
-				$saved = $mdconsultable -> insertNonNextDate($idclinichistory, $idgeneraldata, $motive, $presumptivediagnosis, $differentialdiagnosis, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $definitivediagnosis, $forecast, $companyId);
+				$saved = $mdControltable -> insertNonNextDate($idconsultation, $idgeneraldata, $evolution, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams);
 			}
 			if ($saved === TRUE) {
-				$id = $mdconsultable -> selectLastInsertId();
+				$id = $mdControltable -> selectLastInsertId();
 			}
 		} else {
 			$errorLog = new ErrorLogTable();
@@ -81,9 +77,9 @@ if (isset($_POST['save'])) {
 		$generaldatasaved = $generalDataTable -> update($idgeneraldata, $generaldatadateToSQL, $heartrate, $breathingfrequency, $temperature, $heartbeat, $corporalcondition, $linfonodulos, $mucous, $dh, $weight, $mood, $tusigo, $anamnesis, $findings, $clinicaltreatment, $formulanumber, $formula, $recomendations, $observations);
 		if ($generaldatasaved === TRUE) {
 			if ($nextdate != '') {
-				$saved = $mdconsultable -> update($id, $motive, $presumptivediagnosis, $differentialdiagnosis, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $definitivediagnosis, $forecast, $nextdateToSQL);
+				$saved = $mdControltable -> update($id, $evolution, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $nextdateToSQL);
 			} else {
-				$saved = $mdconsultable -> updateNonNextDate($id, $motive, $presumptivediagnosis, $differentialdiagnosis, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $definitivediagnosis, $forecast);
+				$saved = $mdControltable -> updateNonNextDate($id, $evolution, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams);
 			}
 		} else {
 			$errorLog = new ErrorLogTable();
@@ -93,25 +89,21 @@ if (isset($_POST['save'])) {
 
 	if (isset($saved) && $saved === FALSE) {
 		$errorLog = new ErrorLogTable();
-		$errorLog -> insert($mdconsultable -> getError());
+		$errorLog -> insert($mdControltable -> getError());
 	}
 }
 
 if (isset($_POST['view'])) {
-	$id = $_POST['idconsultation'];
-	$results = $mdconsultable -> selectById($id);
+	$id = $_POST['idmedicalcontrol'];
+	$results = $mdControltable -> selectById($id);
 	if ($rows = mysqli_fetch_array($results)) {
-		$motive = $rows['motive'];
-		$presumptivediagnosis = $rows['presumptivediagnosis'];
-		$differentialdiagnosis = $rows['differentialdiagnosis'];
+		$evolution = $rows['evolution'];
 		$diagnosisrecomendations = $rows['diagnosisrecomendations'];
 		$diagnosissamples = $rows['diagnosissamples'];
 		$diagnosisexams = $rows['diagnosisexams'];
-		$definitivediagnosis = $rows['definitivediagnosis'];
-		$forecast = $rows['forecast'];
 		$external = $rows['nextdate'];
 		$nextdate = '';
-		if ($external != '') {
+		if($external != '') {
 			$format = "Y-m-d h:i:s";
 			$dateobj = DateTime::createFromFormat($format, $external);
 			$nextdate = $dateobj -> format("d/m/Y");
@@ -177,16 +169,12 @@ if (isset($_POST['view'])) {
 		}
 	}
 }
-
-if (isset($id) && intval($id) > 0) {
-	$mdcontroltable = new MedicalControlTable();
-}
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Pet City | Consulta m&eacute;dica</title>
+		<title>Pet City | Control post-consulta</title>
 		<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 		<link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 		<link href="../../css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -212,7 +200,7 @@ if (isset($id) && intval($id) > 0) {
 			</aside>
 			<aside class="right-side">
 				<section class="content-header">
-					<h1> Consulta m&eacute;dica </h1>
+					<h1> Control post-consulta </h1>
 					<ol class="breadcrumb">
 						<li>
 							<a href="#"><i class="fa fa-medkit"></i> Pet City</a>
@@ -221,7 +209,7 @@ if (isset($id) && intval($id) > 0) {
 							<a href="../../">Historias cl&iacute;nicas</a>
 						</li>
 						<li class="active">
-							Consulta m&eacute;dica
+							Control post-consulta
 						</li>
 					</ol>
 				</section>
@@ -232,9 +220,10 @@ if (isset($id) && intval($id) > 0) {
 						<div class="col-xs-12">
 							<div class="box">
 								<div class="box-body">
-									<form action="historia.php" method="post" role="form">
+									<form action="consulta.php" method="post" role="form">
 										<input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo $_POST['idclinichistory']; ?>" />
-										<button type="submit" id="backward" name="backward" class="btn btn-success">
+										<input type="hidden" id="idconsultation" name="idconsultation" value="<?php echo $_POST['idconsultation']; ?>" />
+										<button type="submit" id="view" name="view" class="btn btn-success">
 											<i class="fa fa-reply"></i>
 										</button>
 									</form>
@@ -244,7 +233,7 @@ if (isset($id) && intval($id) > 0) {
 					</div>
 					<?php } ?>
 					<div class="row">
-						<form action="consulta.php" method="post" role="form" onsubmit="return validate()">
+						<form action="control.php" method="post" role="form" onsubmit="return validate()">
 							<div class="col-xs-12">
 								<div class="box">
 									<?php
@@ -253,7 +242,7 @@ if (isset($id) && intval($id) > 0) {
 											echo '<div class="alert alert-success alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Datos guardados!</b> La consulta m&eacute;dica ha sido guardada exitosamente.
+<b>Datos guardados!</b> El control post-consulta ha sido guardado exitosamente.
 </div>';
 										} else {
 											echo '<div class="alert alert-danger alert-dismissable">
@@ -271,7 +260,7 @@ if (isset($id) && intval($id) > 0) {
 									}
 									?>
 									<div class="box-header">
-										<h3 class="box-title">Consulta m&eacute;dica</h3>
+										<h3 class="box-title">Control post-consulta</h3>
 									</div>
 									<div class="box-body">
 										<button type="submit" id="save" name="save" class="btn btn-primary">
@@ -282,6 +271,10 @@ if (isset($id) && intval($id) > 0) {
 										<?php if (isset($_POST['idclinichistory'])) {
 										?>
 										<input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo $_POST['idclinichistory']; ?>" />
+										<?php } ?>
+										<?php if (isset($_POST['idconsultation'])) {
+										?>
+										<input type="hidden" id="idconsultation" name="idconsultation" value="<?php echo $_POST['idconsultation']; ?>" />
 										<?php } ?>
 										<input type="hidden" id="id" name="id" value="<?php
 										if (isset($id)) {
@@ -301,29 +294,11 @@ if (isset($id) && intval($id) > 0) {
 										include_once '../phpfragments/generaldata.php';
 										?>
 										<div class="row">
-											<div class="col-xs-4">
+											<div class="col-xs-12">
 												<div class="form-group">
-													<label for="motive">Motivo</label>
-													<textarea class="form-control" id="motive" name="motive" rows="4" maxlength="200" placeholder="&iquest;Cu&aacute;l es el motivo de la consulta?" required><?php
-													if (isset($motive)) { echo $motive;
-													}
-												?></textarea>
-												</div>
-											</div>
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="presumptivediagnosis">Diagn&oacute;stico presuntivo</label>
-													<textarea class="form-control" id="presumptivediagnosis" name="presumptivediagnosis" rows="4" maxlength="100" required><?php
-													if (isset($presumptivediagnosis)) { echo $presumptivediagnosis;
-													}
-												?></textarea>
-												</div>
-											</div>
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="differentialdiagnosis">Diagn&oacute;stico diferencial</label>
-													<textarea class="form-control" id="differentialdiagnosis" name="differentialdiagnosis" rows="4" maxlength="100" required><?php
-													if (isset($differentialdiagnosis)) { echo $differentialdiagnosis;
+													<label for="evolution">Evoluci&oacute;n</label>
+													<textarea class="form-control" id="evolution" name="evolution" rows="4" maxlength="600" required><?php
+													if (isset($evolution)) { echo $evolution;
 													}
 												?></textarea>
 												</div>
@@ -362,24 +337,6 @@ if (isset($id) && intval($id) > 0) {
 										include_once '../phpfragments/generaldatatreatment.php';
 										?>
 										<div class="row">
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="definitivediagnosis">Diagn&oacute;stico definitivo</label>
-													<textarea class="form-control" id="definitivediagnosis" name="definitivediagnosis" rows="4" maxlength="100"><?php
-													if (isset($definitivediagnosis)) { echo $definitivediagnosis;
-													}
-												?></textarea>
-												</div>
-											</div>
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="forecast">Pron&oacute;stico</label>
-													<textarea class="form-control" id="forecast" name="forecast" rows="4" maxlength="100"><?php
-													if (isset($forecast)) { echo $forecast;
-													}
-												?></textarea>
-												</div>
-											</div>
 											<div id="divnextdate" class="col-xs-4">
 												<div class="form-group">
 													<label for="nextdate">Pr&oacute;ximo control</label>
@@ -396,28 +353,6 @@ if (isset($id) && intval($id) > 0) {
 							</div>
 						</form>
 					</div>
-					<?php if (isset($id) && intval($id) > 0) {
-					?>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="nav-tabs-custom">
-								<ul class="nav nav-tabs">
-									<li class="active">
-										<a href="#tab_1" data-toggle="tab">Controles</a>
-									</li>
-									<li class="pull-right">
-										<a href="#" class="text-muted"><i class="fa fa-table"></i></a>
-									</li>
-								</ul>
-								<div class="tab-content">
-									<?php
-									include_once 'tabmedcontrollist.php';
-									?>
-								</div>
-							</div>
-						</div>
-					</div>
-					<?php } ?>
 				</section>
 			</aside>
 		</div>
@@ -457,10 +392,9 @@ if (isset($id) && intval($id) > 0) {
 		<script src="../../js/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
 		<script src="../../js/plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
 		<script src="../../js/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
-		<script src="../../js/petcity.js" type="text/javascript"></script>
-		<script src="../../js/jquery-ui-1.10.3.min.js" type="text/javascript"></script>
 		<script src="../../js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
 		<script src="../../js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+		<script src="../../js/petcity.js" type="text/javascript"></script>
 		<script src="../../js/jquery-ui.min.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			$(function() {
@@ -469,10 +403,6 @@ if (isset($id) && intval($id) > 0) {
 				});
 				$("[data-mask]").inputmask();
 			});
-
-			function changeVisibility(input, displayVal) {
-				input.css("display", displayVal);
-			}
 
 			function validate() {
 				if (!validateDate($('#generaldatadate').val())) {
