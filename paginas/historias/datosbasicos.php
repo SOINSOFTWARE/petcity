@@ -39,6 +39,8 @@ if (isset($_POST['idclinichistory'])) {
 }
 
 if (isset($_POST['basicdata'])) {
+	$idclinichistory = $_POST['idhistory'];
+	
 	$idowner = $_POST['idowner'];
 	$document = $_POST['ownerdocument'];
 	$ownername = $_POST['ownername'];
@@ -223,6 +225,13 @@ function saveError($log) {
 														</button>
 													</div>
 												</div>
+												<input type="hidden" id="idhistory" name="idhistory" value="<?php
+												if (isset($idclinichistory)) {
+													echo $idclinichistory;
+												} else {
+													echo '0';
+												}
+												?>" />
 												<br />
 												<div class="row">
 													<div class="col-xs-6">
