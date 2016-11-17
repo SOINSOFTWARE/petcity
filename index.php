@@ -49,7 +49,7 @@ $results = $clinichistory -> select($companyId);
 						<div class="col-xs-12">
 							<div class="box">
 								<div class="box-body">
-									<form action="paginas/historias/historia.php" method="post" role="form">
+									<form action="paginas/historias/datosbasicos.php" method="post" role="form">
 										<button type="submit" id="submit" name="submit" class="btn btn-primary">
 											<i class="fa fa-plus"></i>
 										</button>
@@ -67,12 +67,11 @@ $results = $clinichistory -> select($companyId);
 											<tr>
 												<th style="text-align:center; width: 10%">Mascota</th>
 												<th style="text-align:center; width: 15%">Tipo</th>
-												<th style="text-align:center; width: 16%">Raza</th>
+												<th style="text-align:center; width: 20%">Raza</th>
 												<th style="text-align:center; width: 10%">Documento</th>
 												<th style="text-align:center; width: 25%">Propietario</th>
 												<th style="text-align:center; width: 10%">Celular</th>
-												<th style="text-align:center; width: 7%">Consulta</th>
-												<th style="text-align:center; width: 7%">Historial</th>
+												<th style="text-align:center; width: 10%">Ver</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -85,8 +84,7 @@ $results = $clinichistory -> select($companyId);
 												echo '<td>' . $rows["document"] . '</td>';
 												echo '<td>' . $rows["ownername"] . ' ' . $rows["lastname"] . '</td>';
 												echo '<td>' . $rows["phone2"] . '</td>';
-												echo '<td style="text-align:center"><form action="paginas/historias/historia.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $rows["id"] . '" /><button type="submit" id="newvisit" name="newvisit" class="btn btn-info"><i class="fa fa-stethoscope"></i></button></form></td>';
-												echo '<td style="text-align:center"><form action="paginas/historias/consultas.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $rows["id"] . '" /><button type="submit" id="history" name="history" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';
+												echo '<td style="text-align:center"><form action="paginas/historias/historia.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $rows["id"] . '" /><button type="submit" id="history" name="history" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';
 												echo "</tr>";
 											}
 											?>

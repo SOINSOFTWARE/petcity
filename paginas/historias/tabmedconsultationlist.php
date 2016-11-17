@@ -8,7 +8,7 @@
 				<div class="box-body table-responsive">
 					<div class="row">
 						<div class="col-xs-4">
-							<form action="historia.php" method="post" role="form">
+							<form action="consulta.php" method="post" role="form">
 								<input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php
 								if (isset($idclinichistory)) {
 									echo $idclinichistory;
@@ -44,7 +44,7 @@
 								echo '<td>' . $rows["motive"] . '</td>';
 								echo '<td>' . $rows["diagnosis"] . '</td>';
 								echo '<td>' . $rows["illness"] . '</td>';
-								echo '<td style="text-align:center"><form action="historia.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $rows["idclinichistory"] . '" /><input type="hidden" id="idconsultation" name="idconsultation" value="' . $rows["id"] . '" /><button type="submit" id="history" name="history" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';
+								echo '<td style="text-align:center"><form action="consulta.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $rows["idclinichistory"] . '" /><input type="hidden" id="idconsultation" name="idconsultation" value="' . $rows["id"] . '" /><button type="submit" id="history" name="history" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';
 								echo "</tr>";
 							}
 							?>

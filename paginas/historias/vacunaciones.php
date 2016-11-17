@@ -212,7 +212,7 @@ $results = $vaccinetable -> select($companyId);
 						<div class="col-xs-12">
 							<div class="box">
 								<div class="box-body">
-									<form action="consultas.php" method="post" role="form">
+									<form action="historia.php" method="post" role="form">
 										<input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo $_POST['idclinichistory']; ?>" />
 										<button type="submit" id="backward" name="backward" class="btn btn-success">
 											<i class="fa fa-reply"></i>
