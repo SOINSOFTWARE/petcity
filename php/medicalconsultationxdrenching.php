@@ -29,7 +29,7 @@ class MedicalConsultationXDrenchingTable {
 	}
 
 	public function select($idpet) {
-		$sql = "SELECT * FROM medicalconsultationxdrenching md JOIN drenching dr ON md.iddrenching = dr.id  WHERE md.idpet = $idpet AND md.enabled = 1 ORDER BY md.drenchingdate";
+		$sql = "SELECT md.id AS idmeddrenching, md.*, dr.* FROM medicalconsultationxdrenching md JOIN drenching dr ON md.iddrenching = dr.id  WHERE md.idpet = $idpet AND md.enabled = 1 ORDER BY md.drenchingdate";
 		return mysqli_query($this -> conn, $sql);
 	}
 

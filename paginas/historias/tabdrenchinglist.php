@@ -51,8 +51,8 @@
 								echo '<td>' . $rows["name"] . '</td>';
 								echo '<td>' . $rows["dose"] . '</td>';
 								echo '<td>' . $rows["administration"] . '</td>';
-								echo '<td style="text-align:center"><form action="desparasitaciones.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $idclinichistory . '" /><input type="hidden" id="idmeddrenching" name="idmeddrenching" value="' . $rows["id"] . '" /><button type="submit" id="view" name="view" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';
-								echo '<td style="text-align:center"><form action="consultas.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $idclinichistory . '" /><input type="hidden" id="idmeddrenching" name="idmeddrenching" value="' . $rows["id"] . '" /><button type="submit" id="deletemeddrenching" name="deletemeddrenching" class="btn btn-danger"><i class="fa fa-times"></i></button></form></td>';
+								echo '<td style="text-align:center"><form action="desparasitaciones.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $idclinichistory . '" /><input type="hidden" id="idmeddrenching" name="idmeddrenching" value="' . $rows["idmeddrenching"] . '" /><button type="submit" id="view" name="view" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';
+								echo '<td style="text-align:center"><form action="historia.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $idclinichistory . '" /><input type="hidden" id="idmeddrenching" name="idmeddrenching" value="' . $rows["idmeddrenching"] . '" /><button type="submit" id="deletemeddrenching" name="deletemeddrenching" class="btn btn-danger"><i class="fa fa-times"></i></button></form></td>';
 								echo "</tr>";
 							}
 							?>

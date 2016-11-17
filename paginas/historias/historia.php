@@ -28,6 +28,15 @@ if (isset($_POST['idclinichistory'])) {
 		$petbreedname = $rows['breedname'];
 	}
 }
+$mdconsultable = new MedicalConsultationTable();
+if (isset($_POST['deleteconsultation'])) {
+	$idconsultation = $_POST['idconsultation'];
+	$consultationdeleted = $mdconsultable -> delete($idconsultation);
+	if ($consultationdeleted === FALSE) {
+		$errorLog = new ErrorLogTable();
+		$errorLog -> insert($mdconsultable -> getError());
+	}
+}
 $notification = new NotificationTable();
 if (isset($_POST['deletenote'])) {
 	$idnotification = $_POST['idnotification'];
@@ -139,6 +148,21 @@ if (isset($_POST['deletevacconsultation'])) {
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
 <b>Datos eliminados!</b> La vacunaci&oacute;n ha sido eliminada exitosamente.
+</div>';
+									} else {
+										echo '<div class="alert alert-danger alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Error!</b> Ocurri&oacute; un error al intentar eliminar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
+</div>';
+									}
+								}
+								if (isset($consultationdeleted)) {
+									if ($consultationdeleted) {
+										echo '<div class="alert alert-success alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Datos eliminados!</b> La consulta m&eacute;dica ha sido eliminada exitosamente.
 </div>';
 									} else {
 										echo '<div class="alert alert-danger alert-dismissable">

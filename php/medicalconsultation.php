@@ -13,16 +13,29 @@ class MedicalConsultationTable {
 		mysqli_select_db($this -> conn, DB_NAME);
 	}
 
-	public function insert($idclinichistory, $idfoodbrand, $weight, $corporalcondition, $consultationdate, $motive, $anamnesis, $illness, $findings, $diagnosis, $treatment, $control, $idcompany) {
-		$sql = "INSERT medicalconsultation(idclinichistory,idfoodbrand,weight,corporalcondition,consultationdate,motive,anamnesis,illness,findings,diagnosis,treatment,control,idcompany) 
-		VALUES($idclinichistory,$idfoodbrand,$weight,'$corporalcondition','$consultationdate','$motive','$anamnesis','$illness','$findings','$diagnosis','$treatment','$control',$idcompany)";
+	public function insert($idclinichistory, $idgeneraldata, $motive, $presumptivediagnosis, $differentialdiagnosis, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $definitivediagnosis, $forecast, $nextdate, $idcompany) {
+		$sql = "INSERT medicalconsultation(idclinichistory,idgeneraldata,motive,presumptivediagnosis,differentialdiagnosis,diagnosisrecomendations,diagnosissamples,diagnosisexams,definitivediagnosis,forecast,nextdate,idcompany) 
+		VALUES($idclinichistory,$idgeneraldata,'$motive','$presumptivediagnosis','$differentialdiagnosis','$diagnosisrecomendations','$diagnosissamples','$diagnosisexams','$definitivediagnosis','$forecast','$nextdate',$idcompany)";
+		return $this -> conn -> query($sql);
+	}
+	
+	public function insertNonNextDate($idclinichistory, $idgeneraldata, $motive, $presumptivediagnosis, $differentialdiagnosis, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $definitivediagnosis, $forecast, $idcompany) {
+		$sql = "INSERT medicalconsultation(idclinichistory,idgeneraldata,motive,presumptivediagnosis,differentialdiagnosis,diagnosisrecomendations,diagnosissamples,diagnosisexams,definitivediagnosis,forecast,idcompany) 
+		VALUES($idclinichistory,$idgeneraldata,'$motive','$presumptivediagnosis','$differentialdiagnosis','$diagnosisrecomendations','$diagnosissamples','$diagnosisexams','$definitivediagnosis','$forecast',$idcompany)";
 		return $this -> conn -> query($sql);
 	}
 
-	public function update($id, $idfoodbrand, $weight, $corporalcondition, $consultationdate, $motive, $anamnesis, $illness, $findings, $diagnosis, $treatment, $control) {
-		$sql = "UPDATE medicalconsultation SET idfoodbrand = $idfoodbrand, weight = $weight, corporalcondition = '$corporalcondition',
-			consultationdate = '$consultationdate', motive = '$motive', anamnesis = '$anamnesis', illness = '$illness',
-			findings = '$findings', diagnosis = '$diagnosis', treatment = '$treatment', control = '$control' WHERE id = $id";
+	public function update($id, $motive, $presumptivediagnosis, $differentialdiagnosis, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $definitivediagnosis, $forecast, $nextdate) {
+		$sql = "UPDATE medicalconsultation SET motive = '$motive', presumptivediagnosis = '$presumptivediagnosis', differentialdiagnosis = '$differentialdiagnosis',
+			diagnosisrecomendations = '$diagnosisrecomendations', diagnosissamples = '$diagnosissamples', diagnosisexams = '$diagnosisexams',
+			definitivediagnosis = '$definitivediagnosis', forecast = '$forecast', nextdate = '$nextdate' WHERE id = $id";
+		return $this -> conn -> query($sql);
+	}
+	
+	public function updateNonNextDate($id, $motive, $presumptivediagnosis, $differentialdiagnosis, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $definitivediagnosis, $forecast) {
+		$sql = "UPDATE medicalconsultation SET motive = '$motive', presumptivediagnosis = '$presumptivediagnosis', differentialdiagnosis = '$differentialdiagnosis',
+			diagnosisrecomendations = '$diagnosisrecomendations', diagnosissamples = '$diagnosissamples', diagnosisexams = '$diagnosisexams',
+			definitivediagnosis = '$definitivediagnosis', forecast = '$forecast', nextdate = null WHERE id = $id";
 		return $this -> conn -> query($sql);
 	}
 
@@ -42,7 +55,7 @@ class MedicalConsultationTable {
 	}
 	
 	public function selectByIdClinicHistory($idclinichistory) {
-		$sql = "SELECT * FROM medicalconsultation WHERE idclinichistory = $idclinichistory ORDER BY consultationdate DESC";
+		$sql = "SELECT md.id AS idconsultation, md.*, gd.* FROM medicalconsultation md JOIN generaldata gd ON md.idgeneraldata = gd.id WHERE md.idclinichistory = $idclinichistory AND md.enabled = 1 ORDER BY gd.generaldatadate DESC";
 		return mysqli_query($this -> conn, $sql);
 	}
 	

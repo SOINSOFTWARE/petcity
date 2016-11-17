@@ -56,7 +56,7 @@
 								echo '<td>' . $rows["batch"] . '</td>';
 								echo '<td>' . $rows["expiration"] . '</td>';
 								echo '<td style="text-align:center"><form action="vacunaciones.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $idclinichistory . '" /><input type="hidden" id="idvaccineconsultation" name="idvaccineconsultation" value="' . $rows["idvaccineconsultation"] . '" /><button type="submit" id="view" name="view" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';
-								echo '<td style="text-align:center"><form action="consultas.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $idclinichistory . '" /><input type="hidden" id="idvaccineconsultation" name="idvaccineconsultation" value="' . $rows["idvaccineconsultation"] . '" /><button type="submit" id="deletevacconsultation" name="deletevacconsultation" class="btn btn-danger"><i class="fa fa-times"></i></button></form></td>';
+								echo '<td style="text-align:center"><form action="historia.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $idclinichistory . '" /><input type="hidden" id="idvaccineconsultation" name="idvaccineconsultation" value="' . $rows["idvaccineconsultation"] . '" /><button type="submit" id="deletevacconsultation" name="deletevacconsultation" class="btn btn-danger"><i class="fa fa-times"></i></button></form></td>';
 								echo "</tr>";
 							}
 							?>
