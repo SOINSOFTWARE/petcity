@@ -3,6 +3,7 @@ include_once '../session.php';
 include_once '../../php/generaldata.php';
 include_once '../../php/medicalconsultation.php';
 include_once '../../php/medicalcontrol.php';
+include_once '../../php/medicalexam.php';
 include_once '../../php/errorlog.php';
 
 $idclinichistory = $_POST['idclinichistory'];
@@ -97,7 +98,7 @@ if (isset($_POST['save'])) {
 	}
 }
 
-if (isset($_POST['view'])) {
+if (isset($_POST['view']) || isset($_POST['deletecontrol']) || isset($_POST['deleteexam'])) {
 	$id = $_POST['idconsultation'];
 	$results = $mdconsultable -> selectById($id);
 	if ($rows = mysqli_fetch_array($results)) {
@@ -180,6 +181,23 @@ if (isset($_POST['view'])) {
 
 if (isset($id) && intval($id) > 0) {
 	$mdcontroltable = new MedicalControlTable();
+	if (isset($_POST['deletecontrol'])) {
+		$idmedicalcontrol = $_POST['idmedicalcontrol'];
+		$controldeleted = $mdcontroltable -> delete($idmedicalcontrol);
+		if ($controldeleted === FALSE) {
+			$errorLog = new ErrorLogTable();
+			$errorLog -> insert($mdcontroltable -> getError());
+		}
+	}
+	$mdexamtable = new MedicalExamTable();
+	if (isset($_POST['deleteexam'])) {
+		$idmedicalexam = $_POST['idmedicalexam'];
+		$examdeleted = $mdexamtable -> delete($idmedicalexam);
+		if ($examdeleted === FALSE) {
+			$errorLog = new ErrorLogTable();
+			$errorLog -> insert($mdexamtable -> getError());
+		}
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -268,6 +286,36 @@ if (isset($id) && intval($id) > 0) {
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
 <b>Error!</b> Ocurri&oacute; un error al intentar guardar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
 </div>';
+									}
+									if (isset($controldeleted)) {
+										if ($controldeleted) {
+											echo '<div class="alert alert-success alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Datos eliminados!</b> El control ha sido eliminado exitosamente.
+</div>';
+										} else {
+											echo '<div class="alert alert-danger alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Error!</b> Ocurri&oacute; un error al intentar eliminar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
+</div>';
+										}
+									}
+									if (isset($examdeleted)) {
+										if ($examdeleted) {
+											echo '<div class="alert alert-success alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Datos eliminados!</b> El ex&aacute;men ha sido eliminado exitosamente.
+</div>';
+										} else {
+											echo '<div class="alert alert-danger alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Error!</b> Ocurri&oacute; un error al intentar eliminar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
+</div>';
+										}
 									}
 									?>
 									<div class="box-header">
@@ -405,6 +453,9 @@ if (isset($id) && intval($id) > 0) {
 									<li class="active">
 										<a href="#tab_1" data-toggle="tab">Controles</a>
 									</li>
+									<li>
+										<a href="#tab_2" data-toggle="tab">Ex&aacute;menes</a>
+									</li>
 									<li class="pull-right">
 										<a href="#" class="text-muted"><i class="fa fa-table"></i></a>
 									</li>
@@ -412,6 +463,7 @@ if (isset($id) && intval($id) > 0) {
 								<div class="tab-content">
 									<?php
 									include_once 'tabmedcontrollist.php';
+									include_once 'tabmedexamlist.php';
 									?>
 								</div>
 							</div>

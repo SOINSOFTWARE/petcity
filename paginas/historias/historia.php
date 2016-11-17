@@ -295,14 +295,8 @@ if (isset($_POST['deletevacconsultation'])) {
 								<div class="tab-content">
 									<?php
 									include_once 'tabmedconsultationlist.php';
-									?>
-									<?php
 									include_once 'tabdrenchinglist.php';
-									?>
-									<?php
 									include_once 'tabvaccinelist.php';
-									?>
-									<?php
 									include_once 'tabnotelist.php';
 									?>
 								</div>

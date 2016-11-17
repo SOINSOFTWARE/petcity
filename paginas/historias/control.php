@@ -50,7 +50,7 @@ if (isset($_POST['save'])) {
 	$format = "d/m/Y H:i:s";
 	$dateobj = DateTime::createFromFormat($format, $external);
 	$generaldatadateToSQL = $dateobj -> format("Y-m-d");
-	
+
 	if ($nextdate != '') {
 		$external = $nextdate . ' 00:00:00';
 		$dateobj = DateTime::createFromFormat($format, $external);
@@ -103,7 +103,7 @@ if (isset($_POST['view'])) {
 		$diagnosisexams = $rows['diagnosisexams'];
 		$external = $rows['nextdate'];
 		$nextdate = '';
-		if($external != '') {
+		if ($external != '') {
 			$format = "Y-m-d h:i:s";
 			$dateobj = DateTime::createFromFormat($format, $external);
 			$nextdate = $dateobj -> format("d/m/Y");
@@ -230,8 +230,8 @@ if (isset($_POST['view'])) {
 								</div>
 							</div>
 						</div>
+						<?php } ?>
 					</div>
-					<?php } ?>
 					<div class="row">
 						<form action="control.php" method="post" role="form" onsubmit="return validate()">
 							<div class="col-xs-12">
