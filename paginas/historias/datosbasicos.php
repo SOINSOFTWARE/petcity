@@ -31,6 +31,7 @@ if (isset($_POST['idclinichistory'])) {
 		$color = $rows['color'];
 		$sex = $rows['sex'];
 		$bornplace = $rows['bornplace'];
+		$history = $rows['history'];
 		$external = $rows['borndate'];
 		$format = "Y-m-d h:i:s";
 		$dateobj = DateTime::createFromFormat($format, $external);
@@ -40,7 +41,7 @@ if (isset($_POST['idclinichistory'])) {
 
 if (isset($_POST['basicdata'])) {
 	$idclinichistory = $_POST['idhistory'];
-	
+
 	$idowner = $_POST['idowner'];
 	$document = $_POST['ownerdocument'];
 	$ownername = $_POST['ownername'];
@@ -61,6 +62,7 @@ if (isset($_POST['basicdata'])) {
 	$sex = $_POST['petsex'];
 	$borndate = $_POST['petborndate'];
 	$bornplace = $_POST['petbornplace'];
+	$history = $_POST['history'];
 
 	$document = str_replace("_", "", $document);
 	$phone1 = str_replace("_", "", $phone1);
@@ -84,7 +86,7 @@ if (isset($_POST['basicdata'])) {
 			$idowner = $owner -> selectLastInsertId();
 		}
 		if ($idpet == 0) {
-			$petsaved = $pet -> insert($petname, $color, $sex, $fullborndate, $bornplace, $idreproduction, $idpettype, $idbreed, $idowner, $companyId);
+			$petsaved = $pet -> insert($petname, $color, $sex, $fullborndate, $bornplace, $history, $idreproduction, $idpettype, $idbreed, $idowner, $companyId);
 			if ($petsaved === TRUE) {
 				$idpet = $pet -> selectLastInsertId();
 				$clinichistorysaved = $clinichistory -> insert($idpet, $companyId);
@@ -97,7 +99,7 @@ if (isset($_POST['basicdata'])) {
 				saveError($pet -> getError());
 			}
 		} else {
-			$petsaved = $pet -> update($idpet, $petname, $color, $sex, $fullborndate, $bornplace, $idreproduction, $idpettype, $idbreed);
+			$petsaved = $pet -> update($idpet, $petname, $color, $sex, $fullborndate, $bornplace, $history, $idreproduction, $idpettype, $idbreed);
 			if ($petsaved === FALSE) {
 				saveError($pet -> getError());
 			}
@@ -425,6 +427,13 @@ function saveError($log) {
 																		echo $bornplace;
 																	}
 																	?>" required />
+																</div>
+																<div class="form-group">
+																	<label for="history">Antecedentes - Enfermedades anteriores</label>
+																	<textarea class="form-control" id="history" name="history" rows="8" maxlength="650" placeholder="Enfermedades anteriores, hospitalizaciones, propietarios anteriores, reacciones adversas, y todos los datos de importancia de la mascota"><?php
+																	if (isset($history)) { echo $history;
+																	}
+ ?></textarea>
 																</div>
 															</div>
 														</div>

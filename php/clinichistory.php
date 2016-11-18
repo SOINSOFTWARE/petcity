@@ -40,7 +40,7 @@ class ClinicHistoryTable {
 	}
 	
 	public function selectById($id) {
-		$sql = "SELECT ch.id AS id, idpet, p.name AS petname, color, sex, borndate, bornplace, idreproduction, p.idpettype, idbreed, idowner, document, o.name AS ownername, lastname, email, address, phone, phone2, pt.name AS pettypename, b.name AS breedname  
+		$sql = "SELECT ch.id AS id, idpet, p.name AS petname, color, sex, borndate, bornplace, history, idreproduction, p.idpettype, idbreed, idowner, document, o.name AS ownername, lastname, email, address, phone, phone2, pt.name AS pettypename, b.name AS breedname  
 		FROM clinichistory ch 
 		JOIN pet p ON ch.idpet = p.id 
 		JOIN owner o ON p.idowner = o.id 

@@ -13,13 +13,13 @@ class PetTable {
 		mysqli_select_db($this -> conn, DB_NAME);
 	}
 
-	public function insert($name, $color, $sex, $borndate, $bornplace, $idreproduction, $idpettype, $idbreed, $idowner, $idcompany) {
-		$sql = "INSERT pet(name,color,sex,borndate,bornplace,idreproduction,idpettype,idbreed,idowner,idcompany) VALUES('$name', '$color', '$sex', '$borndate', '$bornplace', $idreproduction, $idpettype, $idbreed, $idowner, $idcompany)";
+	public function insert($name, $color, $sex, $borndate, $bornplace, $history, $idreproduction, $idpettype, $idbreed, $idowner, $idcompany) {
+		$sql = "INSERT pet(name,color,sex,borndate,bornplace,history,idreproduction,idpettype,idbreed,idowner,idcompany) VALUES('$name', '$color', '$sex', '$borndate', '$bornplace', '$history', $idreproduction, $idpettype, $idbreed, $idowner, $idcompany)";
 		return $this -> conn -> query($sql);
 	}
 
-	public function update($id, $name, $color, $sex, $borndate, $bornplace, $idreproduction, $idpettype, $idbreed) {
-		$sql = "UPDATE pet SET name = '$name', color = '$color', sex = '$sex', borndate = '$borndate', bornplace = '$bornplace', idreproduction = $idreproduction, idpettype = $idpettype, idbreed = $idbreed WHERE id = $id";
+	public function update($id, $name, $color, $sex, $borndate, $bornplace, $history, $idreproduction, $idpettype, $idbreed) {
+		$sql = "UPDATE pet SET name = '$name', color = '$color', sex = '$sex', borndate = '$borndate', bornplace = '$bornplace', history = '$history', idreproduction = $idreproduction, idpettype = $idpettype, idbreed = $idbreed WHERE id = $id";
 		return $this -> conn -> query($sql);
 	}
 
