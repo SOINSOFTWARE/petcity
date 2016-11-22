@@ -6,6 +6,7 @@ include_once '../../php/notification.php';
 include_once '../../php/medicalconsultationxdrenching.php';
 include_once '../../php/vaccineconsultation.php';
 include_once '../../php/adversereactions.php';
+include_once '../../php/hospitalization.php';
 include_once '../../php/errorlog.php';
 
 if (isset($_POST['idclinichistory'])) {
@@ -70,6 +71,15 @@ if (isset($_POST['deleteadvreaction'])) {
 	$idadversereaction = $_POST['idadversereaction'];
 	$advreactiondeleted = $adversereactionstable -> delete($idadversereaction);
 	if ($advreactiondeleted === FALSE) {
+		$errorLog = new ErrorLogTable();
+		$errorLog -> insert($adversereactionstable -> getError());
+	}
+}
+$hospitalizationTable = new HospitalizationTable();
+if (isset($_POST['deletehospitalization'])) {
+	$idhospitalization = $_POST['idhospitalization'];
+	$hospitalizationdeleted = $hospitalizationTable -> delete($idhospitalization);
+	if ($hospitalizationdeleted === FALSE) {
 		$errorLog = new ErrorLogTable();
 		$errorLog -> insert($adversereactionstable -> getError());
 	}
@@ -197,6 +207,21 @@ if (isset($_POST['deleteadvreaction'])) {
 </div>';
 									}
 								}
+								if (isset($hospitalizationdeleted)) {
+									if ($hospitalizationdeleted) {
+										echo '<div class="alert alert-success alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Datos eliminados!</b> La hospitalizaci&oacute;n ha sido eliminada exitosamente.
+</div>';
+									} else {
+										echo '<div class="alert alert-danger alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Error!</b> Ocurri&oacute; un error al intentar eliminar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
+</div>';
+									}
+								}
 								if (isset($_POST['send'])) {
 									$results = $notification -> selectById($_POST['idnotification']);
 									if ($rows = mysqli_fetch_array($results)) {
@@ -314,7 +339,10 @@ if (isset($_POST['deleteadvreaction'])) {
 										<a href="#tab_4" data-toggle="tab">Reacciones adversas</a>
 									</li>
 									<li>
-										<a href="#tab_5" data-toggle="tab">Notas</a>
+										<a href="#tab_5" data-toggle="tab">Hospitalizaciones</a>
+									</li>
+									<li>
+										<a href="#tab_6" data-toggle="tab">Notas</a>
 									</li>
 									<li class="pull-right">
 										<a href="#" class="text-muted"><i class="fa fa-table"></i></a>
@@ -326,6 +354,7 @@ if (isset($_POST['deleteadvreaction'])) {
 									include_once 'tabdrenchinglist.php';
 									include_once 'tabvaccinelist.php';
 									include_once 'tabadversereactionlist.php';
+									include_once 'tabhospitalizationlist.php';
 									include_once 'tabnotelist.php';
 									?>
 								</div>
