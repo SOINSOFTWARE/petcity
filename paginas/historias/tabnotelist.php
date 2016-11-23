@@ -1,4 +1,4 @@
-<div class="tab-pane" id="tab_6">
+<div class="tab-pane" id="tab_7">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="box box-primary">

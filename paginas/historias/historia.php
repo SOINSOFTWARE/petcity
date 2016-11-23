@@ -7,6 +7,7 @@ include_once '../../php/medicalconsultationxdrenching.php';
 include_once '../../php/vaccineconsultation.php';
 include_once '../../php/adversereactions.php';
 include_once '../../php/hospitalization.php';
+include_once '../../php/surgery.php';
 include_once '../../php/errorlog.php';
 
 if (isset($_POST['idclinichistory'])) {
@@ -82,6 +83,15 @@ if (isset($_POST['deletehospitalization'])) {
 	if ($hospitalizationdeleted === FALSE) {
 		$errorLog = new ErrorLogTable();
 		$errorLog -> insert($adversereactionstable -> getError());
+	}
+}
+$surgerytable = new SurgeryTable();
+if (isset($_POST['deletesurgery'])) {
+	$idsurgery = $_POST['idsurgery'];
+	$surgerydeleted = $surgerytable -> delete($idsurgery);
+	if ($surgerydeleted === FALSE) {
+		$errorLog = new ErrorLogTable();
+		$errorLog -> insert($surgerytable -> getError());
 	}
 }
 ?>
@@ -222,6 +232,21 @@ if (isset($_POST['deletehospitalization'])) {
 </div>';
 									}
 								}
+								if (isset($surgerydeleted)) {
+									if ($surgerydeleted) {
+										echo '<div class="alert alert-success alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Datos eliminados!</b> El procedimiento ha sido eliminado exitosamente.
+</div>';
+									} else {
+										echo '<div class="alert alert-danger alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Error!</b> Ocurri&oacute; un error al intentar eliminar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
+</div>';
+									}
+								}
 								if (isset($_POST['send'])) {
 									$results = $notification -> selectById($_POST['idnotification']);
 									if ($rows = mysqli_fetch_array($results)) {
@@ -342,7 +367,10 @@ if (isset($_POST['deletehospitalization'])) {
 										<a href="#tab_5" data-toggle="tab">Hospitalizaciones</a>
 									</li>
 									<li>
-										<a href="#tab_6" data-toggle="tab">Notas</a>
+										<a href="#tab_6" data-toggle="tab">Procedimientos quir&uacute;rgicos</a>
+									</li>
+									<li>
+										<a href="#tab_7" data-toggle="tab">Notas</a>
 									</li>
 									<li class="pull-right">
 										<a href="#" class="text-muted"><i class="fa fa-table"></i></a>
@@ -355,6 +383,7 @@ if (isset($_POST['deletehospitalization'])) {
 									include_once 'tabvaccinelist.php';
 									include_once 'tabadversereactionlist.php';
 									include_once 'tabhospitalizationlist.php';
+									include_once 'tabsurgerylist.php';
 									include_once 'tabnotelist.php';
 									?>
 								</div>
