@@ -116,12 +116,12 @@ if (isset($_POST['register'])) {
 			<form action="registrarse.php" method="post" onsubmit="return validate()">
 				<div class="body bg-gray">
 					<div class="form-group">
-						<label for="nit">NIT</label>
-						<input type="text" class="form-control" id="nit" name="nit" placeholder="NIT" data-inputmask='"mask": "999999999-9"' value="<?php
+						<label for="nit">NIT(Incluya el d&iacute;gito de verificaci&oacute;n)</label>
+						<input type="text" class="form-control" id="nit" name="nit" placeholder="99999999-9" value="<?php
 						if (isset($nit)) {
 							echo $nit;
 						}
-						?>" required data-mask>
+						?>" required>
 					</div>
 					<div class="form-group">
 						<label for="companyname">Nombre de la veterinaria</label>
@@ -293,7 +293,7 @@ if (isset($_POST['register'])) {
 				var nitStr = $.trim($('#nit').val());
 				var arrayNit = nitStr.split("-");
 				var nit = parseInt(arrayNit[0].split('_').join(''));
-				return nit > 100000000;
+				return nit > 10000000;
 			}
 
 			function validateCompanyName(val) {

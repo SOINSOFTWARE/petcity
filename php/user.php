@@ -55,7 +55,7 @@ class UserTable {
 
 	public function selectForLogin($email, $password) {
 		$inDb = FALSE;
-		$sql = "SELECT co.id AS comId, co.name AS comName, us.name, us.lastname, us.email FROM user us JOIN company co ON us.idcompany = co.id WHERE us.email = '$email' AND us.password = '$password'";
+		$sql = "SELECT co.id AS comId, co.name AS comName, us.name, us.lastname, us.email FROM user us JOIN company co ON us.idcompany = co.id WHERE us.email = '$email' AND us.password = '$password' AND co.paid = 1";
 		$results = mysqli_query($this -> conn, $sql);
 		if ($rows = mysqli_fetch_array($results)) {
 			$inDb = TRUE;

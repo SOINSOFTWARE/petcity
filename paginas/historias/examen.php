@@ -22,7 +22,7 @@ if (isset($_POST['save'])) {
 	$examdateToSQL = $dateobj -> format("Y-m-d");
 
 	if (intval($id) === 0) {
-		$targetdir = '../../exams/' . $companyId . "/";
+		$targetdir = '../../exams/' . $companyId . "/" . $idconsultation . "/";
 		$filepath = $targetdir . rand() . basename($_FILES["fileToUpload"]["name"]);
 		if (!file_exists($targetdir)) {
 			mkdir($targetdir, 0777, true);
