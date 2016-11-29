@@ -39,7 +39,7 @@ class VaccineConsultationTable {
 	}
 
 	public function select($idpet) {
-		$sql = "SELECT vc.id AS idvaccineconsultation, vc.*, gd.*, v.* FROM vaccineconsultation vc JOIN generaldata gd ON vc.idgeneraldata = gd.id LEFT JOIN vaccine v ON vc.idvaccine = v.id  WHERE vc.idpet = $idpet AND vc.enabled = 1 ORDER BY gd.generaldatadate";
+		$sql = "SELECT vc.id AS idvaccineconsultation, vc.*, gd.*, v.* FROM vaccineconsultation vc JOIN generaldata gd ON vc.idgeneraldata = gd.id LEFT JOIN vaccine v ON vc.idvaccine = v.id  WHERE vc.idpet = $idpet AND vc.enabled = 1 ORDER BY gd.generaldatadate DESC";
 		return mysqli_query($this -> conn, $sql);
 	}
 

@@ -21,23 +21,17 @@ if (isset($_POST['save'])) {
 	$heartbeat = $_POST['heartbeat'];
 	$linfonodulos = $_POST['linfonodulos'];
 	$mucous = $_POST['mucous'];
+	$trc = $_POST['trc'];
 	$dh = $_POST['dh'];
 	$mood = $_POST['mood'];
 	$tusigo = $_POST['tusigo'];
-	$anamnesis = $_POST['anamnesis'];
-	$findings = $_POST['findings'];
+	$anamnesis = '';
+	$findings = '';
 	$clinicaltreatment = '';
 	$formulanumber = '0';
 	$formula = '';
 	$recomendations = '';
 	$observations = '';
-
-	$weight = str_replace("_", "0", $weight);
-	$heartrate = str_replace("_", "0", $heartrate);
-	$breathingfrequency = str_replace("_", "0", $breathingfrequency);
-	$temperature = str_replace("_", "0", $temperature);
-	$dh = str_replace("_", "0", $dh);
-	$formulanumber = str_replace("_", "0", $formulanumber);
 
 	$reporttime = $_POST['reporttime'];
 	$evolution = $_POST['evolution'];	
@@ -48,7 +42,7 @@ if (isset($_POST['save'])) {
 	$generaldatadateToSQL = $dateobj -> format("Y-m-d");
 
 	if (intval($id) === 0) {
-		$generaldatasaved = $generalDataTable -> insert($generaldatadateToSQL, $heartrate, $breathingfrequency, $temperature, $heartbeat, $corporalcondition, $linfonodulos, $mucous, $dh, $weight, $mood, $tusigo, $anamnesis, $findings, $clinicaltreatment, $formulanumber, $formula, $recomendations, $observations, $companyId);
+		$generaldatasaved = $generalDataTable -> insert($generaldatadateToSQL, $heartrate, $breathingfrequency, $temperature, $heartbeat, $corporalcondition, $linfonodulos, $mucous, $trc, $dh, $weight, $mood, $tusigo, $anamnesis, $findings, $clinicaltreatment, $formulanumber, $formula, $recomendations, $observations, $companyId);
 		if ($generaldatasaved === TRUE) {
 			$idgeneraldata = $generalDataTable -> selectLastInsertId();
 			$saved = $hospreporttable -> insert($idhospitalization, $idgeneraldata, $reporttime, $evolution);
@@ -60,7 +54,7 @@ if (isset($_POST['save'])) {
 			$errorLog -> insert($generalDataTable -> getError());
 		}
 	} else {
-		$generaldatasaved = $generalDataTable -> update($idgeneraldata, $generaldatadateToSQL, $heartrate, $breathingfrequency, $temperature, $heartbeat, $corporalcondition, $linfonodulos, $mucous, $dh, $weight, $mood, $tusigo, $anamnesis, $findings, $clinicaltreatment, $formulanumber, $formula, $recomendations, $observations);
+		$generaldatasaved = $generalDataTable -> update($idgeneraldata, $generaldatadateToSQL, $heartrate, $breathingfrequency, $temperature, $heartbeat, $corporalcondition, $linfonodulos, $mucous, $trc, $dh, $weight, $mood, $tusigo, $anamnesis, $findings, $clinicaltreatment, $formulanumber, $formula, $recomendations, $observations);
 		if ($generaldatasaved === TRUE) {
 			$saved = $hospreporttable -> update($id, $reporttime, $evolution);
 		} else {
@@ -90,7 +84,7 @@ if (isset($_POST['view'])) {
 			$format = "Y-m-d h:i:s";
 			$dateobj = DateTime::createFromFormat($format, $external);
 			$generaldatadate = $dateobj -> format("d/m/Y");
-			$weight = $rowsGeneralData['weight'];
+			$weight = intval($rowsGeneralData['weight']);
 			$corporalcondition = $rowsGeneralData['corporalcondition'];
 			$heartrate = $rowsGeneralData['heartrate'];
 			$breathingfrequency = $rowsGeneralData['breathingfrequency'];
@@ -98,6 +92,7 @@ if (isset($_POST['view'])) {
 			$heartbeat = $rowsGeneralData['heartbeat'];
 			$linfonodulos = $rowsGeneralData['linfonodulos'];
 			$mucous = $rowsGeneralData['mucous'];
+			$trc = $rowsGeneralData['trc'];
 			$dh = $rowsGeneralData['dh'];
 			$mood = $rowsGeneralData['mood'];
 			$tusigo = $rowsGeneralData['tusigo'];
@@ -108,37 +103,6 @@ if (isset($_POST['view'])) {
 			$formula = $rowsGeneralData['formula'];
 			$recomendations = $rowsGeneralData['recomendations'];
 			$observations = $rowsGeneralData['observations'];
-
-			if ($weight < 10) {
-				$weight = '00' . $weight . '';
-			} else if ($weight < 100) {
-				$weight = '0' . $weight . '';
-			}
-			if ($heartrate < 10) {
-				$heartrate = '00' . $heartrate . '';
-			} else if ($heartrate < 100) {
-				$heartrate = '0' . $heartrate . '';
-			}
-			if ($breathingfrequency < 10) {
-				$breathingfrequency = '00' . $breathingfrequency . '';
-			} else if ($breathingfrequency < 100) {
-				$breathingfrequency = '0' . $breathingfrequency . '';
-			}
-			if ($temperature < 10) {
-				$temperature = '0' . $temperature . '';
-			}
-			if ($dh < 10) {
-				$dh = '00' . $dh . '';
-			} else if ($dh < 100) {
-				$dh = '0' . $dh . '';
-			}
-			if ($formulanumber < 10) {
-				$formulanumber = '000' . $formulanumber . '';
-			} else if ($formulanumber < 100) {
-				$formulanumber = '00' . $formulanumber . '';
-			} else if ($formulanumber < 1000) {
-				$formulanumber = '0' . $formulanumber . '';
-			}
 		}
 	}
 }
@@ -421,6 +385,66 @@ if (isset($_POST['view'])) {
 					}]
 				});
 				divDialog.dialog("open");
+			}
+			
+			$(document).ready(function() {
+				$("#weight").keydown(function(e) {
+					validateIntegerInput(e);
+				});
+			});
+
+			$(document).ready(function() {
+				$("#heartrate").keydown(function(e) {
+					validateIntegerInput(e);
+				});
+			});
+
+			$(document).ready(function() {
+				$("#breathingfrequency").keydown(function(e) {
+					validateIntegerInput(e);
+				});
+			});
+
+			$(document).ready(function() {
+				$("#temperature").keydown(function(e) {
+					validateDecimalInput(e);
+				});
+			});
+
+			$(document).ready(function() {
+				$("#trc").keydown(function(e) {
+					validateIntegerInput(e);
+				});
+			});
+
+			$(document).ready(function() {
+				$("#dh").keydown(function(e) {
+					validateIntegerInput(e);
+				});
+			});
+
+			$(document).ready(function() {
+				$("#formulanumber").keydown(function(e) {
+					validateIntegerInput(e);
+				});
+			});
+
+			function validateIntegerInput(e) {
+				if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 || (e.keyCode == 65 && e.ctrlKey === true) || (e.keyCode == 67 && e.ctrlKey === true) || (e.keyCode == 88 && e.ctrlKey === true) || (e.keyCode >= 35 && e.keyCode <= 39)) {
+					return;
+				}
+				if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+					e.preventDefault();
+				}
+			}
+
+			function validateDecimalInput(e) {
+				if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 || (e.keyCode == 65 && e.ctrlKey === true) || (e.keyCode == 67 && e.ctrlKey === true) || (e.keyCode == 88 && e.ctrlKey === true) || (e.keyCode >= 35 && e.keyCode <= 39)) {
+					return;
+				}
+				if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+					e.preventDefault();
+				}
 			}
 		</script>
 	</body>

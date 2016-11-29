@@ -11,13 +11,13 @@
 	<div class="col-xs-6">
 		<div class="form-group">
 			<label for="formulanumber">N&uacute;mero de f&oacute;rmula</label>
-			<input type="text" class="form-control" id="formulanumber" name="formulanumber" placeholder="N&uacute;mero de f&oacute;rmula" data-inputmask='"mask": "9999"' value="<?php
+			<input type="text" class="form-control" id="formulanumber" name="formulanumber" placeholder="N&uacute;mero de f&oacute;rmula" maxlength="5" autocomplete="off" value="<?php
 			if (isset($formulanumber)) {
 				echo $formulanumber;
 			} else {
-				echo '0000';
+				echo '0';
 			}
-			?>" data-mask />
+			?>" />
 		</div>
 		<div class="form-group">
 			<label for="formula">F&oacute;rmula</label>
