@@ -47,8 +47,8 @@
 								echo '<td>' . $rows["presumptivediagnosis"] . '</td>';
 								echo '<td>' . $rows["differentialdiagnosis"] . '</td>';
 								echo '<td>' . $rows["definitivediagnosis"] . '</td>';
-								echo '<td style="text-align:center"><form action="procedimientos.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $rows["idclinichistory"] . '" /><input type="hidden" id="idsurgery" name="idsurgery" value="' . $rows["idsurgery"] . '" /><button type="submit" id="view" name="view" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';
-								echo '<td style="text-align:center"><form action="historia.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $rows["idclinichistory"] . '" /><input type="hidden" id="idsurgery" name="idsurgery" value="' . $rows["idsurgery"] . '" /><button type="submit" id="deletesurgery" name="deletesurgery" class="btn btn-danger"><i class="fa fa-times"></i></button></form></td>';
+								echo '<td style="text-align:center"><form action="procedimientos.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $rows["idclinichistory"] . '" /><input type="hidden" id="idpreevaluation" name="idpreevaluation" value="' . $rows["idpreevaluation"] . '" /><button type="submit" id="view" name="view" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';
+								echo '<td style="text-align:center"><form action="historia.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $rows["idclinichistory"] . '" /><input type="hidden" id="idpreevaluation" name="idpreevaluation" value="' . $rows["idpreevaluation"] . '" /><button type="submit" id="deletesurgery" name="deletesurgery" class="btn btn-danger"><i class="fa fa-times"></i></button></form></td>';
 								echo "</tr>";
 							}
 							?>

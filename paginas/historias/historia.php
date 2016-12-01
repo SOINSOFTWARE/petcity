@@ -87,7 +87,7 @@ if (isset($_POST['deletehospitalization'])) {
 }
 $surgerytable = new SurgeryTable();
 if (isset($_POST['deletesurgery'])) {
-	$idsurgery = $_POST['idsurgery'];
+	$idsurgery = $_POST['idpreevaluation'];
 	$surgerydeleted = $surgerytable -> delete($idsurgery);
 	if ($surgerydeleted === FALSE) {
 		$errorLog = new ErrorLogTable();

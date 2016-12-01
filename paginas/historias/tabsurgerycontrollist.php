@@ -1,5 +1,6 @@
-<?php if (isset($id) && intval($id) > 0) { ?>
-<div class="tab-pane active" id="tab_1">
+<?php if (isset($id) && intval($id) > 0) {
+?>
+<div class="tab-pane active" id="tab_3">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="box box-primary">
@@ -18,6 +19,11 @@
 								<input type="hidden" id="idsurgery" name="idsurgery" value="<?php
 								if (isset($id)) {
 									echo $id;
+								}
+								?>" />
+								<input type="hidden" id="idpreevaluation" name="idpreevaluation" value="<?php
+								if (isset($idpreevaluation)) {
+									echo $idpreevaluation;
 								}
 								?>" />
 								<button type="submit" id="submit" name="submit" class="btn btn-primary">
@@ -39,8 +45,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<?php
-							$results = $surgerycontroltable -> select($id);
+							<?php $results = $surgerycontroltable -> select($id);
 							while ($rows = mysqli_fetch_array($results)) {
 								$external = $rows['generaldatadate'];
 								$format = "Y-m-d h:i:s";
@@ -52,8 +57,8 @@
 								echo '<td>' . $rows["diagnosisrecomendations"] . '</td>';
 								echo '<td>' . $rows["diagnosissamples"] . '</td>';
 								echo '<td>' . $rows["diagnosisexams"] . '</td>';
-								echo '<td style="text-align:center"><form action="controlprocedimiento.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $_POST['idclinichistory'] . '" /><input type="hidden" id="idsurgery" name="idsurgery" value="' . $rows["idsurgery"] . '" /><input type="hidden" id="idsurgerycontrol" name="idsurgerycontrol" value="' . $rows["idsurgerycontrol"] . '" /><button type="submit" id="view" name="view" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';
-								echo '<td style="text-align:center"><form action="procedimientos.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $_POST['idclinichistory'] . '" /><input type="hidden" id="idsurgery" name="idsurgery" value="' . $rows["idsurgery"] . '" /><input type="hidden" id="idsurgerycontrol" name="idsurgerycontrol" value="' . $rows["idsurgerycontrol"] . '" /><button type="submit" id="deletecontrol" name="deletecontrol" class="btn btn-danger"><i class="fa fa-times"></i></button></form></td>';
+								echo '<td style="text-align:center"><form action="controlprocedimiento.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $_POST['idclinichistory'] . '" /><input type="hidden" id="idsurgery" name="idsurgery" value="' . $id . '" /><input type="hidden" id="idsurgerycontrol" name="idsurgerycontrol" value="' . $rows["idsurgerycontrol"] . '" /><input type="hidden" id="idpreevaluation" name="idpreevaluation" value="' . $idpreevaluation . '" /><button type="submit" id="view" name="view" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';
+								echo '<td style="text-align:center"><form action="procedimientos.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $_POST['idclinichistory'] . '" /><input type="hidden" id="idsurgery" name="idsurgery" value="' . $id . '" /><input type="hidden" id="idsurgerycontrol" name="idsurgerycontrol" value="' . $rows["idsurgerycontrol"] . '" /><input type="hidden" id="idpreevaluation" name="idpreevaluation" value="' . $idpreevaluation . '" /><button type="submit" id="deletecontrol" name="deletecontrol" class="btn btn-danger"><i class="fa fa-times"></i></button></form></td>';
 								echo "</tr>";
 							}
 							?>

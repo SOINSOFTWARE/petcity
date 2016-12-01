@@ -189,6 +189,7 @@ if (isset($_POST['view'])) {
 									<form action="procedimientos.php" method="post" role="form">
 										<input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo $_POST['idclinichistory']; ?>" />
 										<input type="hidden" id="idsurgery" name="idsurgery" value="<?php echo $_POST['idsurgery']; ?>" />
+										<input type="hidden" id="idpreevaluation" name="idpreevaluation" value="<?php echo $_POST['idpreevaluation']; ?>" />
 										<button type="submit" id="view" name="view" class="btn btn-success">
 											<i class="fa fa-reply"></i>
 										</button>

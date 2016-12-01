@@ -10,8 +10,82 @@ $idclinichistory = $_POST['idclinichistory'];
 $generalDataTable = new GeneralDataTable();
 $surgerytable = new SurgeryTable();
 
+if (isset($_POST['savepreevaluation'])) {
+	$idpreevaluation = $_POST['idpreevaluation'];
+	$idgeneraldatapreevaluation = $_POST['idgeneraldata'];
+	$generaldatadatepreevaluation = $_POST['generaldatadatepreevaluation'];
+	$weightpreevaluation = $_POST['weight'];
+	$corporalconditionpreevaluation = $_POST['corporalcondition'];
+	$heartratepreevaluation = $_POST['heartrate'];
+	$breathingfrequencypreevaluation = $_POST['breathingfrequency'];
+	$temperaturepreevaluation = $_POST['temperature'];
+	$heartbeatpreevaluation = $_POST['heartbeat'];
+	$linfonodulospreevaluation = $_POST['linfonodulos'];
+	$mucouspreevaluation = $_POST['mucous'];
+	$trcpreevaluation = $_POST['trc'];
+	$dhpreevaluation = $_POST['dh'];
+	$moodpreevaluation = $_POST['mood'];
+	$tusigopreevaluation = $_POST['tusigo'];
+	$anamnesispreevaluation = $_POST['anamnesis'];
+	$findingspreevaluation = $_POST['findings'];
+	$clinicaltreatmentpreevaluation = $_POST['clinicaltreatment'];
+	$formulanumberpreevaluation = $_POST['formulanumber'];
+	$formulapreevaluation = $_POST['formula'];
+	$recomendationspreevaluation = $_POST['recomendations'];
+	$observationspreevaluation = $_POST['observations'];
+
+	$formulanumberpreevaluation = ($formulanumberpreevaluation != '') ? $formulanumberpreevaluation : 0;
+
+	$namepreevaluation = $_POST['name'];
+	$surgeryapplicationpreevaluation = (isset($_POST['surgeryapplication'])) ? $_POST['surgeryapplication'] : FALSE;
+	$havesurgerypreevaluation = ($surgeryapplicationpreevaluation || $surgeryapplicationpreevaluation === TRUE) ? 1 : 0;
+	$anestheticprotocolpreevaluation = '';
+	$premedicationpreevaluation = '';
+	$presumptivediagnosispreevaluation = $_POST['presumptivediagnosis'];
+	$differentialdiagnosispreevaluation = $_POST['differentialdiagnosis'];
+	$diagnosisrecomendationspreevaluation = $_POST['diagnosisrecomendations'];
+	$diagnosissamplespreevaluation = $_POST['diagnosissamples'];
+	$diagnosisexamspreevaluation = $_POST['diagnosisexams'];
+	$havehospitalizationpreevaluation = 0;
+	$definitivediagnosispreevaluation = $_POST['definitivediagnosis'];
+	$forecastpreevaluation = $_POST['forecast'];
+
+	$external = $generaldatadatepreevaluation . ' 00:00:00';
+	$format = "d/m/Y H:i:s";
+	$dateobj = DateTime::createFromFormat($format, $external);
+	$generaldatadateToSQLpreevaluation = $dateobj -> format("Y-m-d");
+
+	if (intval($idpreevaluation) === 0) {
+		$preevaluationgeneraldatasaved = $generalDataTable -> insert($generaldatadateToSQLpreevaluation, $heartratepreevaluation, $breathingfrequencypreevaluation, $temperaturepreevaluation, $heartbeatpreevaluation, $corporalconditionpreevaluation, $linfonodulospreevaluation, $mucouspreevaluation, $trcpreevaluation, $dhpreevaluation, $weightpreevaluation, $moodpreevaluation, $tusigopreevaluation, $anamnesispreevaluation, $findingspreevaluation, $clinicaltreatmentpreevaluation, $formulanumberpreevaluation, $formulapreevaluation, $recomendationspreevaluation, $observationspreevaluation, $companyId);
+		if ($preevaluationgeneraldatasaved === TRUE) {
+			$idgeneraldatapreevaluation = $generalDataTable -> selectLastInsertId();
+			$preevaluationsaved = $surgerytable -> insertPreEvaluation($idclinichistory, $idgeneraldatapreevaluation, $namepreevaluation, $havesurgerypreevaluation, $anestheticprotocolpreevaluation, $premedicationpreevaluation, $presumptivediagnosispreevaluation, $differentialdiagnosispreevaluation, $diagnosisrecomendationspreevaluation, $diagnosissamplespreevaluation, $diagnosisexamspreevaluation, $havehospitalizationpreevaluation, $definitivediagnosispreevaluation, $forecastpreevaluation, $companyId);
+			if ($preevaluationsaved === TRUE) {
+				$idpreevaluation = $surgerytable -> selectLastInsertId();
+			}
+		} else {
+			$errorLog = new ErrorLogTable();
+			$errorLog -> insert($generalDataTable -> getError());
+		}
+	} else {
+		$preevaluationgeneraldatasaved = $generalDataTable -> update($idgeneraldatapreevaluation, $generaldatadateToSQLpreevaluation, $heartratepreevaluation, $breathingfrequencypreevaluation, $temperaturepreevaluation, $heartbeatpreevaluation, $corporalconditionpreevaluation, $linfonodulospreevaluation, $mucouspreevaluation, $trcpreevaluation, $dhpreevaluation, $weightpreevaluation, $moodpreevaluation, $tusigopreevaluation, $anamnesispreevaluation, $findingspreevaluation, $clinicaltreatmentpreevaluation, $formulanumberpreevaluation, $formulapreevaluation, $recomendationspreevaluation, $observationspreevaluation);
+		if ($preevaluationgeneraldatasaved === TRUE) {
+			$preevaluationsaved = $surgerytable -> updateNonNextDate($idpreevaluation, $namepreevaluation, $havesurgerypreevaluation, $anestheticprotocolpreevaluation, $premedicationpreevaluation, $presumptivediagnosispreevaluation, $differentialdiagnosispreevaluation, $diagnosisrecomendationspreevaluation, $diagnosissamplespreevaluation, $diagnosisexamspreevaluation, $havehospitalizationpreevaluation, $definitivediagnosispreevaluation, $forecastpreevaluation);
+		} else {
+			$errorLog = new ErrorLogTable();
+			$errorLog -> insert($generalDataTable -> getError());
+		}
+	}
+
+	if (isset($preevaluationsaved) && $preevaluationsaved === FALSE) {
+		$errorLog = new ErrorLogTable();
+		$errorLog -> insert($surgerytable -> getError());
+	}
+}
+
 if (isset($_POST['save'])) {
 	$id = $_POST['id'];
+	$idpreevaluation = $_POST['idpreevaluation'];
 	$idgeneraldata = $_POST['idgeneraldata'];
 	$generaldatadate = $_POST['generaldatadate'];
 	$weight = $_POST['weight'];
@@ -69,9 +143,9 @@ if (isset($_POST['save'])) {
 		if ($generaldatasaved === TRUE) {
 			$idgeneraldata = $generalDataTable -> selectLastInsertId();
 			if ($nextdate != '') {
-				$saved = $surgerytable -> insert($idclinichistory, $idgeneraldata, $name, $havesurgery, $anestheticprotocol, $premedication, $presumptivediagnosis, $differentialdiagnosis, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $havehospitalization, $definitivediagnosis, $forecast, $nextdateToSQL, $companyId);
+				$saved = $surgerytable -> insert($idclinichistory, $idgeneraldata, $name, $havesurgery, $anestheticprotocol, $premedication, $presumptivediagnosis, $differentialdiagnosis, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $havehospitalization, $definitivediagnosis, $forecast, $nextdateToSQL, $companyId, $idpreevaluation);
 			} else {
-				$saved = $surgerytable -> insertNonNextDate($idclinichistory, $idgeneraldata, $name, $havesurgery, $anestheticprotocol, $premedication, $presumptivediagnosis, $differentialdiagnosis, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $havehospitalization, $definitivediagnosis, $forecast, $companyId);
+				$saved = $surgerytable -> insertNonNextDate($idclinichistory, $idgeneraldata, $name, $havesurgery, $anestheticprotocol, $premedication, $presumptivediagnosis, $differentialdiagnosis, $diagnosisrecomendations, $diagnosissamples, $diagnosisexams, $havehospitalization, $definitivediagnosis, $forecast, $companyId, $idpreevaluation);
 			}
 			if ($saved === TRUE) {
 				$id = $surgerytable -> selectLastInsertId();
@@ -100,10 +174,60 @@ if (isset($_POST['save'])) {
 	}
 }
 
-if (isset($_POST['view']) || isset($_POST['deletecontrol']) || isset($_POST['deleteexam'])) {
-	$id = $_POST['idsurgery'];
-	$results = $surgerytable -> selectById($id);
+if (isset($_POST['view']) || isset($_POST['deletecontrol']) || isset($_POST['deleteexam']) || isset($_POST['save'])) {
+	$idpreevaluation = $_POST['idpreevaluation'];
+	$results = $surgerytable -> selectById($idpreevaluation);
 	if ($rows = mysqli_fetch_array($results)) {
+		$namepreevaluation = $rows['name'];
+		$havesurgerypreevaluation = $rows['havesurgery'];
+		$surgeryapplicationpreevaluation = ($havesurgerypreevaluation || $havesurgerypreevaluation == 1) ? TRUE : FALSE;
+		$anestheticprotocolpreevaluation = $rows['anestheticprotocol'];
+		$premedicationpreevaluation = $rows['premedication'];
+		$presumptivediagnosispreevaluation = $rows['presumptivediagnosis'];
+		$differentialdiagnosispreevaluation = $rows['differentialdiagnosis'];
+		$diagnosisrecomendationspreevaluation = $rows['diagnosisrecomendations'];
+		$diagnosissamplespreevaluation = $rows['diagnosissamples'];
+		$diagnosisexamspreevaluation = $rows['diagnosisexams'];
+		$havehospitalizationpreevaluation = $rows['havehospitalization'];
+		$hospitalizationapplicationpreevaluation = ($havehospitalizationpreevaluation || $havehospitalizationpreevaluation == 1) ? TRUE : FALSE;
+		$definitivediagnosispreevaluation = $rows['definitivediagnosis'];
+		$forecastpreevaluation = $rows['forecast'];
+
+		$idgeneraldatapreevaluation = $rows['idgeneraldata'];
+
+		$resultsGeneralData = $generalDataTable -> selectById($idgeneraldatapreevaluation);
+		if ($rowsGeneralData = mysqli_fetch_array($resultsGeneralData)) {
+			$external = $rowsGeneralData['generaldatadate'];
+			$format = "Y-m-d h:i:s";
+			$dateobj = DateTime::createFromFormat($format, $external);
+			$generaldatadatepreevaluation = $dateobj -> format("d/m/Y");
+			$weightpreevaluation = intval($rowsGeneralData['weight']);
+			$corporalconditionpreevaluation = $rowsGeneralData['corporalcondition'];
+			$heartratepreevaluation = $rowsGeneralData['heartrate'];
+			$breathingfrequencypreevaluation = $rowsGeneralData['breathingfrequency'];
+			$temperaturepreevaluation = $rowsGeneralData['temperature'];
+			$heartbeatpreevaluation = $rowsGeneralData['heartbeat'];
+			$linfonodulospreevaluation = $rowsGeneralData['linfonodulos'];
+			$mucouspreevaluation = $rowsGeneralData['mucous'];
+			$trcpreevaluation = $rowsGeneralData['trc'];
+			$dhpreevaluation = $rowsGeneralData['dh'];
+			$moodpreevaluation = $rowsGeneralData['mood'];
+			$tusigopreevaluation = $rowsGeneralData['tusigo'];
+			$anamnesispreevaluation = $rowsGeneralData['anamnesis'];
+			$findingspreevaluation = $rowsGeneralData['findings'];
+			$clinicaltreatmentpreevaluation = $rowsGeneralData['clinicaltreatment'];
+			$formulanumberpreevaluation = $rowsGeneralData['formulanumber'];
+			$formulapreevaluation = $rowsGeneralData['formula'];
+			$recomendationspreevaluation = $rowsGeneralData['recomendations'];
+			$observationspreevaluation = $rowsGeneralData['observations'];
+		}
+	}
+}
+
+if (isset($idpreevaluation) && intval($idpreevaluation) > 0) {
+	$results = $surgerytable -> selectByIdSurgery($idpreevaluation);
+	if ($rows = mysqli_fetch_array($results)) {
+		$id = $rows['id'];
 		$name = $rows['name'];
 		$havesurgery = $rows['havesurgery'];
 		$surgeryapplication = ($havesurgery || $havesurgery == 1) ? TRUE : FALSE;
@@ -125,10 +249,10 @@ if (isset($_POST['view']) || isset($_POST['deletecontrol']) || isset($_POST['del
 			$dateobj = DateTime::createFromFormat($format, $external);
 			$nextdate = $dateobj -> format("d/m/Y");
 		}
-
+		
 		$idgeneraldata = $rows['idgeneraldata'];
-
-		$resultsGeneralData = $generalDataTable -> selectById($idgeneraldata);
+		
+		$resultsGeneralData = $generalDataTable -> selectById($idgeneraldata);		
 		if ($rowsGeneralData = mysqli_fetch_array($resultsGeneralData)) {
 			$external = $rowsGeneralData['generaldatadate'];
 			$format = "Y-m-d h:i:s";
@@ -240,283 +364,33 @@ if (isset($id) && intval($id) > 0) {
 					</div>
 					<?php } ?>
 					<div class="row">
-						<form action="procedimientos.php" method="post" role="form" onsubmit="return validate()">
-							<div class="col-xs-12">
-								<div class="box">
-									<?php
-									if (isset($generaldatasaved) && isset($saved)) {
-										if ($saved) {
-											echo '<div class="alert alert-success alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Datos guardados!</b> El procedimientos quir&uacute;rgicos ha sido guardado exitosamente.
-</div>';
-										} else {
-											echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar guardar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-										}
-									} else if (isset($generaldatasaved) || isset($saved)) {
-										echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar guardar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-									}
-									if (isset($controldeleted)) {
-										if ($controldeleted) {
-											echo '<div class="alert alert-success alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Datos eliminados!</b> El control ha sido eliminado exitosamente.
-</div>';
-										} else {
-											echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar eliminar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-										}
-									}
-									if (isset($examdeleted)) {
-										if ($examdeleted) {
-											echo '<div class="alert alert-success alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Datos eliminados!</b> El ex&aacute;men ha sido eliminado exitosamente.
-</div>';
-										} else {
-											echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar eliminar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-										}
-									}
-									?>
-									<div class="box-header">
-										<h3 class="box-title">Procedimientos quir&uacute;rgicos o que conllevan anestesia</h3>
-									</div>
-									<div class="box-body">
-										<button type="submit" id="save" name="save" class="btn btn-primary">
-											<i class="fa fa-save"></i>
-										</button>
-										<br />
-										<br />
-										<?php if (isset($_POST['idclinichistory'])) {
-										?>
-										<input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo $_POST['idclinichistory']; ?>" />
-										<?php } ?>
-										<input type="hidden" id="id" name="id" value="<?php
-										if (isset($id)) {
-											echo $id;
-										} else {
-											0;
-										}
-										?>"/>
-										<input type="hidden" id="idgeneraldata" name="idgeneraldata" value="<?php
-										if (isset($idgeneraldata)) {
-											echo $idgeneraldata;
-										} else {
-											0;
-										}
-										?>">
-										<div class="row">
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="name">Nombre del procedimiento</label>
-													<input type="text" class="form-control" id="name" name="name" value="<?php
-													if (isset($name)) {
-														echo $name;
-													}
-													?>" required />
-												</div>
-											</div>
-										</div>
-										<?php
-										include_once '../phpfragments/generaldata.php';
-										?>
-										<div class="row">
-											<div class="col-xs-6">
-												<div class="form-group">
-													<label for="anamnesis">Anamnesis</label>
-													<textarea class="form-control" id="anamnesis" name="anamnesis" rows="5" maxlength="400" required><?php
-													if (isset($anamnesis)) { echo $anamnesis;
-													}
-												?></textarea>
-												</div>
-											</div>
-											<div class="col-xs-6">
-												<div class="form-group">
-													<label for="findings">Hallazgos</label>
-													<textarea class="form-control" id="findings" name="findings" rows="5" maxlength="400" required><?php
-													if (isset($findings)) { echo $findings;
-													}
-												?></textarea>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-4">
-												<div class="checkbox">
-													<label> &iquest;Apto para procedimiento?
-														<input type="checkbox" id="surgeryapplication" name="surgeryapplication"
-														<?php
-														if (isset($surgeryapplication) && ($surgeryapplication || $surgeryapplication === TRUE)) {
-															echo "checked";
-														}
-														?>
-														/>
-													</label>
-												</div>
-											</div>
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="anestheticprotocol">Protocolo anest&eacute;sico</label>
-													<textarea class="form-control" id="anestheticprotocol" name="anestheticprotocol" rows="4" maxlength="300"><?php
-													if (isset($anestheticprotocol)) { echo $anestheticprotocol;
-													}
-												?></textarea>
-												</div>
-											</div>
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="premedication">Premedicaci&oacute;n</label>
-													<textarea class="form-control" id="premedication" name="premedication" rows="4" maxlength="300"><?php
-													if (isset($premedication)) { echo $premedication;
-													}
-												?></textarea>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="presumptivediagnosis">Diagn&oacute;stico presuntivo</label>
-													<textarea class="form-control" id="presumptivediagnosis" name="presumptivediagnosis" rows="4" maxlength="100" required><?php
-													if (isset($presumptivediagnosis)) { echo $presumptivediagnosis;
-													}
-												?></textarea>
-												</div>
-											</div>
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="differentialdiagnosis">Diagn&oacute;stico diferencial</label>
-													<textarea class="form-control" id="differentialdiagnosis" name="differentialdiagnosis" rows="4" maxlength="100" required><?php
-													if (isset($differentialdiagnosis)) { echo $differentialdiagnosis;
-													}
-												?></textarea>
-												</div>
-											</div>
-											<div class="col-xs-4">
-												<div class="checkbox">
-													<label> &iquest;Hospitalizaci&oacute;n?
-														<input type="checkbox" id="hospitalizationapplication" name="hospitalizationapplication"
-														<?php
-														if (isset($hospitalizationapplication) && ($hospitalizationapplication || $hospitalizationapplication === TRUE)) {
-															echo "checked";
-														}
-														?>
-														/>
-													</label>
-												</div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="diagnosisrecomendations">Recomendaciones (Ayuda diagn&oacute;stico)</label>
-													<textarea class="form-control" id="diagnosisrecomendations" name="diagnosisrecomendations" rows="4" maxlength="100"><?php
-													if (isset($diagnosisrecomendations)) { echo $diagnosisrecomendations;
-													}
-												?></textarea>
-												</div>
-											</div>
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="diagnosissamples">Muestras tomadas (Ayuda diagn&oacute;stico)</label>
-													<textarea class="form-control" id="diagnosissamples" name="diagnosissamples" rows="4" maxlength="100"><?php
-													if (isset($diagnosissamples)) { echo $diagnosissamples;
-													}
-												?></textarea>
-												</div>
-											</div>
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="diagnosisexams">Examenes a practicar (Ayuda diagn&oacute;stico)</label>
-													<textarea class="form-control" id="diagnosisexams" name="diagnosisexams" rows="4" maxlength="100"><?php
-													if (isset($diagnosisexams)) { echo $diagnosisexams;
-													}
-												?></textarea>
-												</div>
-											</div>
-										</div>
-										<?php
-										include_once '../phpfragments/generaldatatreatment.php';
-										?>
-										<div class="row">
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="definitivediagnosis">Diagn&oacute;stico definitivo</label>
-													<textarea class="form-control" id="definitivediagnosis" name="definitivediagnosis" rows="4" maxlength="100"><?php
-													if (isset($definitivediagnosis)) { echo $definitivediagnosis;
-													}
-												?></textarea>
-												</div>
-											</div>
-											<div class="col-xs-4">
-												<div class="form-group">
-													<label for="forecast">Pron&oacute;stico</label>
-													<textarea class="form-control" id="forecast" name="forecast" rows="4" maxlength="100"><?php
-													if (isset($forecast)) { echo $forecast;
-													}
-												?></textarea>
-												</div>
-											</div>
-											<div id="divnextdate" class="col-xs-4">
-												<div class="form-group">
-													<label for="nextdate">Pr&oacute;ximo control</label>
-													<input type="text" class="form-control" id="nextdate" name="nextdate" data-inputmask="'alias': 'dd/mm/yyyy'" value="<?php
-													if (isset($nextdate)) {
-														echo $nextdate;
-													}
-													?>" data-mask />
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-					<?php if (isset($id) && intval($id) > 0) {
-					?>
-					<div class="row">
 						<div class="col-md-12">
 							<div class="nav-tabs-custom">
 								<ul class="nav nav-tabs">
 									<li class="active">
-										<a href="#tab_1" data-toggle="tab">Controles</a>
+										<a href="#tab_1" data-toggle="tab">Valoraci&oacute;n</a>
 									</li>
+									<?php if (isset($idpreevaluation) && intval($idpreevaluation) > 0) {
+									?>
 									<li>
-										<a href="#tab_2" data-toggle="tab">Ex&aacute;menes</a>
+										<a href="#tab_2" data-toggle="tab">Procedimiento</a>
 									</li>
+									<?php } ?>
 									<li class="pull-right">
 										<a href="#" class="text-muted"><i class="fa fa-table"></i></a>
 									</li>
 								</ul>
 								<div class="tab-content">
 									<?php
-									include_once 'tabsurgerycontrollist.php';
-									include_once 'tabsurgeryexamlist.php';
+									include_once 'tabpreevaluation.php';
+									if (isset($idpreevaluation) && intval($idpreevaluation) > 0) {
+										include_once 'tabsurgery.php';
+									}
 									?>
 								</div>
 							</div>
 						</div>
 					</div>
-					<?php } ?>
 				</section>
 			</aside>
 		</div>
@@ -568,6 +442,16 @@ if (isset($id) && intval($id) > 0) {
 				});
 				$("[data-mask]").inputmask();
 			});
+
+			function validatePreEvaluation() {
+				if (!validateDate($('#generaldatadatepreevaluation').val())) {
+					$("#divgeneraldatadatepreevaluation").addClass("has-error");
+					showDivDialog($("#date-dialog"));
+					return false;
+				} else {
+					$("#divgeneraldatadatepreevaluation").removeClass("has-error");
+				}
+			}
 
 			function changeVisibility(input, displayVal) {
 				input.css("display", displayVal);
@@ -642,7 +526,8 @@ if (isset($id) && intval($id) > 0) {
 				});
 				divDialog.dialog("open");
 			}
-			
+
+
 			$(document).ready(function() {
 				$("#weight").keydown(function(e) {
 					validateIntegerInput(e);
