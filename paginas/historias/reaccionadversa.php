@@ -59,7 +59,7 @@ if (isset($_POST['view'])) {
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Pet City | Reacci&oacute;n adversa</title>
+		<title>Pet City | Reacci&oacute;n adversa - alergia</title>
 		<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 		<link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 		<link href="../../css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -85,7 +85,7 @@ if (isset($_POST['view'])) {
 			</aside>
 			<aside class="right-side">
 				<section class="content-header">
-					<h1> Reacci&oacute;n adversa </h1>
+					<h1> Reacci&oacute;n adversa - alergia </h1>
 					<ol class="breadcrumb">
 						<li>
 							<a href="#"><i class="fa fa-medkit"></i> Pet City</a>
@@ -94,7 +94,7 @@ if (isset($_POST['view'])) {
 							<a href="../../">Historias cl&iacute;nicas</a>
 						</li>
 						<li class="active">
-							Reacci&oacute;n adversa
+							Reacci&oacute;n adversa - alergia
 						</li>
 					</ol>
 				</section>
@@ -138,7 +138,7 @@ if (isset($_POST['view'])) {
 									}
 									?>
 									<div class="box-header">
-										<h3 class="box-title">Reacci&oacute;n adversa</h3>
+										<h3 class="box-title">Reacci&oacute;n adversa - alergia</h3>
 									</div>
 									<div class="box-body">
 										<button type="submit" id="save" name="save" class="btn btn-primary">
