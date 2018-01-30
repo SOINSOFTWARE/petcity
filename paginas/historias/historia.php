@@ -300,7 +300,7 @@ if (isset($_POST['deletesurgery'])) {
 											?>" disabled>
 										</div>
 										<div class="col-xs-4">
-											<label for="pettype">Tipo</label>
+											<label for="pettype">Especie</label>
 											<input type="text" class="form-control" id="pettype" name="pettype" value="<?php
 											if (isset($pettypename)) {
 												echo $pettypename;
@@ -361,7 +361,7 @@ if (isset($_POST['deletesurgery'])) {
 										<a href="#tab_3" data-toggle="tab">Vacunaciones</a>
 									</li>
 									<li>
-										<a href="#tab_4" data-toggle="tab">Reacciones adversas</a>
+										<a href="#tab_4" data-toggle="tab">Reacciones adversas - alergias</a>
 									</li>
 									<li>
 										<a href="#tab_5" data-toggle="tab">Hospitalizaciones</a>

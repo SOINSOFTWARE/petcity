@@ -345,16 +345,16 @@ function saveError($log) {
 																	<button type="button" id="pettypebtn" name="pettypebtn" class="btn btn-warning" onclick="showPetType();">
 																		<i class="fa fa-search"></i>
 																	</button>
-																	<label for="pettypebtn"> Buscar tipo y raza de la mascota</label>
+																	<label for="pettypebtn"> Buscar la especie y raza de la mascota</label>
 																</div>
 																<div class="form-group">
-																	<label for="pettype">Tipo</label>
+																	<label for="pettype">Especie</label>
 																	<input type="hidden" id="pettype" name="pettype" value="<?php
 																	if (isset($idpettype)) {
 																		echo $idpettype;
 																	}
 																	?>" />
-																	<input type="text" class="form-control" id="pettypename" name="pettypename" placeholder="Tipo de mascota" value="<?php
+																	<input type="text" class="form-control" id="pettypename" name="pettypename" placeholder="Especie de la mascota" value="<?php
 																	if (isset($pettypename)) {
 																		echo $pettypename;
 																	}
@@ -451,7 +451,7 @@ function saveError($log) {
 		</div>
 		<div id="breed-dialog" title="Error" style="display: none">
 			<p>
-				<span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>Seleccione el tipo y raza de la mascota.
+				<span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>Seleccione la especie y raza de la mascota.
 			</p>
 		</div>
 		<div id="borndate-dialog" title="Error" style="display: none">

@@ -66,7 +66,7 @@ $results = $clinichistory -> select($companyId);
 										<thead>
 											<tr>
 												<th style="text-align:center; width: 10%">Mascota</th>
-												<th style="text-align:center; width: 15%">Tipo</th>
+												<th style="text-align:center; width: 15%">Especie</th>
 												<th style="text-align:center; width: 20%">Raza</th>
 												<th style="text-align:center; width: 10%">Documento</th>
 												<th style="text-align:center; width: 25%">Propietario</th>

@@ -79,7 +79,7 @@
 							<div class="col-xs-4">
 								<div class="form-group">
 									<label for="weight">Peso de la mascota (Kg)</label>
-									<input type="text" class="form-control" id="weight" name="weight" placeholder="KG" maxlength="5" autocomplete="off" value="<?php
+									<input type="number" class="form-control" id="weight" name="weight" placeholder="KG" step=".01" autocomplete="off" value="<?php
 									if (isset($weightpreevaluation)) {
 										echo $weightpreevaluation;
 									}
@@ -110,8 +110,8 @@
 							</div>
 							<div class="col-xs-4">
 								<div class="form-group">
-									<label for="breathingfrequency">Frecuencia respiratoria</label>
-									<input type="text" class="form-control" id="breathingfrequency" name="breathingfrequency" placeholder="Frecuencia" maxlength="3" autocomplete="off" value="<?php
+									<label for="breathingfrequency">Frecuencia respiratoria (rpm)</label>
+									<input type="text" class="form-control" id="breathingfrequency" name="breathingfrequency" placeholder="rpm" maxlength="3" autocomplete="off" value="<?php
 									if (isset($breathingfrequencypreevaluation)) {
 										echo $breathingfrequencypreevaluation;
 									}
@@ -121,7 +121,7 @@
 							<div class="col-xs-4">
 								<div class="form-group">
 									<label for="temperature">Temperatura (&#8728;C)</label>
-									<input type="text" class="form-control" id="temperature" name="temperature" placeholder="Temperatura" maxlength="4" autocomplete="off" value="<?php
+									<input type="number" class="form-control" id="temperature" name="temperature" placeholder="Temperatura" step=".01" autocomplete="off" value="<?php
 									if (isset($temperaturepreevaluation)) {
 										echo $temperaturepreevaluation;
 									}
@@ -164,7 +164,7 @@
 						<div class="row">
 							<div class="col-xs-4">
 								<div class="form-group">
-									<label for="trc">Tiempo de relleno capilar</label>
+									<label for="trc">Tiempo de llenado capilar (Segundos)</label>
 									<input type="text" class="form-control" id="trc" name="trc" placeholder="Segundos" maxlength="3" autocomplete="off" value="<?php
 									if (isset($trcpreevaluation)) {
 										echo $trcpreevaluation;
@@ -184,8 +184,8 @@
 							</div>
 							<div class="col-xs-4">
 								<div class="form-group">
-									<label for="mood">Estado de &aacute;nimo</label>
-									<input type="text" class="form-control" id="mood" name="mood" placeholder="Estado de &aacute;nimo" maxlength="60" value="<?php
+									<label for="mood">Actitud</label>
+									<input type="text" class="form-control" id="mood" name="mood" placeholder="Actitud" maxlength="60" value="<?php
 									if (isset($moodpreevaluation)) {
 										echo $moodpreevaluation;
 									}
@@ -196,8 +196,8 @@
 						<div class="row">
 							<div class="col-xs-4">
 								<div class="form-group">
-									<label for="tusigo">Reflejo tusigeno</label>
-									<input type="text" class="form-control" id="tusigo" name="tusigo" placeholder="Reflejo tusigeno" maxlength="60" value="<?php
+									<label for="tusigo">Reflejo tus&iacute;geno</label>
+									<input type="text" class="form-control" id="tusigo" name="tusigo" placeholder="Reflejo tus&iacute;geno" maxlength="60" value="<?php
 									if (isset($tusigopreevaluation)) {
 										echo $tusigopreevaluation;
 									}

@@ -48,12 +48,6 @@ if (isset($_POST['view'])) {
 		$drenching = $rows['iddrenching'];
 		$doses = $rows['dose'];
 		$administration = $rows['administration'];
-
-		if ($weight < 10) {
-			$weight = '00' . $weight . '';
-		} else if ($weight < 100) {
-			$weight = '0' . $weight . '';
-		}
 	}
 }
 
@@ -181,11 +175,9 @@ $results = $drenchingtable -> select($companyId);
 											<div class="col-xs-4">
 												<div id="divweight" class="form-group">
 													<label for="weight">Peso de la mascota (Kg)</label>
-													<input type="text" class="form-control" id="weight" name="weight" placeholder="Peso de la mascota" data-inputmask='"mask": "999.99"' value="<?php
+													<input type="number" class="form-control" id="weight" name="weight" step=".01" placeholder="Peso de la mascota" value="<?php
 													if (isset($weight)) {
 														echo $weight;
-													} else {
-														echo '000.00';
 													}
 													?>" required data-mask />
 												</div>
@@ -271,7 +263,7 @@ $results = $drenchingtable -> select($companyId);
 				} else {
 					$("#divdrenchingdate").removeClass("has-error");
 				}
-				if ($.trim($('#weight').val()) === '000.00') {
+				if ($.trim($('#weight').val()) === '0') {
 					$("#divweight").addClass("has-error");
 					showDivDialog($("#weight-dialog"));
 					return false;
@@ -310,6 +302,21 @@ $results = $drenchingtable -> select($companyId);
 					}]
 				});
 				divDialog.dialog("open");
+			}
+
+			$(document).ready(function() {
+				$("#weight").keydown(function(e) {
+					validateDecimalInput(e);
+				});
+			});
+
+			function validateDecimalInput(e) {
+				if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 188]) !== -1 || (e.keyCode == 65 && e.ctrlKey === true) || (e.keyCode == 67 && e.ctrlKey === true) || (e.keyCode == 88 && e.ctrlKey === true) || (e.keyCode >= 35 && e.keyCode <= 39)) {
+					return;
+				}
+				if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+					e.preventDefault();
+				}
 			}
 		</script>
 	</body>
