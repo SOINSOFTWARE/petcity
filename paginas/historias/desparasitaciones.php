@@ -4,6 +4,7 @@ include_once '../../php/drenching.php';
 include_once '../../php/medicalconsultationxdrenching.php';
 include_once '../../php/errorlog.php';
 include_once '../phpfragments/drenching_select.php';
+include_once '../phpfragments/custom_date.php';
 
 $idpet = (isset($_POST['idpet'])) ? $_POST['idpet'] : 0;
 $drenching = 0;
@@ -40,9 +41,7 @@ if (isset($_POST['view'])) {
 	$results = $medxdrenchingtable -> selectById($id);
 	if ($rows = mysqli_fetch_array($results)) {
 		$external = $rows['drenchingdate'];
-		$format = "Y-m-d h:i:s";
-		$dateobj = DateTime::createFromFormat($format, $external);
-		$drenchingdate = $dateobj -> format("d/m/Y");
+		$drenchingdate = format_string_date($external, "d/m/Y");
 		$idpet = $rows['idpet'];
 		$weight = $rows['weight'];
 		$drenching = $rows['iddrenching'];
@@ -309,15 +308,6 @@ $results = $drenchingtable -> select($companyId);
 					validateDecimalInput(e);
 				});
 			});
-
-			function validateDecimalInput(e) {
-				if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 188]) !== -1 || (e.keyCode == 65 && e.ctrlKey === true) || (e.keyCode == 67 && e.ctrlKey === true) || (e.keyCode == 88 && e.ctrlKey === true) || (e.keyCode >= 35 && e.keyCode <= 39)) {
-					return;
-				}
-				if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-					e.preventDefault();
-				}
-			}
 		</script>
 	</body>
 </html>

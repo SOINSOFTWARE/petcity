@@ -2,6 +2,7 @@
 include_once '../session.php';
 include_once '../../php/hospitalizationexam.php';
 include_once '../../php/errorlog.php';
+include_once '../phpfragments/custom_date.php';
 
 $hospexamtable = new HospitalizationExamTable();
 
@@ -35,7 +36,7 @@ if (isset($_POST['save'])) {
 	} else {
 		$saved = $hospexamtable -> update($id, $examdateToSQL, $name, $results);
 	}
-	if ($saved === FALSE) {
+	if ($saved == null || $saved === FALSE) {
 		$errorLog = new ErrorLogTable();
 		$errorLog -> insert($hospexamtable -> getError());
 	}
@@ -47,9 +48,7 @@ if (isset($_POST['view'])) {
 	$results = $hospexamtable -> selectById($id);
 	if ($rows = mysqli_fetch_array($results)) {
 		$external = $rows['examdate'];
-		$format = "Y-m-d h:i:s";
-		$dateobj = DateTime::createFromFormat($format, $external);
-		$examdate = $dateobj -> format("d/m/Y");
+		$examdate = format_string_date($external, "d/m/Y");
 		$name = $rows['name'];
 		$results = $rows['results'];
 		$filepath = $rows['filepath'];

@@ -43,12 +43,8 @@
 							<?php
 							$results = $mdcontroltable -> select($id);
 							while ($rows = mysqli_fetch_array($results)) {
-								$external = $rows['generaldatadate'];
-								$format = "Y-m-d h:i:s";
-								$dateobj = DateTime::createFromFormat($format, $external);
-								$consultationdate = $dateobj -> format("d/m/Y");
 								echo "<tr>";
-								echo '<td>' . $consultationdate . '</td>';
+								echo '<td>' . format_string_date($rows['generaldatadate'], "d/m/Y") . '</td>';
 								echo '<td>' . $rows["evolution"] . '</td>';
 								echo '<td>' . $rows["diagnosisrecomendations"] . '</td>';
 								echo '<td>' . $rows["diagnosissamples"] . '</td>';

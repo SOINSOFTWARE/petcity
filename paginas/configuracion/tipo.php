@@ -34,7 +34,7 @@ $results = $petType -> select($companyId);
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Pet City | Tipo de mascota</title>
+		<title>Pet City | Especies</title>
 		<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 		<link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 		<link href="../../css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -60,7 +60,7 @@ $results = $petType -> select($companyId);
 			</aside>
 			<aside class="right-side">
 				<section class="content-header">
-					<h1> Tipos de mascotas </h1>
+					<h1> Especies </h1>
 					<ol class="breadcrumb">
 						<li>
 							<a href="#"><i class="fa fa-gears"></i> Pet City</a>
@@ -69,7 +69,7 @@ $results = $petType -> select($companyId);
 							<a href="#"> Configuraci&oacute;n</a>
 						</li>
 						<li class="active">
-							Tipos de mascotas
+							Especies
 						</li>
 					</ol>
 				</section>
@@ -78,7 +78,7 @@ $results = $petType -> select($companyId);
 						<div class="col-xs-7">
 							<div class="box">
 								<div class="box-header">
-									<h3 class="box-title">Listado de tipos</h3>
+									<h3 class="box-title">Listado de especies</h3>
 								</div>
 								<div class="box-body">
 									<div class="row">
@@ -91,7 +91,7 @@ $results = $petType -> select($companyId);
 														echo '<div class="alert alert-success alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Dato actualizado!</b> El tipo ha sido actualizado.
+<b>Dato actualizado!</b> La especie ha sido actualizado.
 </div>';
 													} else {
 														echo '<div class="alert alert-danger alert-dismissable">
@@ -106,7 +106,7 @@ $results = $petType -> select($companyId);
 														echo '<div class="alert alert-success alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Dato eliminado!</b> El tipo ha sido eliminado.
+<b>Dato eliminado!</b> La especie ha sido eliminada.
 </div>';
 													} else {
 														echo '<div class="alert alert-danger alert-dismissable">
@@ -158,7 +158,7 @@ $results = $petType -> select($companyId);
 											echo '<div class="alert alert-success alert-dismissable">
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Datos guardados!</b> Un nuevo tipo ha sido creado.
+<b>Datos guardados!</b> Una nueva especie ha sido registrada.
 </div>';
 										} else {
 											echo '<div class="alert alert-danger alert-dismissable">
@@ -170,7 +170,7 @@ $results = $petType -> select($companyId);
 									}
 									?>
 									<div class="box-header">
-										<h3 class="box-title">Nuevo tipo</h3>
+										<h3 class="box-title">Nueva especie</h3>
 									</div>
 									<div class="box-body">
 										<button type="submit" name="newtype" name="newtype" class="btn btn-primary">
@@ -180,7 +180,7 @@ $results = $petType -> select($companyId);
 										<br />
 										<div class="form-group">
 											<label for="name">Nombre</label>
-											<input type="text" class="form-control" id="name" name="name" placeholder="Gatos, Peces, Perros..." maxlength="100" required>
+											<input type="text" class="form-control" id="name" name="name" placeholder="Caninos" maxlength="100" required>
 										</div>
 									</div>
 								</div>

@@ -11,7 +11,7 @@
 	        <i class="fa fa-angle-left pull-right"></i>
 	    </a>
 	    <ul class="treeview-menu">
-	        <li><a href="paginas/configuracion/tipo.php"><i class="fa fa-angle-double-right"></i> Tipos de mascotas</a></li>
+	        <li><a href="paginas/configuracion/tipo.php"><i class="fa fa-angle-double-right"></i> Especies</a></li>
 	        <li><a href="paginas/configuracion/raza.php"><i class="fa fa-angle-double-right"></i> Razas</a></li>
 	        <li><a href="paginas/configuracion/marcaalimento.php"><i class="fa fa-angle-double-right"></i> Alimentos de mascotas</a></li>
 	        <li><a href="paginas/configuracion/vacuna.php"><i class="fa fa-angle-double-right"></i> Productos de vacunaci&oacute;n</a></li>

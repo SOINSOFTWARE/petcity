@@ -37,12 +37,8 @@
 							<?php
 							$results = $mdconsultable -> selectByIdClinicHistory($idclinichistory);
 							while ($rows = mysqli_fetch_array($results)) {
-								$external = $rows['generaldatadate'];
-								$format = "Y-m-d h:i:s";
-								$dateobj = DateTime::createFromFormat($format, $external);
-								$consultationdate = $dateobj -> format("d/m/Y");
 								echo "<tr>";
-								echo '<td>' . $consultationdate . '</td>';
+								echo '<td>' . format_string_date($rows['generaldatadate'], "d/m/Y") . '</td>';
 								echo '<td>' . $rows["motive"] . '</td>';
 								echo '<td>' . $rows["presumptivediagnosis"] . '</td>';
 								echo '<td>' . $rows["differentialdiagnosis"] . '</td>';

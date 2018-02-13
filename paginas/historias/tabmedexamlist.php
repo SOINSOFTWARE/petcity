@@ -42,12 +42,8 @@
 							<?php
 							$results = $mdexamtable -> select($id);
 							while ($rows = mysqli_fetch_array($results)) {
-								$external = $rows['examdate'];
-								$format = "Y-m-d h:i:s";
-								$dateobj = DateTime::createFromFormat($format, $external);
-								$consultationdate = $dateobj -> format("d/m/Y");
 								echo "<tr>";
-								echo '<td>' . $consultationdate . '</td>';
+								echo '<td>' . format_string_date($rows['examdate'], "d/m/Y") . '</td>';
 								echo '<td>' . $rows["name"] . '</td>';
 								echo '<td>' . $rows["results"] . '</td>';
 								echo '<td style="text-align:center"><form action="examen.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $_POST['idclinichistory'] . '" /><input type="hidden" id="idconsultation" name="idconsultation" value="' . $rows["idmedicalconsultation"] . '" /><input type="hidden" id="idmedicalexam" name="idmedicalexam" value="' . $rows["id"] . '" /><button type="submit" id="view" name="view" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';

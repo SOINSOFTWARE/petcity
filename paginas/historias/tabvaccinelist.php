@@ -43,12 +43,8 @@
 							<?php
 							$results = $vacConsultationtable -> select($idpet);
 							while ($rows = mysqli_fetch_array($results)) {
-								$external = $rows['generaldatadate'];
-								$format = "Y-m-d h:i:s";
-								$dateobj = DateTime::createFromFormat($format, $external);
-								$generaldatadate = $dateobj -> format("d/m/Y");
 								echo "<tr>";
-								echo '<td>' . $generaldatadate . '</td>';
+								echo '<td>' . format_string_date($rows['generaldatadate'], "d/m/Y") . '</td>';
 								echo '<td>' . $rows["weight"] . '</td>';
 								echo '<td>' . $rows["heartrate"] . '</td>';
 								echo '<td>' . $rows["breathingfrequency"] . '</td>';

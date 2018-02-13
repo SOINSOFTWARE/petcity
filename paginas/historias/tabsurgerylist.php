@@ -36,14 +36,10 @@
 							<?php
 							$results = $surgerytable -> selectByIdClinicHistory($idclinichistory);
 							while ($rows = mysqli_fetch_array($results)) {
-								$external = $rows['generaldatadate'];
-								$format = "Y-m-d h:i:s";
-								$dateobj = DateTime::createFromFormat($format, $external);
-								$consultationdate = $dateobj -> format("d/m/Y");
-								$havesurgery = ($rows["havesurgery"] || $rows["havesurgery"] == 1) ? 'Si' : 'No';
+                                                                $havesurgery = ($rows["havesurgery"] || $rows["havesurgery"] == 1) ? 'Si' : 'No';
 								echo "<tr>";
-								echo '<td>' . $consultationdate . '</td>';
-								echo '<td>' . $havesurgery  . '</td>';
+								echo '<td>' . format_string_date($rows['generaldatadate'], "d/m/Y") . '</td>';
+								echo '<td>' .  $havesurgery . '</td>';
 								echo '<td>' . $rows["presumptivediagnosis"] . '</td>';
 								echo '<td>' . $rows["differentialdiagnosis"] . '</td>';
 								echo '<td>' . $rows["definitivediagnosis"] . '</td>';

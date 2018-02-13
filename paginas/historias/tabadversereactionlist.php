@@ -41,12 +41,8 @@
 							<?php
 							$results = $adversereactionstable -> select($idpet);
 							while ($rows = mysqli_fetch_array($results)) {
-								$external = $rows['adversereactiondate'];
-								$format = "Y-m-d h:i:s";
-								$dateobj = DateTime::createFromFormat($format, $external);
-								$adversereactiondate = $dateobj -> format("d/m/Y");
 								echo "<tr>";
-								echo '<td>' . $adversereactiondate . '</td>';
+								echo '<td>' . format_string_date($rows['adversereactiondate'], "d/m/Y") . '</td>';
 								echo '<td>' . $rows["type"] . '</td>';
 								echo '<td>' . $rows["allergen"] . '</td>';
 								echo '<td>' . $rows["dose"] . '</td>';

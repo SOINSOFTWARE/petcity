@@ -2,6 +2,7 @@
 include_once '../session.php';
 include_once '../../php/adversereactions.php';
 include_once '../../php/errorlog.php';
+include_once '../phpfragments/custom_date.php';
 
 $idpet = (isset($_POST['idpet'])) ? $_POST['idpet'] : 0;
 $adversereactionstable = new AdverseReactionsTable();
@@ -40,10 +41,7 @@ if (isset($_POST['view'])) {
 	$id = $_POST['idadversereaction'];
 	$results = $adversereactionstable -> selectById($id);
 	if ($rows = mysqli_fetch_array($results)) {
-		$external = $rows['adversereactiondate'];
-		$format = "Y-m-d h:i:s";
-		$dateobj = DateTime::createFromFormat($format, $external);
-		$adversereactiondate = $dateobj -> format("d/m/Y");
+		$adversereactiondate = format_string_date($rows['adversereactiondate'], "d/m/Y");
 		$idpet = $rows['idpet'];
 		$type = $rows['type'];
 		$allergen = $rows['allergen'];

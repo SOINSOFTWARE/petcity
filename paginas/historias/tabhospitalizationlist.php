@@ -41,20 +41,9 @@
 							<?php
 							$results = $hospitalizationTable -> select($idpet);
 							while ($rows = mysqli_fetch_array($results)) {
-								$external = $rows['initialdate'];
-								$format = "Y-m-d h:i:s";
-								$dateobj = DateTime::createFromFormat($format, $external);
-								$initialdate = $dateobj -> format("d/m/Y");
-								$external = $rows['finaldate'];
-								$finaldate = '';
-								if ($external != null && $external != '') {
-									$format = "Y-m-d h:i:s";
-									$dateobj = DateTime::createFromFormat($format, $external);
-									$finaldate = $dateobj -> format("d/m/Y");
-								}
 								echo "<tr>";
-								echo '<td>' . $initialdate . '</td>';
-								echo '<td>' . $finaldate . '</td>';
+								echo '<td>' . format_string_date($rows['initialdate'], "d/m/Y") . '</td>';
+								echo '<td>' . format_string_date($rows['finaldate'], "d/m/Y") . '</td>';
 								echo '<td>' . $rows["comments"] . '</td>';
 								echo '<td>' . $rows["recomendations"] . '</td>';
 								echo '<td>' . $rows["receivedby"] . '</td>';

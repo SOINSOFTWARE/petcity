@@ -4,6 +4,7 @@ include_once '../../php/clinichistory.php';
 include_once '../../php/owner.php';
 include_once '../../php/pet.php';
 include_once '../../php/errorlog.php';
+include_once '../phpfragments/custom_date.php';
 
 $clinichistory = new ClinicHistoryTable();
 
@@ -33,9 +34,7 @@ if (isset($_POST['idclinichistory'])) {
 		$bornplace = $rows['bornplace'];
 		$history = $rows['history'];
 		$external = $rows['borndate'];
-		$format = "Y-m-d h:i:s";
-		$dateobj = DateTime::createFromFormat($format, $external);
-		$borndate = $dateobj -> format("m/Y");
+		$borndate = format_string_date($external, "m/Y");
 	}
 }
 

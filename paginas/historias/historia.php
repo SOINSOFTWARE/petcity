@@ -9,6 +9,7 @@ include_once '../../php/adversereactions.php';
 include_once '../../php/hospitalization.php';
 include_once '../../php/surgery.php';
 include_once '../../php/errorlog.php';
+include_once '../phpfragments/custom_date.php';
 
 if (isset($_POST['idclinichistory'])) {
 	$clinichistory = new ClinicHistoryTable();
@@ -251,9 +252,7 @@ if (isset($_POST['deletesurgery'])) {
 									$results = $notification -> selectById($_POST['idnotification']);
 									if ($rows = mysqli_fetch_array($results)) {
 										$external = $rows['notificationdate'];
-										$format = "Y-m-d h:i:s";
-										$dateobj = DateTime::createFromFormat($format, $external);
-										$notificationdate = $dateobj -> format("d/m/Y");
+										$notificationdate = format_string_date($external, "d/m/Y");
 										$title = $rows['title'];
 										$message = $rows['message'];
 										$notification -> sendMail($useremail, $company, $ownerfullname, $petname, $title, $message, $notificationdate);

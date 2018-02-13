@@ -6,6 +6,7 @@ include_once '../../php/hospitalizationreport.php';
 include_once '../../php/hospitalizationcontrol.php';
 include_once '../../php/hospitalizationexam.php';
 include_once '../../php/errorlog.php';
+include_once '../phpfragments/custom_date.php';
 
 $idpet = (isset($_POST['idpet'])) ? $_POST['idpet'] : 0;
 $hospitalizationTable = new HospitalizationTable();
@@ -72,14 +73,10 @@ if (isset($_POST['view']) || isset($_POST['deletetreatment']) || isset($_POST['d
 		$external = $rows['finaldate'];
 		$finaldate = '';
 		if ($external != '') {
-			$format = "Y-m-d h:i:s";
-			$dateobj = DateTime::createFromFormat($format, $external);
-			$finaldate = $dateobj -> format("d/m/Y");
+			$finaldate = format_string_date($external, "d/m/Y");
 		}
 		$external = $rows['initialdate'];
-		$format = "Y-m-d h:i:s";
-		$dateobj = DateTime::createFromFormat($format, $external);
-		$initialdate = $dateobj -> format("d/m/Y");
+		$initialdate = format_string_date($external, "d/m/Y");
 		if ($formulanumber < 10) {
 			$formulanumber = '000' . $formulanumber . '';
 		} else if ($formulanumber < 100) {

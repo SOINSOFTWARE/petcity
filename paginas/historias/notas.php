@@ -2,6 +2,7 @@
 include_once '../session.php';
 include_once '../../php/notification.php';
 include_once '../../php/errorlog.php';
+include_once '../phpfragments/custom_date.php';
 
 $notification = new NotificationTable();
 
@@ -36,9 +37,7 @@ if (isset($_POST['view'])) {
 	$results = $notification -> selectById($id);
 	if ($rows = mysqli_fetch_array($results)) {
 		$external = $rows['notificationdate'];
-		$format = "Y-m-d h:i:s";
-		$dateobj = DateTime::createFromFormat($format, $external);
-		$notificationdate = $dateobj -> format("d/m/Y");
+		$notificationdate = format_string_date($external, "d/m/Y");
 		$idpet = $rows['idpet'];
 		$title = $rows['title'];
 		$message = $rows['message'];

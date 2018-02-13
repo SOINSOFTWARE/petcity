@@ -40,12 +40,8 @@
 							<?php
 							$results = $notification -> select($idpet);
 							while ($rows = mysqli_fetch_array($results)) {
-								$external = $rows['notificationdate'];
-								$format = "Y-m-d h:i:s";
-								$dateobj = DateTime::createFromFormat($format, $external);
-								$notificationdate = $dateobj -> format("d/m/Y");
 								echo "<tr>";
-								echo '<td>' . $notificationdate . '</td>';
+								echo '<td>' . format_string_date($rows['notificationdate'], "d/m/Y") . '</td>';
 								echo '<td>' . $rows["title"] . '</td>';
 								echo '<td>' . $rows["message"] . '</td>';
 								echo '<td style="text-align:center"><form action="notas.php" method="post" role="form"><input type="hidden" id="idclinichistory" name="idclinichistory" value="' . $idclinichistory . '" /><input type="hidden" id="idnotification" name="idnotification" value="' . $rows["id"] . '" /><button type="submit" id="view" name="view" class="btn btn-warning"><i class="fa fa-folder-open-o"></i></button></form></td>';

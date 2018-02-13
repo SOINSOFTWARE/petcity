@@ -2,6 +2,7 @@
 include_once '../session.php';
 include_once '../../php/medicalexam.php';
 include_once '../../php/errorlog.php';
+include_once '../phpfragments/custom_date.php';
 
 $mdexamtable = new MedicalExamTable();
 
@@ -50,9 +51,7 @@ if (isset($_POST['view'])) {
 	$results = $mdexamtable -> selectById($id);
 	if ($rows = mysqli_fetch_array($results)) {
 		$external = $rows['examdate'];
-		$format = "Y-m-d h:i:s";
-		$dateobj = DateTime::createFromFormat($format, $external);
-		$examdate = $dateobj -> format("d/m/Y");
+		$examdate = format_string_date($external, "d/m/Y");
 		$name = $rows['name'];
 		$results = $rows['results'];
 		$formulanumber = $rows['formulanumber'];

@@ -5,6 +5,7 @@ include_once '../../php/surgery.php';
 include_once '../../php/surgerycontrol.php';
 include_once '../../php/surgeryexam.php';
 include_once '../../php/errorlog.php';
+include_once '../phpfragments/custom_date.php';
 
 $idclinichistory = $_POST['idclinichistory'];
 $generalDataTable = new GeneralDataTable();
@@ -198,9 +199,7 @@ if (isset($_POST['view']) || isset($_POST['deletecontrol']) || isset($_POST['del
 		$resultsGeneralData = $generalDataTable -> selectById($idgeneraldatapreevaluation);
 		if ($rowsGeneralData = mysqli_fetch_array($resultsGeneralData)) {
 			$external = $rowsGeneralData['generaldatadate'];
-			$format = "Y-m-d h:i:s";
-			$dateobj = DateTime::createFromFormat($format, $external);
-			$generaldatadatepreevaluation = $dateobj -> format("d/m/Y");
+			$generaldatadatepreevaluation = format_string_date($external, "d/m/Y");
 			$weightpreevaluation = $rowsGeneralData['weight'];
 			$corporalconditionpreevaluation = $rowsGeneralData['corporalcondition'];
 			$heartratepreevaluation = $rowsGeneralData['heartrate'];
@@ -245,9 +244,7 @@ if (isset($idpreevaluation) && intval($idpreevaluation) > 0) {
 		$external = $rows['nextdate'];
 		$nextdate = '';
 		if ($external != '') {
-			$format = "Y-m-d h:i:s";
-			$dateobj = DateTime::createFromFormat($format, $external);
-			$nextdate = $dateobj -> format("d/m/Y");
+			$nextdate = format_string_date($external, "d/m/Y");
 		}
 
 		$idgeneraldata = $rows['idgeneraldata'];
@@ -255,9 +252,7 @@ if (isset($idpreevaluation) && intval($idpreevaluation) > 0) {
 		$resultsGeneralData = $generalDataTable -> selectById($idgeneraldata);
 		if ($rowsGeneralData = mysqli_fetch_array($resultsGeneralData)) {
 			$external = $rowsGeneralData['generaldatadate'];
-			$format = "Y-m-d h:i:s";
-			$dateobj = DateTime::createFromFormat($format, $external);
-			$generaldatadate = $dateobj -> format("d/m/Y");
+			$generaldatadate = format_string_date($external, "d/m/Y");
 			$weight = $rowsGeneralData['weight'];
 			$corporalcondition = $rowsGeneralData['corporalcondition'];
 			$heartrate = $rowsGeneralData['heartrate'];
@@ -465,28 +460,28 @@ if (isset($id) && intval($id) > 0) {
 				} else {
 					$("#divgeneraldatadate").removeClass("has-error");
 				}
-				if ($.trim($('#weight').val()) === '000.00' || $.trim($('#weight').val()) === '___.__') {
+				if ($.trim($('#weight').val()) === '0' || $.trim($('#weight').val()) === '') {
 					$("#divweight").addClass("has-error");
 					showDivDialog($("#weight-dialog"));
 					return false;
 				} else {
 					$("#divweight").removeClass("has-error");
 				}
-				if ($.trim($('#heartrate').val()) === '000' || $.trim($('#heartrate').val()) === '___') {
+				if ($.trim($('#heartrate').val()) === '0' || $.trim($('#heartrate').val()) === '') {
 					$("#divheartrate").addClass("has-error");
 					showDivDialog($("#heartrate-dialog"));
 					return false;
 				} else {
 					$("#divheartrate").removeClass("has-error");
 				}
-				if ($.trim($('#breathingfrequency').val()) === '000' || $.trim($('#breathingfrequency').val()) === '___') {
+				if ($.trim($('#breathingfrequency').val()) === '0' || $.trim($('#breathingfrequency').val()) === '') {
 					$("#divbreathingfrequency").addClass("has-error");
 					showDivDialog($("#breathingfrequency-dialog"));
 					return false;
 				} else {
 					$("#divbreathingfrequency").removeClass("has-error");
 				}
-				if ($.trim($('#temperature').val()) === '00.00' || $.trim($('#temperature').val()) === '__.__') {
+				if ($.trim($('#temperature').val()) === '0' || $.trim($('#temperature').val()) === '') {
 					$("#divtemperature").addClass("has-error");
 					showDivDialog($("#temperature-dialog"));
 					return false;
@@ -569,24 +564,6 @@ if (isset($id) && intval($id) > 0) {
 					validateIntegerInput(e);
 				});
 			});
-
-			function validateIntegerInput(e) {
-				if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 || (e.keyCode == 65 && e.ctrlKey === true) || (e.keyCode == 67 && e.ctrlKey === true) || (e.keyCode == 88 && e.ctrlKey === true) || (e.keyCode >= 35 && e.keyCode <= 39)) {
-					return;
-				}
-				if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-					e.preventDefault();
-				}
-			}
-
-			function validateDecimalInput(e) {
-				if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 188]) !== -1 || (e.keyCode == 65 && e.ctrlKey === true) || (e.keyCode == 67 && e.ctrlKey === true) || (e.keyCode == 88 && e.ctrlKey === true) || (e.keyCode >= 35 && e.keyCode <= 39)) {
-					return;
-				}
-				if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-					e.preventDefault();
-				}
-			}
 		</script>
 	</body>
 </html>

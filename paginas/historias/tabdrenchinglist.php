@@ -41,12 +41,8 @@
 							<?php
 							$results = $medxdrenchingtable -> select($idpet);
 							while ($rows = mysqli_fetch_array($results)) {
-								$external = $rows['drenchingdate'];
-								$format = "Y-m-d h:i:s";
-								$dateobj = DateTime::createFromFormat($format, $external);
-								$drenchingdate = $dateobj -> format("d/m/Y");
 								echo "<tr>";
-								echo '<td>' . $drenchingdate . '</td>';
+								echo '<td>' . format_string_date($rows['drenchingdate'], "d/m/Y") . '</td>';
 								echo '<td>' . $rows["weight"] . '</td>';
 								echo '<td>' . $rows["name"] . '</td>';
 								echo '<td>' . $rows["dose"] . '</td>';
