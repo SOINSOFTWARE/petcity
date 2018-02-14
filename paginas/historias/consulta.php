@@ -312,7 +312,7 @@ if (isset($id) && intval($id) > 0) {
 											<div class="col-xs-8">
 												<div class="form-group">
 													<label for="motive">Motivo</label>
-													<textarea class="form-control" id="motive" name="motive" rows="4" maxlength="200" placeholder="&iquest;Cu&aacute;l es el motivo de la consulta?" required><?php
+													<textarea class="form-control" id="motive" name="motive" rows="4" maxlength="900" placeholder="&iquest;Cu&aacute;l es el motivo de la consulta?" required><?php
 													if (isset($motive)) { echo $motive;
 													}
 												?></textarea>
@@ -326,7 +326,7 @@ if (isset($id) && intval($id) > 0) {
 											<div class="col-xs-6">
 												<div class="form-group">
 													<label for="anamnesis">Anamnesis</label>
-													<textarea class="form-control" id="anamnesis" name="anamnesis" rows="5" maxlength="400" required><?php
+													<textarea class="form-control" id="anamnesis" name="anamnesis" rows="5" maxlength="900" required><?php
 													if (isset($anamnesis)) { echo $anamnesis;
 													}
 												?></textarea>
@@ -335,7 +335,7 @@ if (isset($id) && intval($id) > 0) {
 											<div class="col-xs-6">
 												<div class="form-group">
 													<label for="findings">Hallazgos</label>
-													<textarea class="form-control" id="findings" name="findings" rows="5" maxlength="400" required><?php
+													<textarea class="form-control" id="findings" name="findings" rows="5" maxlength="500" required><?php
 													if (isset($findings)) { echo $findings;
 													}
 												?></textarea>
@@ -346,7 +346,7 @@ if (isset($id) && intval($id) > 0) {
 											<div class="col-xs-6">
 												<div class="form-group">
 													<label for="presumptivediagnosis">Diagn&oacute;stico presuntivo</label>
-													<textarea class="form-control" id="presumptivediagnosis" name="presumptivediagnosis" rows="4" maxlength="100" required><?php
+													<textarea class="form-control" id="presumptivediagnosis" name="presumptivediagnosis" rows="4" maxlength="400" required><?php
 													if (isset($presumptivediagnosis)) { echo $presumptivediagnosis;
 													}
 												?></textarea>
@@ -355,7 +355,7 @@ if (isset($id) && intval($id) > 0) {
 											<div class="col-xs-6">
 												<div class="form-group">
 													<label for="differentialdiagnosis">Diagn&oacute;stico diferencial</label>
-													<textarea class="form-control" id="differentialdiagnosis" name="differentialdiagnosis" rows="4" maxlength="100" required><?php
+													<textarea class="form-control" id="differentialdiagnosis" name="differentialdiagnosis" rows="4" maxlength="400" required><?php
 													if (isset($differentialdiagnosis)) { echo $differentialdiagnosis;
 													}
 												?></textarea>
@@ -366,7 +366,7 @@ if (isset($id) && intval($id) > 0) {
 											<div class="col-xs-4">
 												<div class="form-group">
 													<label for="diagnosisrecomendations">Recomendaciones (Ayuda diagn&oacute;stico)</label>
-													<textarea class="form-control" id="diagnosisrecomendations" name="diagnosisrecomendations" rows="4" maxlength="100"><?php
+													<textarea class="form-control" id="diagnosisrecomendations" name="diagnosisrecomendations" rows="4" maxlength="400"><?php
 													if (isset($diagnosisrecomendations)) { echo $diagnosisrecomendations;
 													}
 												?></textarea>
@@ -375,7 +375,7 @@ if (isset($id) && intval($id) > 0) {
 											<div class="col-xs-4">
 												<div class="form-group">
 													<label for="diagnosissamples">Muestras tomadas (Ayuda diagn&oacute;stico)</label>
-													<textarea class="form-control" id="diagnosissamples" name="diagnosissamples" rows="4" maxlength="100"><?php
+													<textarea class="form-control" id="diagnosissamples" name="diagnosissamples" rows="4" maxlength="400"><?php
 													if (isset($diagnosissamples)) { echo $diagnosissamples;
 													}
 												?></textarea>
@@ -384,7 +384,7 @@ if (isset($id) && intval($id) > 0) {
 											<div class="col-xs-4">
 												<div class="form-group">
 													<label for="diagnosisexams">Examenes a practicar (Ayuda diagn&oacute;stico)</label>
-													<textarea class="form-control" id="diagnosisexams" name="diagnosisexams" rows="4" maxlength="100"><?php
+													<textarea class="form-control" id="diagnosisexams" name="diagnosisexams" rows="4" maxlength="400"><?php
 													if (isset($diagnosisexams)) { echo $diagnosisexams;
 													}
 												?></textarea>
@@ -398,7 +398,7 @@ if (isset($id) && intval($id) > 0) {
 											<div class="col-xs-4">
 												<div class="form-group">
 													<label for="definitivediagnosis">Diagn&oacute;stico definitivo</label>
-													<textarea class="form-control" id="definitivediagnosis" name="definitivediagnosis" rows="4" maxlength="100"><?php
+													<textarea class="form-control" id="definitivediagnosis" name="definitivediagnosis" rows="4" maxlength="400"><?php
 													if (isset($definitivediagnosis)) { echo $definitivediagnosis;
 													}
 												?></textarea>
@@ -407,7 +407,7 @@ if (isset($id) && intval($id) > 0) {
 											<div class="col-xs-4">
 												<div class="form-group">
 													<label for="forecast">Pron&oacute;stico</label>
-													<textarea class="form-control" id="forecast" name="forecast" rows="4" maxlength="100"><?php
+													<textarea class="form-control" id="forecast" name="forecast" rows="4" maxlength="400"><?php
 													if (isset($forecast)) { echo $forecast;
 													}
 												?></textarea>

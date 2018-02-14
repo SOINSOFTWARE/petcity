@@ -261,7 +261,7 @@ if (isset($_POST['view'])) {
 											<div class="col-xs-6">
 												<div class="form-group">
 													<label for="findings">Hallazgos</label>
-													<textarea class="form-control" id="findings" name="findings" rows="5" maxlength="400" required><?php
+													<textarea class="form-control" id="findings" name="findings" rows="5" maxlength="500" required><?php
 													if (isset($findings)) { echo $findings;
 													}
 												?></textarea>
@@ -270,7 +270,7 @@ if (isset($_POST['view'])) {
 											<div class="col-xs-6">
 												<div class="form-group">
 													<label for="evolution">Evoluci&oacute;n</label>
-													<textarea class="form-control" id="evolution" name="evolution" rows="4" maxlength="600" required><?php
+													<textarea class="form-control" id="evolution" name="evolution" rows="4" maxlength="700" required><?php
 													if (isset($evolution)) { echo $evolution;
 													}
 												?></textarea>
@@ -281,7 +281,7 @@ if (isset($_POST['view'])) {
 											<div class="col-xs-4">
 												<div class="form-group">
 													<label for="diagnosisrecomendations">Recomendaciones (Ayuda diagn&oacute;stico)</label>
-													<textarea class="form-control" id="diagnosisrecomendations" name="diagnosisrecomendations" rows="4" maxlength="100"><?php
+													<textarea class="form-control" id="diagnosisrecomendations" name="diagnosisrecomendations" rows="4" maxlength="400"><?php
 													if (isset($diagnosisrecomendations)) { echo $diagnosisrecomendations;
 													}
 												?></textarea>
@@ -290,7 +290,7 @@ if (isset($_POST['view'])) {
 											<div class="col-xs-4">
 												<div class="form-group">
 													<label for="diagnosissamples">Muestras tomadas (Ayuda diagn&oacute;stico)</label>
-													<textarea class="form-control" id="diagnosissamples" name="diagnosissamples" rows="4" maxlength="100"><?php
+													<textarea class="form-control" id="diagnosissamples" name="diagnosissamples" rows="4" maxlength="400"><?php
 													if (isset($diagnosissamples)) { echo $diagnosissamples;
 													}
 												?></textarea>
@@ -299,7 +299,7 @@ if (isset($_POST['view'])) {
 											<div class="col-xs-4">
 												<div class="form-group">
 													<label for="diagnosisexams">Examenes a practicar (Ayuda diagn&oacute;stico)</label>
-													<textarea class="form-control" id="diagnosisexams" name="diagnosisexams" rows="4" maxlength="100"><?php
+													<textarea class="form-control" id="diagnosisexams" name="diagnosisexams" rows="4" maxlength="400"><?php
 													if (isset($diagnosisexams)) { echo $diagnosisexams;
 													}
 												?></textarea>
