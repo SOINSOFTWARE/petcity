@@ -6,7 +6,7 @@ include_once '../../php/breed.php';
 $breed = new BreedTable();
 if (isset($_POST['new'])) {
     $idPetType = $_POST['type'];
-    $name = $_POST['name'];
+    $name = $_POST['breedname'];
     $saved = $breed->insert($name, $idPetType, $companyId);
     if ($saved === FALSE) {
         $errorLog = new ErrorLogTable();
@@ -191,9 +191,9 @@ $results = $breed->select($companyId);
                                                 ?>
                                             </select>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="name">Raza</label>
-                                            <input type="text" class="form-control" id="name" name="name" placeholder="Golden Retriever, Beagle, Sin Raza..." maxlength="100" required>
+                                        <div id="divbreedname" class="form-group">
+                                            <label for="breedname">Raza</label>
+                                            <input type="text" class="form-control" id="breedname" name="breedname" placeholder="Golden Retriever..." maxlength="100" required>
                                         </div>
                                     </div>
                                 </div>
@@ -203,9 +203,14 @@ $results = $breed->select($companyId);
                 </section>
             </aside>
         </div>
-        <div id="type-dialog" title="Error" style="display: none">
+        <div id="type-dialog" title="Valores requeridos" style="display: none">
             <p>
                 <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>Seleccione un tipo antes de guardar.
+            </p>
+        </div>
+        <div id="breedname-dialog" title="Valores requeridos" style="display: none">
+            <p>
+                <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>El nombre de la raza es requerido.
             </p>
         </div>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
@@ -217,13 +222,21 @@ $results = $breed->select($companyId);
         <script src="../../js/jquery-ui.min.js" type="text/javascript"></script>
         <script type="text/javascript">
                             function validate() {
-                                if ($("#type").val() === 0) {
+                                if ($("#type").val() === '0') {
                                     $("#divtype").addClass("has-error");
                                     showRequiredDialog($("#type-dialog"));
                                     return false;
+                                } else {
+                                    $("#divtype").removeClass("has-error");
+                                }
+                                if ($.trim($("#breedname").val()) === '') {
+                                    $("#divbreedname").addClass("has-error");
+                                    showRequiredDialog($("#breedname-dialog"));
+                                    return false;
+                                } else {
+                                    $("#divbreedname").removeClass("has-error");
                                 }
                             }
-
                             function showRequiredDialog(divDialog) {
                                 divDialog.dialog({
                                     autoOpen: false,
