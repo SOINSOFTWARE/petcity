@@ -2,35 +2,8 @@
 session_start();
 include_once '../session.php';
 include_once '../../php/breed.php';
-
-$breed = new BreedTable();
-if (isset($_POST['new'])) {
-    $idPetType = $_POST['type'];
-    $name = $_POST['breedname'];
-    $saved = $breed->insert($name, $idPetType, $companyId);
-    if ($saved === FALSE) {
-        $errorLog = new ErrorLogTable();
-        $errorLog->insert($breed->getError());
-    }
-}
-if (isset($_POST['update'])) {
-    $id = $_POST['idtable'];
-    $name = $_POST['name'];
-    $updated = $breed->update($id, $name);
-    if ($updated === FALSE) {
-        $errorLog = new ErrorLogTable();
-        $errorLog->insert($breed->getError());
-    }
-}
-if (isset($_POST['delete'])) {
-    $id = $_POST['idtable'];
-    $deleted = $breed->delete($id);
-    if ($deleted === FALSE) {
-        $errorLog = new ErrorLogTable();
-        $errorLog->insert($breed->getError());
-    }
-}
-$results = $breed->select($companyId);
+include_once '../phpfragments/message_dialog.php';
+include_once './php/breed/before_load.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -46,16 +19,12 @@ $results = $breed->select($companyId);
         <link href="../../css/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
     </head>
     <body class="skin-blue">
-        <?php
-        include '../header.php';
-        ?>
+        <?php include '../header.php'; ?>
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <aside class="left-side sidebar-offcanvas">
                 <section class="sidebar">
                     <?php
                     include '../user-panel.php';
-                    ?>
-                    <?php
                     include 'menu.php';
                     ?>
                 </section>
@@ -76,103 +45,11 @@ $results = $breed->select($companyId);
                     </ol>
                 </section>
                 <section class="content">
+                    <?php include_once './php/breed/after_crud_operation_messages.php'; ?>
                     <div class="row">
-                        <div class="col-xs-7">
-                            <div class="box">
-                                <div class="box-header">
-                                    <h3 class="box-title">Listado de razas</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div class="box">
-                                                <br />
-                                                <?php
-                                                if (isset($updated)) {
-                                                    if ($updated) {
-                                                        echo '<div class="alert alert-success alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Dato actualizado!</b> La raza ha sido actualizada.
-</div>';
-                                                    } else {
-                                                        echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar actualizar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-                                                    }
-                                                }
-                                                if (isset($deleted)) {
-                                                    if ($deleted) {
-                                                        echo '<div class="alert alert-success alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Dato eliminado!</b> La raza ha sido eliminada.
-</div>';
-                                                    } else {
-                                                        echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar eliminar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-                                                    }
-                                                }
-                                                ?>
-                                                <div class="box-body table-responsive">
-                                                    <table id="tableData" class="table table-bordered table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th style="text-align:center; width: 20%">Tipo</th>
-                                                                <th style="text-align:center; width: 25%">Nombre</th>
-                                                                <th style="text-align:center; width: 40%">Actualizaci&oacute;n</th>
-                                                                <th style="text-align:center; width: 15%">Eliminar</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php
-                                                            while ($rows = mysqli_fetch_array($results)) {
-                                                                echo "<tr>";
-                                                                echo '<td>' . $rows["pettype"] . '</td>';
-                                                                echo '<td>' . $rows["breed"] . '</td>';
-                                                                if (is_null($rows["idcompany"])) {
-                                                                    echo "<td></td><td></td>";
-                                                                } else {
-                                                                    echo '<td><form action="raza.php" method="post" role="form"><input type="hidden" id="idtable" name="idtable" value="' . $rows["id"] . '" /><div class="input-group input-group-sm"><input type="text" class="form-control" id="name" name="name" maxlength="60" required /><span class="input-group-btn"><button type="submit" id="update" name="update" class="btn btn-success"><i class="fa fa-edit"></i></button></span></div></form></td>';
-                                                                    echo '<td style="text-align:center"><form action="raza.php" method="post" role="form"><input type="hidden" id="idtable" name="idtable" value="' . $rows["id"] . '" /><button type="submit" id="delete" name="delete" class="btn btn-danger"><i class="fa fa-times"></i></button></form></td>';
-                                                                }
-                                                                echo "</tr>";
-                                                            }
-                                                            ?>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <form action="raza.php" method="post" role="form" onsubmit="return validate()">
                             <div class="col-xs-5">
                                 <div class="box">
-                                    <?php
-                                    if (isset($saved)) {
-                                        if ($saved) {
-                                            echo '<div class="alert alert-success alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Datos guardados!</b> Una nueva raza ha sido creada.
-</div>';
-                                        } else {
-                                            echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar guardar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-                                        }
-                                    }
-                                    ?>
                                     <div class="box-header">
                                         <h3 class="box-title">Nueva raza</h3>
                                     </div>
@@ -183,12 +60,10 @@ $results = $breed->select($companyId);
                                         <br />
                                         <br />
                                         <div id="divtype" class="form-group">
-                                            <label for="type">Tipo</label>
+                                            <label for="type">Especie</label>
                                             <select id="type" name="type" class="form-control" required>
                                                 <option value="0">Seleccione uno...</option>
-                                                <?php
-                                                include '../phpfragments/pettype_select.php';
-                                                ?>
+                                                <?php include '../phpfragments/pettype_select.php'; ?>
                                             </select>
                                         </div>
                                         <div id="divbreedname" class="form-group">
@@ -199,20 +74,42 @@ $results = $breed->select($companyId);
                                 </div>
                             </div>
                         </form>
+                        <div class="col-xs-7">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Listado de razas</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="box">
+                                                <br />
+                                                <div class="box-body table-responsive">
+                                                    <table id="tableData" class="table table-bordered table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="text-align:center; width: 30%">Tipo</th>
+                                                                <th style="text-align:center; width: 50%">Nombre</th>
+                                                                <th style="text-align:center; width: 20%">Eliminar</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php include_once './php/breed/list_to_table_rows.php'; ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </aside>
         </div>
-        <div id="type-dialog" title="Valores requeridos" style="display: none">
-            <p>
-                <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>Seleccione un tipo antes de guardar.
-            </p>
-        </div>
-        <div id="breedname-dialog" title="Valores requeridos" style="display: none">
-            <p>
-                <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>El nombre de la raza es requerido.
-            </p>
-        </div>
+        <?php load_prompt_dialog('type-dialog', 'Valores requeridos', 'Seleccione una especie') ?>
+        <?php load_prompt_dialog('breedname-dialog', 'Valores requeridos', 'El nombre de la raza es requerido.') ?>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         <script src="../../js/bootstrap.min.js" type="text/javascript"></script>
         <script src="../../js/AdminLTE/app.js" type="text/javascript"></script>

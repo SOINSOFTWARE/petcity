@@ -2,34 +2,8 @@
 session_start();
 include_once '../session.php';
 include_once '../../php/drenching.php';
-
-$drenching = new DrenchingTable();
-if (isset($_POST['new'])) {
-    $name = $_POST['drechingname'];
-    $saved = $drenching->insert($name, $companyId);
-    if ($saved === FALSE) {
-        $errorLog = new ErrorLogTable();
-        $errorLog->insert($drenching->getError());
-    }
-}
-if (isset($_POST['update'])) {
-    $id = $_POST['idtable'];
-    $name = $_POST['name'];
-    $updated = $drenching->update($id, $name);
-    if ($updated === FALSE) {
-        $errorLog = new ErrorLogTable();
-        $errorLog->insert($drenching->getError());
-    }
-}
-if (isset($_POST['delete'])) {
-    $id = $_POST['idtable'];
-    $deleted = $drenching->delete($id);
-    if ($deleted === FALSE) {
-        $errorLog = new ErrorLogTable();
-        $errorLog->insert($drenching->getError());
-    }
-}
-$results = $drenching->select($companyId);
+include_once '../phpfragments/message_dialog.php';
+include_once './php/drenching/before_load.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -75,101 +49,11 @@ $results = $drenching->select($companyId);
                     </ol>
                 </section>
                 <section class="content">
-                    <div class="row">						
-                        <div class="col-xs-7">
-                            <div class="box">
-                                <div class="box-header">
-                                    <h3 class="box-title">Listado de productos antiparasitarios</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div class="box">
-                                                <br />
-                                                <?php
-                                                if (isset($updated)) {
-                                                    if ($updated) {
-                                                        echo '<div class="alert alert-success alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Dato actualizado!</b> El producto antiparasitario ha sido actualizada.
-</div>';
-                                                    } else {
-                                                        echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar actualizar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-                                                    }
-                                                }
-                                                if (isset($deleted)) {
-                                                    if ($deleted) {
-                                                        echo '<div class="alert alert-success alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Dato eliminado!</b> El producto antiparasitario ha sido eliminada.
-</div>';
-                                                    } else {
-                                                        echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar eliminar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-                                                    }
-                                                }
-                                                ?>
-                                                <div class="box-body table-responsive">
-                                                    <table id="tableData" class="table table-bordered table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th style="text-align:center; width: 30%">Nombre</th>
-                                                                <th style="text-align:center; width: 50%">Actualizaci&oacute;n</th>
-                                                                <th style="text-align:center; width: 20%">Eliminar</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php
-                                                            while ($rows = mysqli_fetch_array($results)) {
-                                                                echo "<tr>";
-                                                                echo '<td>' . $rows["name"] . '</td>';
-                                                                if (is_null($rows["idcompany"])) {
-                                                                    echo "<td></td><td></td>";
-                                                                } else {
-                                                                    echo '<td><form action="antiparasitarios.php" method="post" role="form"><input type="hidden" id="idtable" name="idtable" value="' . $rows["id"] . '" /><div class="input-group input-group-sm"><input type="text" class="form-control" id="name" name="name" maxlength="60" required /><span class="input-group-btn"><button type="submit" id="update" name="update" class="btn btn-success"><i class="fa fa-edit"></i></button></span></div></form></td>';
-                                                                    echo '<td style="text-align:center"><form action="antiparasitarios.php" method="post" role="form"><input type="hidden" id="idtable" name="idtable" value="' . $rows["id"] . '" /><button type="submit" id="delete" name="delete" class="btn btn-danger"><i class="fa fa-times"></i></button></form></td>';
-                                                                }
-                                                                echo "</tr>";
-                                                            }
-                                                            ?>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <?php include_once './php/drenching/after_crud_operation_messages.php'; ?>
+                    <div class="row">
                         <form action="antiparasitarios.php" method="post" role="form" onsubmit="return validate()">
                             <div class="col-xs-5">
                                 <div class="box">
-                                    <?php
-                                    if (isset($saved)) {
-                                        if ($saved) {
-                                            echo '<div class="alert alert-success alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Datos guardados!</b> Un nuevo producto antiparasitario ha sido creado.
-</div>';
-                                        } else {
-                                            echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar guardar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-                                        }
-                                    }
-                                    ?>
                                     <div class="box-header">
                                         <h3 class="box-title">Nuevo producto antiparasitario</h3>
                                     </div>
@@ -180,22 +64,47 @@ $results = $drenching->select($companyId);
                                         <br />
                                         <br />
                                         <div class="form-group">
-                                            <label for="drechingname">Nombre</label>
-                                            <input type="text" class="form-control" id="drechingname" name="drechingname" placeholder="Program 400..." maxlength="100" required>
+                                            <label for="newname">Nombre</label>
+                                            <input type="text" class="form-control" id="newname" name="newname" placeholder="Program 400..." maxlength="100" required>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
+                        <div class="col-xs-7">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Listado de productos antiparasitarios</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="box">
+                                                <br />
+                                                <div class="box-body table-responsive">
+                                                    <table id="tableData" class="table table-bordered table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="text-align:center; width: 80%">Nombre</th>
+                                                                <th style="text-align:center; width: 20%">Eliminar</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php include_once './php/drenching/list_to_table_rows.php'; ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </aside>
         </div>
-        <div id="name-dialog" title="Valores requeridos" style="display: none">
-            <p>
-                <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>El nombre del antiparasitario es requerido.
-            </p>
-        </div>
+        <?php load_prompt_dialog('name-dialog', 'Valores requeridos', 'El nombre del antiparasitario es requerido.') ?>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         <script src="../../js/bootstrap.min.js" type="text/javascript"></script>
         <script src="../../js/AdminLTE/app.js" type="text/javascript"></script>
@@ -205,7 +114,7 @@ $results = $drenching->select($companyId);
         <script src="../../js/jquery-ui.min.js" type="text/javascript"></script>
         <script type="text/javascript">
             function validate() {
-                if ($.trim($("#drechingname").val()) === '') {
+                if ($.trim($("#newname").val()) === '') {
                     $("#divname").addClass("has-error");
                     showRequiredDialog($("#name-dialog"));
                     return false;

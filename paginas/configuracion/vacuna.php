@@ -2,34 +2,8 @@
 session_start();
 include_once '../session.php';
 include_once '../../php/vaccine.php';
-
-$vaccine = new VaccineTable();
-if (isset($_POST['new'])) {
-    $name = $_POST['vaccinename'];
-    $saved = $vaccine->insert($name, $companyId);
-    if ($saved === FALSE) {
-        $errorLog = new ErrorLogTable();
-        $errorLog->insert($vaccine->getError());
-    }
-}
-if (isset($_POST['update'])) {
-    $id = $_POST['idtable'];
-    $name = $_POST['name'];
-    $updated = $vaccine->update($id, $name);
-    if ($updated === FALSE) {
-        $errorLog = new ErrorLogTable();
-        $errorLog->insert($vaccine->getError());
-    }
-}
-if (isset($_POST['delete'])) {
-    $id = $_POST['idtable'];
-    $deleted = $vaccine->delete($id);
-    if ($deleted === FALSE) {
-        $errorLog = new ErrorLogTable();
-        $errorLog->insert($vaccine->getError());
-    }
-}
-$results = $vaccine->select($companyId);
+include_once '../phpfragments/message_dialog.php';
+include_once './php/vaccine/before_load.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -45,16 +19,12 @@ $results = $vaccine->select($companyId);
         <link href="../../css/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
     </head>
     <body class="skin-blue">
-        <?php
-        include '../header.php';
-        ?>
+        <?php include '../header.php'; ?>
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <aside class="left-side sidebar-offcanvas">
                 <section class="sidebar">
                     <?php
                     include '../user-panel.php';
-                    ?>
-                    <?php
                     include 'menu.php';
                     ?>
                 </section>
@@ -75,101 +45,11 @@ $results = $vaccine->select($companyId);
                     </ol>
                 </section>
                 <section class="content">
-                    <div class="row">						
-                        <div class="col-xs-7">
-                            <div class="box">
-                                <div class="box-header">
-                                    <h3 class="box-title">Listado de productos de vacunaci&oacute;n</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div class="box">
-                                                <br />
-                                                <?php
-                                                if (isset($updated)) {
-                                                    if ($updated) {
-                                                        echo '<div class="alert alert-success alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Dato actualizado!</b> El producto de vacunaci&oacute;n ha sido actualizada.
-</div>';
-                                                    } else {
-                                                        echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar actualizar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-                                                    }
-                                                }
-                                                if (isset($deleted)) {
-                                                    if ($deleted) {
-                                                        echo '<div class="alert alert-success alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Dato eliminado!</b> El producto de vacunaci&oacute;n ha sido eliminada.
-</div>';
-                                                    } else {
-                                                        echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar eliminar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-                                                    }
-                                                }
-                                                ?>
-                                                <div class="box-body table-responsive">
-                                                    <table id="tableData" class="table table-bordered table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th style="text-align:center; width: 30%">Nombre</th>
-                                                                <th style="text-align:center; width: 50%">Actualizaci&oacute;n</th>
-                                                                <th style="text-align:center; width: 20%">Eliminar</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php
-                                                            while ($rows = mysqli_fetch_array($results)) {
-                                                                echo "<tr>";
-                                                                echo '<td>' . $rows["name"] . '</td>';
-                                                                if (is_null($rows["idcompany"])) {
-                                                                    echo "<td></td><td></td>";
-                                                                } else {
-                                                                    echo '<td><form action="vacuna.php" method="post" role="form"><input type="hidden" id="idtable" name="idtable" value="' . $rows["id"] . '" /><div class="input-group input-group-sm"><input type="text" class="form-control" id="name" name="name" maxlength="60" required /><span class="input-group-btn"><button type="submit" id="update" name="update" class="btn btn-success"><i class="fa fa-edit"></i></button></span></div></form></td>';
-                                                                    echo '<td style="text-align:center"><form action="vacuna.php" method="post" role="form"><input type="hidden" id="idtable" name="idtable" value="' . $rows["id"] . '" /><button type="submit" id="delete" name="delete" class="btn btn-danger"><i class="fa fa-times"></i></button></form></td>';
-                                                                }
-                                                                echo "</tr>";
-                                                            }
-                                                            ?>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <?php include_once './php/vaccine/after_crud_operation_messages.php'; ?>
+                    <div class="row">
                         <form action="vacuna.php" method="post" role="form" onsubmit="return validate()">
                             <div class="col-xs-5">
                                 <div class="box">
-                                    <?php
-                                    if (isset($saved)) {
-                                        if ($saved) {
-                                            echo '<div class="alert alert-success alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Datos guardados!</b> Un nuevo producto de vacunaci&oacute;n ha sido creado.
-</div>';
-                                        } else {
-                                            echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar guardar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-                                        }
-                                    }
-                                    ?>
                                     <div class="box-header">
                                         <h3 class="box-title">Nuevo producto de vacunaci&oacute;n</h3>
                                     </div>
@@ -180,22 +60,47 @@ $results = $vaccine->select($companyId);
                                         <br />
                                         <br />
                                         <div id="divname" class="form-group">
-                                            <label for="vaccinename">Nombre</label>
-                                            <input type="text" class="form-control" id="vaccinename" name="vaccinename" placeholder="Nobivac..." maxlength="100" required>
+                                            <label for="newname">Nombre</label>
+                                            <input type="text" class="form-control" id="newname" name="newname" placeholder="Nobivac..." maxlength="100" required>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
+                        <div class="col-xs-7">
+                            <div class="box">
+                                <div class="box-header">
+                                    <h3 class="box-title">Listado de productos de vacunaci&oacute;n</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="box">
+                                                <br />
+                                                <div class="box-body table-responsive">
+                                                    <table id="tableData" class="table table-bordered table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="text-align:center; width: 80%">Nombre</th>
+                                                                <th style="text-align:center; width: 20%">Eliminar</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php include_once './php/vaccine/list_to_table_rows.php'; ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
                     </div>
                 </section>
             </aside>
         </div>
-        <div id="name-dialog" title="Valores requeridos" style="display: none">
-            <p>
-                <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>El nombre de la vacuna es requerido.
-            </p>
-        </div>
+        <?php load_prompt_dialog('name-dialog', 'Valores requeridos', 'El nombre de la vacuna es requerido.') ?>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         <script src="../../js/bootstrap.min.js" type="text/javascript"></script>
         <script src="../../js/AdminLTE/app.js" type="text/javascript"></script>
@@ -205,7 +110,7 @@ $results = $vaccine->select($companyId);
         <script src="../../js/jquery-ui.min.js" type="text/javascript"></script>
         <script type="text/javascript">
                             function validate() {
-                                if ($.trim($("#vaccinename").val()) === '') {
+                                if ($.trim($("#newname").val()) === '') {
                                     $("#divname").addClass("has-error");
                                     showRequiredDialog($("#name-dialog"));
                                     return false;
