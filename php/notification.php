@@ -1,88 +1,122 @@
 <?php
+
 include_once 'connection.php';
 
 class NotificationTable {
 
-	private $conn = null;
+    private $conn = NULL;
 
-	function __construct() {
-		$this -> conn = mysqli_connect(DB_SERVER, DB_USER, DB_PASS);
-		if (mysqli_connect_errno()) {
-			echo "Failed to connect to MySQL: " . mysqli_connect_error();
-		}
-		mysqli_select_db($this -> conn, DB_NAME);
-	}
+    function __construct() {
+        $this->conn = mysqli_connect(DB_SERVER, DB_USER, DB_PASS);
+        if (mysqli_connect_errno()) {
+            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        } else {
+            mysqli_select_db($this->conn, DB_NAME);
+        }
+    }
 
-	public function insert($title, $message, $notificationdate, $idpet) {
-		$sql = "INSERT notification(title,message,notificationdate, idpet) VALUES('$title', '$message', '$notificationdate', $idpet)";
-		return $this -> conn -> query($sql);
-	}
+    public function insert($title, $message, $notificationdate, $idpet) {
+        if ($this->conn != NULL) {
+            $sql = "INSERT notification(title,message,notificationdate, idpet) VALUES('$title', '$message', '$notificationdate', $idpet)";
+            return $this->conn->query($sql);
+        } else {
+            return NULL;
+        }
+    }
 
-	public function update($id, $title, $message, $notificationdate) {
-		$sql = "UPDATE notification SET title = '$title', message = '$message', notificationdate = '$notificationdate' WHERE id = $id";
-		return $this -> conn -> query($sql);
-	}
+    public function update($id, $title, $message, $notificationdate) {
+        if ($this->conn != NULL) {
+            $sql = "UPDATE notification SET title = '$title', message = '$message', notificationdate = '$notificationdate' WHERE id = $id";
+            return $this->conn->query($sql);
+        } else {
+            return NULL;
+        }
+    }
 
-	public function delete($id) {
-		$sql = "UPDATE notification SET enabled = 0 WHERE id = $id";
-		return $this -> conn -> query($sql);
-	}
+    public function delete($id) {
+        if ($this->conn != NULL) {
+            $sql = "UPDATE notification SET enabled = 0 WHERE id = $id";
+            return $this->conn->query($sql);
+        } else {
+            return NULL;
+        }
+    }
 
-	public function select($idpet) {
-		$sql = "SELECT * FROM notification WHERE idpet = $idpet AND enabled = 1 ORDER BY notificationdate";
-		return mysqli_query($this -> conn, $sql);
-	}
+    public function select($idpet) {
+        if ($this->conn != NULL) {
+            $sql = "SELECT * FROM notification WHERE idpet = $idpet AND enabled = 1 ORDER BY notificationdate";
+            return mysqli_query($this->conn, $sql);
+        } else {
+            return NULL;
+        }
+    }
 
-	public function selectById($id) {
-		$sql = "SELECT * FROM notification WHERE id = $id";
-		return mysqli_query($this -> conn, $sql);
-	}
+    public function selectById($id) {
+        if ($this->conn != NULL) {
+            $sql = "SELECT notification.id, title, message, notificationdate, pet.name as petname, owner.name as ownername, owner.lastname, owner.phone2, owner.email
+                FROM notification
+                JOIN pet ON notification.idpet = pet.id
+                JOIN owner ON pet.idowner = owner.id
+                WHERE notification.id = $id";
+            return mysqli_query($this->conn, $sql);
+        } else {
+            return NULL;
+        }
+    }
+    
+    public function selectByIdCompany($id_company) {
+        if ($this->conn != NULL) {
+            $sql = "SELECT notification.id, title, message, notificationdate, pet.name as petname, owner.name as ownername, owner.lastname, owner.phone2, owner.email
+                FROM notification
+                JOIN pet ON notification.idpet = pet.id
+                JOIN owner ON pet.idowner = owner.id
+                WHERE notification.enabled = 1 AND pet.enabled = 1 AND pet.idcompany = $id_company ORDER BY notificationdate";
+            return mysqli_query($this->conn, $sql);
+        } else {
+            return NULL;
+        }
+    }
 
-	public function selectLastInsertId() {
-		return mysqli_insert_id($this -> conn);
-	}
+    public function selectLastInsertId() {
+        return mysqli_insert_id($this->conn);
+    }
 
-	public function getConnection() {
-		return $this -> conn;
-	}
+    public function getConnection() {
+        return $this->conn;
+    }
 
-	public function getError() {
-		return $this -> conn -> error;
-	}
+    public function getError() {
+        return $this->conn->error;
+    }
 
-	public function sendMail($email, $companyName, $userfullname, $petname, $title, $message, $notificationdate) {
-		$to = $email . ', ' . 'crodriguez@soinsoftware.com';
-		$subject = 'Recordatorio de ' . $companyName;
-		$message = '
-			<html>
-			<head>
-			  <title>Hola ' . $userfullname . ', est&aacute; es una notificaci&oacute;n usando PetCity!</title>
-			</head>
-			<body>
-			  <p>PetCity quiere recordarle de su siguiente cita para su mascota ' . $petname . '</p>
-			  <table>
-			    <tr>
-			      <th></th><th></th>
-			    </tr>
-			    <tr>
-			      <td>Fecha:</td><td>' . $notificationdate . '</td>
-			    </tr>
-			    <tr>
-			      <td>T&iacute;tulo:</td><td>' . $title . '</td>
-			    </tr>
-			    <tr>
-			      <td>Mensaje:</td><td>' . $message . '</td>
-			    </tr>
-			  </table>
-			</body>
-			</html>
+    public function sendMail($email, $companyName, $userfullname, $petname, $title, $message, $notificationdate) {
+        $to = $email . ', ' . 'carlos.rodriguez@soinsoftware.com';
+        $subject = $title;
+        $message = '
+            <html>
+                <head></head>
+                <body>
+                    <h1>Hola ' . $userfullname . ', est&aacute; es un recordatorio enviado por ' . $companyName . ' usando PetCity!</h1>
+                    <p>' . $message . '</p>
+                    <table>
+                    <tr>
+                        <td>Fecha:</td><td>' . $notificationdate . '</td>
+                    </tr>
+                    <tr>
+                        <td>Mascota:</td><td>' . $petname . '</td>
+                    </tr>
+                    </table>
+                    <h4>Pet City Soft env&iacute;a este recordatorio por petici&oacute;n de ' . $companyName . ', no responda a este correo.</h4>
+                </body>
+            </html>
 			';
-		$headers = 'MIME-Version: 1.0' . "\r\n";
-		$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-		$headers .= 'From: petcity@soinsoftware.com' . "\r\n";
+        $headers = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+        $headers .= 'From: petcity@soinsoftware.com' . "\r\n";
 
-		return mail($to, $subject, $message, $headers);
-	}
+        return mail($to, $subject, $message, $headers);
+    }
 
 }
+
 ?>

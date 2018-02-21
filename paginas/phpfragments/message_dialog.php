@@ -1,14 +1,16 @@
 <?php
 
 function show_success_message($message) {
-    show_message('Datos guardados!', $message);
+    show_message('Datos guardados!', $message, 'fa fa-check');
 }
 function show_error_message($message) {
-    show_message('Error!', $message);
+    show_message('Error!', $message, 'fa fa-times');
 }
-function show_message($title, $message) {
+function show_message($title, $message, $button_img) {
     echo '<div class="alert alert-success alert-dismissable">';
-    echo '<i class="fa fa-times"></i>';
+    echo '<i class="';
+    echo $button_img;
+    echo '"></i>';
     echo '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>';
     echo '<b>';
     echo $title;
