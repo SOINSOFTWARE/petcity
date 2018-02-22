@@ -53,7 +53,9 @@ include_once './php/edit/before_load.php';
                             <div class="col-xs-12">
                                 <div class="box">
                                     <div class="box-body">
-                                        <button type="submit" id="update" name="update" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary"
+                                                id="<?php if ($id == 0) { echo 'new'; } else { echo 'update'; } ?>"
+                                                name="<?php if ($id == 0) { echo 'new'; } else { echo 'update'; } ?>">
                                             <i class="fa fa-save"></i>
                                         </button>
                                         <br />

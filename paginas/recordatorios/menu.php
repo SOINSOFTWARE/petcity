@@ -4,7 +4,12 @@
             <i class="fa fa-medkit"></i><span>Historias cl&iacute;nicas</span>
         </a>
     </li>
-    <li id="refconfiguration" class="treeview active">
+    <li id="refnote" class="active">
+        <a href="./listado.php">
+            <i class="fa fa-list"></i><span>Recordatorios</span>
+        </a>
+    </li>
+    <li id="refconfiguration" class="treeview">
         <a href="#">
             <i class="fa fa-gears"></i>
             <span>Configuraci&oacute;n</span>

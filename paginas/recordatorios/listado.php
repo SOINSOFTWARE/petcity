@@ -45,40 +45,82 @@ include_once './php/list/before_load.php';
                 </section>
                 <section class="content">
                     <?php include_once './php/list/after_crud_operation_messages.php'; ?>
-                    <div class="row">
-                        <div class="box">
-                            <div class="box-body">
-                                <div>
-                                    <form action="editar.php" method="post" role="form">
-                                        <button type="submit" id="new" name="new" class="btn btn-primary">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </form>
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-xs-1">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <form action="editar.php" method="post" role="form">
+                                                    <button type="submit" id="new" name="new" class="btn btn-primary">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form action="listado.php" method="post" role="form" onsubmit="return beforeSendAll()">
+                                                    <input type="hidden" id="send_all_date" name="send_all_date">
+                                                    <button type="submit" id="send-all" name="send-all" class="btn btn-success">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
-                            </div>                            
+                            </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="box box-primary">
-                            <div class="box-body table-responsive">
-                                <table id="table-notes" class="table table-bordered table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th style="text-align:center; width: 16%">T&iacute;tulo</th>
-                                            <th style="text-align:center; width: 29%">Mensaje</th>
-                                            <th style="text-align:center; width: 13%">Mascota</th>
-                                            <th style="text-align:center; width: 16%">Propietario</th>
-                                            <th style="text-align:center; width: 11%">Celular</th>
-                                            <th style="text-align:center; width: 5%">Ver</th>
-                                            <th style="text-align:center; width: 5%">Enviar</th>
-                                            <th style="text-align:center; width: 5%">Eliminar</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php include_once './php/list/list_to_table_rows.php'; ?>
-                                    </tbody>
-                                </table>
-
+                        <div class="col-xs-12">
+                            <div class="box box-primary">
+                                <div class="box-body table-responsive">
+                                    <div class="row">
+                                        <form action="listado.php" method="post" role="form">
+                                            <div class="col-xs-2">
+                                                <div id="divnotificationdate" class="form-group">
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                        <input type="text" class="form-control pull-right" id="notification_date" name="notification_date" value="<?php
+                                                        if (isset($notification_date)) {
+                                                            echo $notification_date;
+                                                        }
+                                                        ?>" required />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-2">
+                                                <button type="submit" id="view" name="view" class="btn btn-primary">
+                                                    <i class="fa fa-refresh"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <table id="table-notes" class="table table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="text-align:center; width: 16%">T&iacute;tulo</th>
+                                                        <th style="text-align:center; width: 29%">Mensaje</th>
+                                                        <th style="text-align:center; width: 13%">Mascota</th>
+                                                        <th style="text-align:center; width: 16%">Propietario</th>
+                                                        <th style="text-align:center; width: 11%">Celular</th>
+                                                        <th style="text-align:center; width: 5%">Ver</th>
+                                                        <th style="text-align:center; width: 5%">Enviar</th>
+                                                        <th style="text-align:center; width: 5%">Eliminar</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php include_once './php/list/list_to_table_rows.php'; ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -93,4 +135,22 @@ include_once './php/list/before_load.php';
     <script src="../../js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
     <script src="../../js/jquery-ui.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#notification_date').datepicker({
+                dateFormat: 'dd/mm/yy',
+                autoclose: true
+            });
+        });
+
+        $(document).ready(function () {
+            $("#notification_date").keydown(function (e) {
+                return false;
+            });
+        });
+        
+        function beforeSendAll() {
+            $('#send_all_date').val($('#notification_date').val());
+        }
+    </script>
 </html>

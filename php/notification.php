@@ -53,7 +53,7 @@ class NotificationTable {
 
     public function selectById($id) {
         if ($this->conn != NULL) {
-            $sql = "SELECT notification.id, title, message, notificationdate, pet.name as petname, owner.name as ownername, owner.lastname, owner.phone2, owner.email
+            $sql = "SELECT notification.id, title, message, notificationdate, pet.id as idpet, pet.name as petname, owner.name as ownername, owner.lastname, owner.phone2, owner.email
                 FROM notification
                 JOIN pet ON notification.idpet = pet.id
                 JOIN owner ON pet.idowner = owner.id
@@ -64,13 +64,13 @@ class NotificationTable {
         }
     }
     
-    public function selectByIdCompany($id_company) {
+    public function selectByIdCompany($id_company, $notification_date) {
         if ($this->conn != NULL) {
-            $sql = "SELECT notification.id, title, message, notificationdate, pet.name as petname, owner.name as ownername, owner.lastname, owner.phone2, owner.email
+            $sql = "SELECT notification.id, title, message, notificationdate, pet.id as idpet, pet.name as petname, owner.name as ownername, owner.lastname, owner.phone2, owner.email
                 FROM notification
                 JOIN pet ON notification.idpet = pet.id
                 JOIN owner ON pet.idowner = owner.id
-                WHERE notification.enabled = 1 AND pet.enabled = 1 AND pet.idcompany = $id_company ORDER BY notificationdate";
+                WHERE notification.enabled = 1 AND pet.enabled = 1 AND pet.idcompany = $id_company AND notificationdate = '$notification_date' ORDER BY notificationdate";
             return mysqli_query($this->conn, $sql);
         } else {
             return NULL;
