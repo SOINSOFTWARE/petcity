@@ -63,14 +63,14 @@ class NotificationTable {
             return NULL;
         }
     }
-    
+
     public function selectByIdCompany($id_company, $notification_date) {
         if ($this->conn != NULL) {
             $sql = "SELECT notification.id, title, message, notificationdate, pet.id as idpet, pet.name as petname, owner.name as ownername, owner.lastname, owner.phone2, owner.email
                 FROM notification
                 JOIN pet ON notification.idpet = pet.id
                 JOIN owner ON pet.idowner = owner.id
-                WHERE notification.enabled = 1 AND pet.enabled = 1 AND pet.idcompany = $id_company AND notificationdate = '$notification_date' ORDER BY notificationdate";
+                WHERE notification.enabled = 1 AND pet.enabled = 1 AND pet.idcompany = $id_company AND date(notificationdate) = date('$notification_date') ORDER BY notificationdate";
             return mysqli_query($this->conn, $sql);
         } else {
             return NULL;
@@ -92,24 +92,18 @@ class NotificationTable {
     public function sendMail($email, $companyName, $userfullname, $petname, $title, $message, $notificationdate) {
         $to = $email . ', ' . 'carlos.rodriguez@soinsoftware.com';
         $subject = $title;
-        $message = '
-            <html>
+        $message = '<html>
                 <head></head>
                 <body>
                     <h1>Hola ' . $userfullname . ', est&aacute; es un recordatorio enviado por ' . $companyName . ' usando PetCity!</h1>
                     <p>' . $message . '</p>
                     <table>
-                    <tr>
-                        <td>Fecha:</td><td>' . $notificationdate . '</td>
-                    </tr>
-                    <tr>
-                        <td>Mascota:</td><td>' . $petname . '</td>
-                    </tr>
+                    <tr><td>Fecha:</td><td>' . $notificationdate . '</td></tr>
+                    <tr><td>Mascota:</td><td>' . $petname . '</td></tr>
                     </table>
                     <h4>Pet City Soft env&iacute;a este recordatorio por petici&oacute;n de ' . $companyName . ', no responda a este correo.</h4>
                 </body>
-            </html>
-			';
+            </html>';
         $headers = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
         $headers .= 'From: petcity@soinsoftware.com' . "\r\n";
@@ -118,5 +112,3 @@ class NotificationTable {
     }
 
 }
-
-?>

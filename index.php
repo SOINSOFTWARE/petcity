@@ -9,7 +9,7 @@ $results = $clinichistory -> select($companyId);
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Pet City | Historias cl&iacute;nicas</title>
+		<title>Pet City | Historico</title>
 		<meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 		<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 		<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -32,13 +32,13 @@ $results = $clinichistory -> select($companyId);
 			</aside>
 			<aside class="right-side">
 				<section class="content-header">
-					<h1> Historias cl&iacute;nicas </h1>
+					<h1> Datos historicos </h1>
 					<ol class="breadcrumb">
 						<li>
 							<a href="#"><i class="fa fa-medkit"></i> Pet City</a>
 						</li>
 						<li class="active">
-							Historias cl&iacute;nicas
+							Historico
 						</li>
 					</ol>
 				</section>

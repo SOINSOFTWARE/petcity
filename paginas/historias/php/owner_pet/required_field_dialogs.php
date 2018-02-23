@@ -12,3 +12,6 @@ load_prompt_dialog('petcolor-dialog', 'Valores requeridos', 'El color de la masc
 load_prompt_dialog('breed-dialog', 'Valores requeridos', 'Seleccione la especie y raza de la mascota.');
 load_prompt_dialog('borndate-dialog', 'Valores requeridos', 'La fecha de nacimiento de la mascota no es valida.');
 load_prompt_dialog('petbornplace-dialog', 'Valores requeridos', 'El lugar de procedencia de la mascota es requerido.');
+load_prompt_dialog('extension-dialog', 'Error', 'Solo se permite adjuntar archivos con extensi&oacute;n png, jpg, jpeg.');
+load_prompt_dialog('browser-dialog', 'Error', 'Su navegador no soporta est&aacute; funcionalidad.');
+load_prompt_dialog('one-file-dialog', 'Error', 'Seleccione solo un archivo');

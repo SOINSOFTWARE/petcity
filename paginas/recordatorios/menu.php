@@ -1,7 +1,7 @@
 <ul class="sidebar-menu">
     <li id="refclihistory">
         <a href="../../">
-            <i class="fa fa-medkit"></i><span>Historias cl&iacute;nicas</span>
+            <i class="fa fa-medkit"></i> <span>Historico</span>
         </a>
     </li>
     <li id="refnote" class="active">

@@ -78,9 +78,9 @@ include_once './php/list/before_load.php';
                                 <div class="box-body table-responsive">
                                     <div class="row">
                                         <form action="listado.php" method="post" role="form">
-                                            <div class="col-xs-2">
+                                            <div class="col-lg-2">
                                                 <div id="divnotificationdate" class="form-group">
-                                                    <div class="input-group date">
+                                                    <div class="input-group date input-group-sm">
                                                         <div class="input-group-addon">
                                                             <i class="fa fa-calendar"></i>
                                                         </div>
@@ -89,19 +89,19 @@ include_once './php/list/before_load.php';
                                                             echo $notification_date;
                                                         }
                                                         ?>" required />
+                                                        <span class="input-group-btn">
+                                                            <button type="submit" id="view" name="view" class="btn btn-primary">
+                                                                <i class="fa fa-refresh"></i>
+                                                            </button>
+                                                        </span>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-xs-2">
-                                                <button type="submit" id="view" name="view" class="btn btn-primary">
-                                                    <i class="fa fa-refresh"></i>
-                                                </button>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-12">
-                                            <table id="table-notes" class="table table-bordered table-hover">
+                                            <table id="tableData" class="table table-bordered table-hover">
                                                 <thead>
                                                     <tr>
                                                         <th style="text-align:center; width: 16%">T&iacute;tulo</th>
@@ -136,21 +136,21 @@ include_once './php/list/before_load.php';
     <script src="../../js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
     <script src="../../js/jquery-ui.min.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $(function () {
-            $('#notification_date').datepicker({
-                dateFormat: 'dd/mm/yy',
-                autoclose: true
-            });
-        });
+                                                    $(function () {
+                                                        $('#notification_date').datepicker({
+                                                            dateFormat: 'dd/mm/yy',
+                                                            autoclose: true
+                                                        });
+                                                    });
 
-        $(document).ready(function () {
-            $("#notification_date").keydown(function (e) {
-                return false;
-            });
-        });
-        
-        function beforeSendAll() {
-            $('#send_all_date').val($('#notification_date').val());
-        }
+                                                    $(document).ready(function () {
+                                                        $("#notification_date").keydown(function (e) {
+                                                            return false;
+                                                        });
+                                                    });
+
+                                                    function beforeSendAll() {
+                                                        $('#send_all_date').val($('#notification_date').val());
+                                                    }
     </script>
 </html>

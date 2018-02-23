@@ -1,5 +1,4 @@
 <?php
-
 $id_clinic_history = 0;
 $id_owner = 0;
 $document = '';
@@ -20,8 +19,11 @@ $id_reproduction = 0;
 $color = '';
 $sex = 'M';
 $born_place = '';
+$pet_photo = '';
 $history = '';
 $born_date = '';
+
+$record_custom_id = '';
 
 function get_numeric_value($numeric_var) {
     if ($numeric_var === NULL) {

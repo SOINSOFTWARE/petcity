@@ -35,13 +35,13 @@ include_once './php/owner_pet/before_load.php';
             </aside>
             <aside class="right-side">
                 <section class="content-header">
-                    <h1> Datos b&aacute;sicos </h1>                    
+                    <h1> Datos b&aacute;sicos del propietario y la mascota </h1>                    
                     <ol class="breadcrumb">
                         <li>
                             <a href="#"><i class="fa fa-medkit"></i> Pet City</a>
                         </li>
                         <li>
-                            <a href="../../">Historias cl&iacute;nicas</a>
+                            <a href="../../">Historico</a>
                         </li>
                         <li class="active">
                             Datos b&aacute;sicos
@@ -52,7 +52,7 @@ include_once './php/owner_pet/before_load.php';
                 </section>
                 <section class="content">
                     <?php include_once './php/owner_pet/after_crud_operation_messages.php'; ?>
-                    <form action="datosbasicos.php" method="post" role="form" onsubmit="return validate()">
+                    <form action="datosbasicos.php" method="post" role="form" onsubmit="return validate()" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="box">
@@ -68,6 +68,27 @@ include_once './php/owner_pet/before_load.php';
                                             </div>
                                         </div>
                                         <br/>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="box">
+                                                    <div class="box-header">
+                                                        <h3 class="box-title">Historia</h3>
+                                                    </div>
+                                                    <div class="box-body">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div id="divclinichistory" class="form-group">
+                                                                    <label for="recordcustomid">N&uacute;mero</label>
+                                                                    <input type="number" class="form-control" id="recordcustomid" name="recordcustomid" 
+                                                                           placeholder="N&uacute;mero de historia" 
+                                                                           value="<?php echo get_string_value($record_custom_id); ?>" data-mask />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="box">
@@ -140,6 +161,24 @@ include_once './php/owner_pet/before_load.php';
                                                         <h3 class="box-title">Mascota</h3>
                                                     </div>
                                                     <div class="box-body">
+                                                        <div class="form-group">
+                                                            <input type="hidden" id="petphoto" name="petphoto" 
+                                                                   value="<?php echo get_string_value($pet_photo); ?>" />
+                                                            <?php
+                                                            if (get_string_value($pet_photo) != '') {
+                                                                echo '<div class="user-panel">';
+                                                                echo '<img src="';
+                                                                echo $pet_photo;
+                                                                echo '" class="img-circle" alt="Foto de la mascota" height="200px" />';
+                                                                echo '</div>';
+                                                                echo '<label for="pet_photo_file">Cambiar foto</label>';
+                                                            } else {
+                                                                echo '<label for="pet_photo_file">Adjuntar foto</label>';
+                                                            }
+                                                            echo '<input type="file" id="pet_photo_file" name="pet_photo_file" onchange="validateFile()">';
+                                                            echo '<p class="help-block">Solo se permite adjuntar archivos con extensi&oacute;n png, jpg, jpeg</p>';
+                                                            ?>
+                                                        </div>
                                                         <div id="divpetname" class="form-group">
                                                             <input type="hidden" id="idpet" name="idpet" 
                                                                    value="<?php echo get_numeric_value($id_pet); ?>" />
@@ -241,18 +280,21 @@ include_once './php/owner_pet/before_load.php';
                                                                     $("#ownerdocument").keydown(function (e) {
                                                                         validateIntegerInput(e);
                                                                     });
-                                                                });
-                                                                $(function () {
+                                                                    $("#recordcustomid").keydown(function (e) {
+                                                                        validateIntegerInput(e);
+                                                                    });
                                                                     $("#datemask").inputmask("mm/yyyy", {
                                                                         "placeholder": "mm/yyyy"
                                                                     });
                                                                     $("[data-mask]").inputmask();
                                                                 });
+
                                                                 function validate() {
                                                                     if (!validateOwnerData() || !validatePetData()) {
                                                                         return false;
                                                                     }
                                                                 }
+
                                                                 function validateOwnerData() {
                                                                     if ($.trim($("#ownerdocument").val()) === ''
                                                                             || $.trim($("#ownerdocument").val()) === '0') {
@@ -300,6 +342,7 @@ include_once './php/owner_pet/before_load.php';
                                                                     }
                                                                     return true;
                                                                 }
+
                                                                 function validatePetData() {
                                                                     if ($.trim($("#petname").val()) === '') {
                                                                         $("#divpetname").addClass("has-error");
@@ -338,9 +381,11 @@ include_once './php/owner_pet/before_load.php';
                                                                     }
                                                                     return true;
                                                                 }
+
                                                                 function validateTypeAndBreed() {
                                                                     return $.trim($('#pettype').val()) !== '0' && $.trim($('#petbreed').val()) !== '0';
                                                                 }
+
                                                                 function validateBornDate() {
                                                                     var borndate = $.trim($('#petborndate').val());
                                                                     var array = borndate.split("/");
@@ -348,6 +393,7 @@ include_once './php/owner_pet/before_load.php';
                                                                     var arrayYear = array[1].split("");
                                                                     return arrayMonth[0] !== 'm' && arrayMonth[1] !== 'm' && arrayYear[0] !== 'y' && arrayYear[1] !== 'y' && arrayYear[2] !== 'y' && arrayYear[3] !== 'y';
                                                                 }
+
                                                                 function showDivDialog(divDialog) {
                                                                     divDialog.dialog({
                                                                         autoOpen: false,
@@ -362,6 +408,25 @@ include_once './php/owner_pet/before_load.php';
                                                                             }]
                                                                     });
                                                                     divDialog.dialog("open");
+                                                                }
+
+                                                                function validateFile() {
+                                                                    var countFiles = document.getElementById("pet_photo_file").files.length;
+                                                                    if (countFiles === 1) {
+                                                                        if (typeof (FileReader) !== "undefined") {
+                                                                            var imgPath = document.getElementById("pet_photo_file").value;
+                                                                            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+                                                                            if (extn !== "png" && extn !== "jpg" && extn !== "jpeg") {
+                                                                                showDivDialog($("#extension-dialog"));
+                                                                                document.getElementById("pet_photo_file").value = null;
+                                                                                return false;
+                                                                            }
+                                                                        } else {
+                                                                            showDivDialog($("#browser-dialog"));
+                                                                        }
+                                                                    } else {
+                                                                        showDivDialog($("#one-file-dialog"));
+                                                                    }
                                                                 }
         </script>
     </body>

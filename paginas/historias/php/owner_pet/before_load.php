@@ -11,6 +11,8 @@ if (is_viewing_object()) {
     $results = $clinichistory->selectById($id_clinic_history);
     $rows = mysqli_fetch_array($results);
     if ($rows !== NULL) {
+        $record_custom_id = $rows['recordcustomid'];
+
         $id_owner = $rows['idowner'];
         $document = $rows['document'];
         $owner_name = $rows['ownername'];
@@ -30,6 +32,7 @@ if (is_viewing_object()) {
         $color = $rows['color'];
         $sex = $rows['sex'];
         $born_place = $rows['bornplace'];
+        $pet_photo = $rows['photo'];
         $history = $rows['history'];
         $born_date = format_string_date($rows['borndate'], "m/Y");
     }
@@ -55,6 +58,7 @@ if (is_viewing_object()) {
     $sex = filter_input(INPUT_POST, 'petsex');
     $born_date = filter_input(INPUT_POST, 'petborndate');
     $born_place = filter_input(INPUT_POST, 'petbornplace');
+    $pet_photo = upload_photo_to_server($companyId, filter_input(INPUT_POST, 'petphoto'));
     $history = filter_input(INPUT_POST, 'history');
     $full_born_date = get_full_born_date($born_date);
 
@@ -63,7 +67,7 @@ if (is_viewing_object()) {
         if (is_creating_new_object()) {
             $id_owner = $owner->selectLastInsertId();
         }
-        $is_pet_saved = save_pet_data($pet, $id_pet, $pet_name, $color, $sex, $full_born_date, $born_place, $history, $id_reproduction, $id_pet_type, $id_breed, $id_owner, $companyId);
+        $is_pet_saved = save_pet_data($pet, $id_pet, $pet_name, $color, $sex, $full_born_date, $born_place, $pet_photo, $history, $id_reproduction, $id_pet_type, $id_breed, $id_owner, $companyId);
         if ($is_pet_saved === TRUE) {
             if (is_creating_new_object()) {
                 $id_pet = $pet->selectLastInsertId();
@@ -106,12 +110,29 @@ function save_owner_data($owner, $id_owner, $document, $owner_name, $last_name, 
     return $is_saved;
 }
 
-function save_pet_data($pet, $id_pet, $pet_name, $color, $sex, $full_born_date, $born_place, $history, $id_reproduction, $id_pet_type, $id_breed, $id_owner, $companyId) {
+function save_pet_data($pet, $id_pet, $pet_name, $color, $sex, $full_born_date, $born_place, $pet_photo, $history, $id_reproduction, $id_pet_type, $id_breed, $id_owner, $companyId) {
     $is_saved = FALSE;
     if (is_creating_new_object()) {
-        $is_saved = $pet->insert($pet_name, $color, $sex, $full_born_date, $born_place, $history, $id_reproduction, $id_pet_type, $id_breed, $id_owner, $companyId);
+        $is_saved = $pet->insert($pet_name, $color, $sex, $full_born_date, $born_place, $pet_photo, $history, $id_reproduction, $id_pet_type, $id_breed, $id_owner, $companyId);
     } else {
-        $is_saved = $pet->update($id_pet, $pet_name, $color, $sex, $full_born_date, $born_place, $history, $id_reproduction, $id_pet_type, $id_breed);
+        $is_saved = $pet->update($id_pet, $pet_name, $color, $sex, $full_born_date, $born_place, $pet_photo, $history, $id_reproduction, $id_pet_type, $id_breed);
     }
     return $is_saved;
+}
+
+function upload_photo_to_server($companyId, $pet_photo) {
+    if ($_FILES["pet_photo_file"]["tmp_name"] != NULL && $_FILES["pet_photo_file"]["tmp_name"] != '') {
+        $targetdir = '../../pets/' . $companyId . "/";
+        $filepath = $targetdir . rand() . basename($_FILES["pet_photo_file"]["name"]);    
+        if (!file_exists($targetdir)) {
+            mkdir($targetdir, 0777, true);
+        }
+        if (move_uploaded_file($_FILES["pet_photo_file"]["tmp_name"], $filepath)) {
+            return $filepath;
+        } else {
+            return $pet_photo;
+        }
+    } else {
+        return $pet_photo;
+    }
 }
