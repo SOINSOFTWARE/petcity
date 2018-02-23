@@ -282,7 +282,7 @@ if (isset($_POST['deletesurgery'])) {
 													echo $idclinichistory;
 												}
 												?>" />
-												<button type="submit" id="submit" name="submit" class="btn btn-primary">
+												<button type="submit" id="view" name="view" class="btn btn-primary">
 													<i class="fa fa-pencil"></i>
 												</button>
 											</form>

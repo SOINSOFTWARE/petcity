@@ -26,9 +26,7 @@ $results = $clinichistory -> select($companyId);
 				<section class="sidebar">
 					<?php
 					include 'user-panel.php';
-					?>
-					<?php
-					include 'menu.php';
+                                        include 'menu.php';
 					?>
 				</section>
 			</aside>

@@ -9,3 +9,6 @@ function is_updating_object() {
 function is_deleting_object() {
     return filter_input(INPUT_POST, 'delete') !== NULL;
 }
+function is_viewing_object() {
+    return filter_input(INPUT_POST, 'view') !== NULL;
+}
