@@ -1,11 +1,11 @@
 <ul class="sidebar-menu">
-    <li id="refclihistory" class="active">
+    <li id="refclihistory">
         <a href="../../">
-            <i class="fa fa-medkit"></i> <span>Historias cl&iacute;nicas</span>
+            <i class="fa fa-medkit"></i><span>Historias cl&iacute;nicas</span>
         </a>
     </li>
-    <li id="refnote">
-        <a href="../recordatorios/listado.php">
+    <li id="refnote" class="active">
+        <a href="./listado.php">
             <i class="fa fa-list"></i><span>Recordatorios</span>
         </a>
     </li>
