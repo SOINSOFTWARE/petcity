@@ -59,7 +59,7 @@ include_once './php/owner_pet/before_load.php';
                                     <div class="box-body">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <button type="submit" id="<?php print_id_for_form(); ?>" name="<?php print_id_for_form(); ?>" 
+                                                <button type="submit" id="<?php print_id_for_form($id_clinic_history); ?>" name="<?php print_id_for_form($id_clinic_history); ?>" 
                                                         class="btn btn-primary">
                                                     <i class="fa fa-save"></i>
                                                 </button>
@@ -166,10 +166,10 @@ include_once './php/owner_pet/before_load.php';
                                                                    value="<?php echo get_string_value($pet_photo); ?>" />
                                                             <?php
                                                             if (get_string_value($pet_photo) != '') {
-                                                                echo '<div class="user-panel">';
+                                                                echo '<div class="form-group">';
                                                                 echo '<img src="';
                                                                 echo $pet_photo;
-                                                                echo '" class="img-circle" alt="Foto de la mascota" height="200px" />';
+                                                                echo '" class="img-rounded" alt="Foto de la mascota" width="250px" />';
                                                                 echo '</div>';
                                                                 echo '<label for="pet_photo_file">Cambiar foto</label>';
                                                             } else {

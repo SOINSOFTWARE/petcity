@@ -38,6 +38,7 @@ if (is_viewing_object()) {
     }
 } else if (is_creating_new_object() || is_updating_object()) {
     $id_clinic_history = filter_input(INPUT_POST, 'idhistory');
+    $record_custom_id = filter_input(INPUT_POST, 'recordcustomid');
     $id_owner = filter_input(INPUT_POST, 'idowner');
     $document = str_replace("_", "", filter_input(INPUT_POST, 'ownerdocument'));
     $owner_name = filter_input(INPUT_POST, 'ownername');
@@ -71,15 +72,17 @@ if (is_viewing_object()) {
         if ($is_pet_saved === TRUE) {
             if (is_creating_new_object()) {
                 $id_pet = $pet->selectLastInsertId();
-                $is_clinic_history_saved = $clinichistory->insert($id_pet, $companyId);
+                $is_clinic_history_saved = $clinichistory->insert($id_pet, $companyId, $record_custom_id);
                 if ($is_clinic_history_saved === TRUE) {
                     $id_clinic_history = $clinichistory->selectLastInsertId();
-                    $success_saved = TRUE;
-                } else {
-                    saveError($clinichistorysaved->getError());
                 }
             } else {
+                $is_clinic_history_saved = $clinichistory->update($id_clinic_history, $record_custom_id);
+            }
+            if ($is_clinic_history_saved === TRUE) {
                 $success_saved = TRUE;
+            } else {
+                saveError($clinichistorysaved->getError());
             }
         } else {
             saveError($pet->getError());
@@ -123,7 +126,7 @@ function save_pet_data($pet, $id_pet, $pet_name, $color, $sex, $full_born_date, 
 function upload_photo_to_server($companyId, $pet_photo) {
     if ($_FILES["pet_photo_file"]["tmp_name"] != NULL && $_FILES["pet_photo_file"]["tmp_name"] != '') {
         $targetdir = '../../pets/' . $companyId . "/";
-        $filepath = $targetdir . rand() . basename($_FILES["pet_photo_file"]["name"]);    
+        $filepath = $targetdir . rand() . basename($_FILES["pet_photo_file"]["name"]);
         if (!file_exists($targetdir)) {
             mkdir($targetdir, 0777, true);
         }

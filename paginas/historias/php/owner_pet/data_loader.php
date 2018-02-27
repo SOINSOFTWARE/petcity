@@ -25,20 +25,6 @@ $born_date = '';
 
 $record_custom_id = '';
 
-function get_numeric_value($numeric_var) {
-    if ($numeric_var === NULL) {
-        $numeric_var = 0;
-    }
-    return $numeric_var;
-}
-
-function get_string_value($string_var) {
-    if ($string_var === NULL) {
-        $string_var = '';
-    }
-    return $string_var;
-}
-
 function print_checked_if_needed($sex, $expected) {
     if (isset($sex)) {
         if ($sex === $expected) {
@@ -47,8 +33,8 @@ function print_checked_if_needed($sex, $expected) {
     }
 }
 
-function print_id_for_form() {
-    if (is_viewing_object() || is_updating_object()) {
+function print_id_for_form($id_clinic_history) {
+    if (is_viewing_object() || is_updating_object() || $id_clinic_history <> 0) {
         echo 'update';
     } else {
         echo 'new';
