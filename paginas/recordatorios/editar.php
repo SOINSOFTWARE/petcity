@@ -56,7 +56,7 @@ include_once './php/edit/before_load.php';
                                         <button type="submit" class="btn btn-primary"
                                                 id="<?php if ($id == 0) { echo 'new'; } else { echo 'update'; } ?>"
                                                 name="<?php if ($id == 0) { echo 'new'; } else { echo 'update'; } ?>">
-                                            <i class="fa fa-save"></i>
+                                            <i class="fa fa-save"></i> Guardar
                                         </button>
                                         <br />
                                         <br />
@@ -84,9 +84,8 @@ include_once './php/edit/before_load.php';
                                                 </div>
                                                 <div id="divpetsearch" class="form-group">
                                                     <button type="button" id="pet_search" name="pet_search" class="btn btn-warning" onclick="showPet();">
-                                                        <i class="fa fa-search"></i>
+                                                        <i class="fa fa-search"></i> Seleccionar Mascota
                                                     </button>
-                                                    <label for="pet_search"> Selecciona la mascota</label>
                                                 </div>
                                                 <div id="divpetname" class="form-group">
                                                     <input type="hidden" id="id_pet" name="id_pet" value="<?php

@@ -122,7 +122,7 @@ if (isset($_POST['view'])) {
 										<input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo $_POST['idclinichistory']; ?>" />
 										<input type="hidden" id="idconsultation" name="idconsultation" value="<?php echo $_POST['idconsultation']; ?>" />
 										<button type="submit" id="view" name="view" class="btn btn-success">
-											<i class="fa fa-reply"></i>
+											<i class="fa fa-reply"></i> Consulta
 										</button>
 									</form>
 								</div>
@@ -156,7 +156,7 @@ if (isset($_POST['view'])) {
 									</div>
 									<div class="box-body">
 										<button type="submit" id="save" name="save" class="btn btn-primary">
-											<i class="fa fa-save"></i>
+											<i class="fa fa-save"></i> Guardar
 										</button>
 										<br />
 										<br />

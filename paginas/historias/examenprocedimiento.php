@@ -157,7 +157,7 @@ if (isset($_POST['view'])) {
 									</div>
 									<div class="box-body">
 										<button type="submit" id="save" name="save" class="btn btn-primary">
-											<i class="fa fa-save"></i>
+											<i class="fa fa-save"></i> Guardar
 										</button>
 										<br />
 										<br />

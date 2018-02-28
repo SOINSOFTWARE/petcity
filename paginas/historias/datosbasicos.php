@@ -59,17 +59,6 @@ include_once './php/owner_pet/before_load.php';
                                     <div class="box-body">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <button type="submit" id="<?php print_id_for_form($id_clinic_history); ?>" name="<?php print_id_for_form($id_clinic_history); ?>" 
-                                                        class="btn btn-primary">
-                                                    <i class="fa fa-save"></i>
-                                                </button>
-                                                <input type="hidden" id="idhistory" name="idhistory" 
-                                                       value="<?php echo get_numeric_value($id_clinic_history); ?>" />
-                                            </div>
-                                        </div>
-                                        <br/>
-                                        <div class="row">
-                                            <div class="col-md-12">
                                                 <div class="box">
                                                     <div class="box-header">
                                                         <h3 class="box-title">Historia</h3>
@@ -164,20 +153,20 @@ include_once './php/owner_pet/before_load.php';
                                                         <div class="form-group">
                                                             <input type="hidden" id="petphoto" name="petphoto" 
                                                                    value="<?php echo get_string_value($pet_photo); ?>" />
-                                                            <?php
-                                                            if (get_string_value($pet_photo) != '') {
-                                                                echo '<div class="form-group">';
-                                                                echo '<img src="';
-                                                                echo $pet_photo;
-                                                                echo '" class="img-rounded" alt="Foto de la mascota" width="250px" />';
-                                                                echo '</div>';
-                                                                echo '<label for="pet_photo_file">Cambiar foto</label>';
-                                                            } else {
-                                                                echo '<label for="pet_photo_file">Adjuntar foto</label>';
-                                                            }
-                                                            echo '<input type="file" id="pet_photo_file" name="pet_photo_file" onchange="validateFile()">';
-                                                            echo '<p class="help-block">Solo se permite adjuntar archivos con extensi&oacute;n png, jpg, jpeg</p>';
-                                                            ?>
+                                                                   <?php
+                                                                   if (get_string_value($pet_photo) != '') {
+                                                                       echo '<div class="form-group">';
+                                                                       echo '<img src="';
+                                                                       echo $pet_photo;
+                                                                       echo '" class="img-rounded" alt="Foto de la mascota" width="250px" />';
+                                                                       echo '</div>';
+                                                                       echo '<label for="pet_photo_file">Cambiar foto</label>';
+                                                                   } else {
+                                                                       echo '<label for="pet_photo_file">Adjuntar foto</label>';
+                                                                   }
+                                                                   echo '<input type="file" id="pet_photo_file" name="pet_photo_file" onchange="validateFile()">';
+                                                                   echo '<p class="help-block">Solo se permite adjuntar archivos con extensi&oacute;n png, jpg, jpeg</p>';
+                                                                   ?>
                                                         </div>
                                                         <div id="divpetname" class="form-group">
                                                             <input type="hidden" id="idpet" name="idpet" 
@@ -253,6 +242,20 @@ include_once './php/owner_pet/before_load.php';
                                                                       class="form-control" id="history" name="history" rows="8" maxlength="650"><?php echo get_string_value($history); ?></textarea>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <button type="submit" id="<?php print_id_for_form($id_clinic_history); ?>" name="<?php print_id_for_form($id_clinic_history); ?>" 
+                                                            class="btn btn-primary pull-right">
+                                                        <i class="fa fa-save"></i> Guardar
+                                                    </button>
+                                                    <input type="hidden" id="idhistory" name="idhistory" 
+                                                           value="<?php echo get_numeric_value($id_clinic_history); ?>" />
                                                 </div>
                                             </div>
                                         </div>

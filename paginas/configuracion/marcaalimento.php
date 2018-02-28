@@ -54,7 +54,7 @@ include_once './php/food_brand/before_load.php';
                                     </div>
                                     <div class="box-body">
                                         <button type="submit" id="new" name="new" class="btn btn-primary">
-                                            <i class="fa fa-save"></i>
+                                            <i class="fa fa-save"></i> Guardar
                                         </button>
                                         <br />
                                         <br />

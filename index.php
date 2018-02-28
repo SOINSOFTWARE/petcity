@@ -50,7 +50,7 @@ $results = $clinichistory->select($companyId);
                                 <div class="box-body">
                                     <form action="paginas/historias/datosbasicos.php" method="post" role="form">
                                         <button type="submit" id="submit" name="submit" class="btn btn-primary">
-                                            <i class="fa fa-plus"></i>
+                                            <i class="fa fa-plus"></i> Nuevo
                                         </button>
                                     </form>
                                 </div>

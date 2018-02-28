@@ -179,7 +179,7 @@ $results = $vaccinetable -> select($companyId);
 									<form action="historia.php" method="post" role="form">
 										<input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo $_POST['idclinichistory']; ?>" />
 										<button type="submit" id="backward" name="backward" class="btn btn-success">
-											<i class="fa fa-reply"></i>
+											<i class="fa fa-reply"></i> Historia
 										</button>
 									</form>
 								</div>
@@ -219,7 +219,7 @@ $results = $vaccinetable -> select($companyId);
 									</div>
 									<div class="box-body">
 										<button type="submit" id="save" name="save" class="btn btn-primary">
-											<i class="fa fa-save"></i>
+											<i class="fa fa-save"></i> Guardar
 										</button>
 										<br />
 										<br />

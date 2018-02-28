@@ -54,7 +54,7 @@ include_once './php/list/before_load.php';
                                             <td>
                                                 <form action="editar.php" method="post" role="form">
                                                     <button type="submit" id="new" name="new" class="btn btn-primary">
-                                                        <i class="fa fa-plus"></i>
+                                                        <i class="fa fa-plus"></i> Nuevo
                                                     </button>
                                                 </form>
                                             </td>
@@ -62,7 +62,7 @@ include_once './php/list/before_load.php';
                                                 <form action="listado.php" method="post" role="form" onsubmit="return beforeSendAll()">
                                                     <input type="hidden" id="send_all_date" name="send_all_date">
                                                     <button type="submit" id="send-all" name="send-all" class="btn btn-success">
-                                                        <i class="fa fa-envelope"></i>
+                                                        <i class="fa fa-envelope"></i> Enviar Emails
                                                     </button>
                                                 </form>
                                             </td>
@@ -91,7 +91,7 @@ include_once './php/list/before_load.php';
                                                         ?>" required />
                                                         <span class="input-group-btn">
                                                             <button type="submit" id="view" name="view" class="btn btn-primary">
-                                                                <i class="fa fa-refresh"></i>
+                                                                <i class="fa fa-refresh"></i> Actualizar
                                                             </button>
                                                         </span>
                                                     </div>

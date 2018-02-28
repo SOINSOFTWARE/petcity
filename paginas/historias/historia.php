@@ -288,7 +288,7 @@ if (isset($_POST['deletesurgery'])) {
                                                 }
                                                 ?>" />
                                                 <button type="submit" id="view" name="view" class="btn btn-primary">
-                                                    <i class="fa fa-pencil"></i>
+                                                    <i class="fa fa-pencil"></i> Editar
                                                 </button>
                                             </form>
                                         </div>

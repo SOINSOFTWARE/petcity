@@ -20,7 +20,7 @@
 								}
 								?>" />
 								<button type="submit" id="submit" name="submit" class="btn btn-primary">
-									<i class="fa fa-plus"></i>
+									<i class="fa fa-plus"></i> Nueva
 								</button>
 							</form>
 						</div>
