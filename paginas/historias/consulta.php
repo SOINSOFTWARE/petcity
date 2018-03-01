@@ -344,7 +344,7 @@ if (isset($id) && intval($id) > 0) {
                                                         <div class="col-xs-6">
                                                             <div class="form-group">
                                                                 <label for="presumptivediagnosis">Diagn&oacute;stico presuntivo</label>
-                                                                <textarea class="form-control" id="presumptivediagnosis" name="presumptivediagnosis" rows="4" maxlength="400" required><?php
+                                                                <textarea class="form-control" id="presumptivediagnosis" name="presumptivediagnosis" rows="4" maxlength="400"><?php
                                                                     if (isset($presumptivediagnosis)) {
                                                                         echo $presumptivediagnosis;
                                                                     }
@@ -354,7 +354,7 @@ if (isset($id) && intval($id) > 0) {
                                                         <div class="col-xs-6">
                                                             <div class="form-group">
                                                                 <label for="differentialdiagnosis">Diagn&oacute;stico diferencial</label>
-                                                                <textarea class="form-control" id="differentialdiagnosis" name="differentialdiagnosis" rows="4" maxlength="400" required><?php
+                                                                <textarea class="form-control" id="differentialdiagnosis" name="differentialdiagnosis" rows="4" maxlength="400"><?php
                                                                     if (isset($differentialdiagnosis)) {
                                                                         echo $differentialdiagnosis;
                                                                     }

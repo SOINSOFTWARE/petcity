@@ -263,7 +263,7 @@ if (isset($_POST['view'])) {
                                             <div class="col-xs-6">
                                                 <div class="form-group">
                                                     <label for="evolution">Evoluci&oacute;n</label>
-                                                    <textarea class="form-control" id="evolution" name="evolution" rows="5" maxlength="700" required><?php
+                                                    <textarea class="form-control" id="evolution" name="evolution" rows="5" maxlength="700"><?php
                                                         if (isset($evolution)) {
                                                             echo $evolution;
                                                         }
