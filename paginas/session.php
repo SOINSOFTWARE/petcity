@@ -6,4 +6,5 @@
 	$company = $_SESSION['petcity_company'];
 	$userName = $_SESSION['petcity_username'];
 	$email = $_SESSION['petcity_login'];
+        $company_photo = $_SESSION['petcity_company_photo'];
 ?>

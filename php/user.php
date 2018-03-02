@@ -72,7 +72,7 @@ class UserTable {
     public function selectForLogin($email, $password) {
         $inDb = FALSE;
         if ($this->conn != NULL) {
-            $sql = "SELECT co.id AS comId, co.name AS comName, us.name, us.lastname, us.email FROM user us JOIN company co ON us.idcompany = co.id WHERE us.email = '$email' AND us.password = '$password' AND co.paid = 1";
+            $sql = "SELECT co.id AS comId, co.name AS comName, us.name, us.lastname, us.email, co.photo FROM user us JOIN company co ON us.idcompany = co.id WHERE us.email = '$email' AND us.password = '$password' AND co.paid = 1";
             $results = mysqli_query($this->conn, $sql);
             if ($rows = mysqli_fetch_array($results)) {
                 $inDb = TRUE;
@@ -80,6 +80,7 @@ class UserTable {
                 $_SESSION['petcity_login'] = $rows['email'];
                 $_SESSION['petcity_companyid'] = $rows['comId'];
                 $_SESSION['petcity_company'] = $rows['comName'];
+                $_SESSION['petcity_company_photo'] = $rows['photo'];
             }
         }
         return $inDb;

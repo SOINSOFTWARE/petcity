@@ -70,7 +70,7 @@ include_once './php/owner_pet/before_load.php';
                                                                     <label for="recordcustomid">N&uacute;mero</label>
                                                                     <input type="number" class="form-control" id="recordcustomid" name="recordcustomid" 
                                                                            placeholder="N&uacute;mero de historia" 
-                                                                           value="<?php echo get_string_value($record_custom_id); ?>" data-mask />
+                                                                           value="<?php echo get_string_value($record_custom_id); ?>" />
                                                                 </div>
                                                             </div>
                                                         </div>
