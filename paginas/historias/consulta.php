@@ -418,14 +418,19 @@ if (isset($id) && intval($id) > 0) {
                                                                     ?></textarea>
                                                             </div>
                                                         </div>
-                                                        <div id="divnextdate" class="col-xs-4">
-                                                            <div class="form-group">
+                                                        <div class="col-lg-4">
+                                                            <div id="divnextdate" class="form-group">
                                                                 <label for="nextdate">Pr&oacute;ximo control</label>
-                                                                <input type="text" class="form-control" id="nextdate" name="nextdate" data-inputmask="'alias': 'dd/mm/yyyy'" value="<?php
-                                                                if (isset($nextdate)) {
-                                                                    echo $nextdate;
-                                                                }
-                                                                ?>" data-mask />
+                                                                <div class="input-group date input-group-sm">
+                                                                    <div class="input-group-addon">
+                                                                        <i class="fa fa-calendar"></i>
+                                                                    </div>
+                                                                    <input type="text" class="form-control pull-right" id="nextdate" name="nextdate" value="<?php
+                                                                    if (isset($nextdate)) {
+                                                                        echo $nextdate;
+                                                                    }
+                                                                    ?>" />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -519,129 +524,146 @@ if (isset($id) && intval($id) > 0) {
         <script src="../../js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
         <script src="../../js/jquery-ui.min.js" type="text/javascript"></script>
         <script type="text/javascript">
-                                $(function () {
-                                    $("#datemask").inputmask("mm/yyyy", {
-                                        "placeholder": "mm/yyyy"
+                                    $(function () {
+                                        $('#generaldatadate').datepicker({
+                                            dateFormat: 'dd/mm/yy',
+                                            autoclose: true
+                                        });
+                                        $('#nextdate').datepicker({
+                                            dateFormat: 'dd/mm/yy',
+                                            autoclose: true
+                                        });
                                     });
-                                    $("[data-mask]").inputmask();
-                                });
-
-                                function changeVisibility(input, displayVal) {
-                                    input.css("display", displayVal);
-                                }
-
-                                function validate() {
-                                    if (!validateDate($('#generaldatadate').val())) {
-                                        $("#divgeneraldatadate").addClass("has-error");
-                                        showDivDialog($("#date-dialog"));
-                                        return false;
-                                    } else {
-                                        $("#divgeneraldatadate").removeClass("has-error");
+                                    $(document).ready(function () {
+                                        $("#generaldatadate").keydown(function (e) {
+                                            return false;
+                                        });
+                                    });
+                                    $(document).ready(function () {
+                                        $("#nextdate").keydown(function (e) {
+                                            if ($.inArray(e.keyCode, [8, 46]) !== -1) {
+                                                return true;
+                                            } else {
+                                                return false;
+                                            }
+                                        });
+                                    });
+                                    function changeVisibility(input, displayVal) {
+                                        input.css("display", displayVal);
                                     }
-                                    if ($.trim($('#weight').val()) === '0' || $.trim($('#weight').val()) === '') {
-                                        $("#divweight").addClass("has-error");
-                                        showDivDialog($("#weight-dialog"));
-                                        return false;
-                                    } else {
-                                        $("#divweight").removeClass("has-error");
+
+                                    function validate() {
+                                        if (!validateDate($('#generaldatadate').val())) {
+                                            $("#divgeneraldatadate").addClass("has-error");
+                                            showDivDialog($("#date-dialog"));
+                                            return false;
+                                        } else {
+                                            $("#divgeneraldatadate").removeClass("has-error");
+                                        }
+                                        if ($.trim($('#weight').val()) === '0' || $.trim($('#weight').val()) === '') {
+                                            $("#divweight").addClass("has-error");
+                                            showDivDialog($("#weight-dialog"));
+                                            return false;
+                                        } else {
+                                            $("#divweight").removeClass("has-error");
+                                        }
+                                        if ($.trim($('#heartrate').val()) === '0' || $.trim($('#heartrate').val()) === '') {
+                                            $("#divheartrate").addClass("has-error");
+                                            showDivDialog($("#heartrate-dialog"));
+                                            return false;
+                                        } else {
+                                            $("#divheartrate").removeClass("has-error");
+                                        }
+                                        if ($.trim($('#breathingfrequency').val()) === '0' || $.trim($('#breathingfrequency').val()) === '') {
+                                            $("#divbreathingfrequency").addClass("has-error");
+                                            showDivDialog($("#breathingfrequency-dialog"));
+                                            return false;
+                                        } else {
+                                            $("#divbreathingfrequency").removeClass("has-error");
+                                        }
+                                        if ($.trim($('#temperature').val()) === '0' || $.trim($('#temperature').val()) === '') {
+                                            $("#divtemperature").addClass("has-error");
+                                            showDivDialog($("#temperature-dialog"));
+                                            return false;
+                                        } else {
+                                            $("#divtemperature").removeClass("has-error");
+                                        }
+                                        if ($.trim($('#nextdate').val()) !== '' && !validateDate($('#nextdate').val())) {
+                                            $("#divnextdate").addClass("has-error");
+                                            showDivDialog($("#nextdate-dialog"));
+                                            return false;
+                                        } else {
+                                            $("#divnextdate").removeClass("has-error");
+                                        }
                                     }
-                                    if ($.trim($('#heartrate').val()) === '0' || $.trim($('#heartrate').val()) === '') {
-                                        $("#divheartrate").addClass("has-error");
-                                        showDivDialog($("#heartrate-dialog"));
-                                        return false;
-                                    } else {
-                                        $("#divheartrate").removeClass("has-error");
+
+                                    function validateDate(date) {
+                                        var dateWithoutSpace = $.trim(date);
+                                        var array = dateWithoutSpace.split("/");
+                                        var arrayDay = array[0].split("");
+                                        var arrayMonth = array[1].split("");
+                                        var arrayYear = array[2].split("");
+                                        return arrayDay[0] !== 'd' && arrayDay[1] !== 'd' && arrayMonth[0] !== 'm' && arrayMonth[1] !== 'm' && arrayYear[0] !== 'y' && arrayYear[1] !== 'y' && arrayYear[2] !== 'y' && arrayYear[3] !== 'y';
                                     }
-                                    if ($.trim($('#breathingfrequency').val()) === '0' || $.trim($('#breathingfrequency').val()) === '') {
-                                        $("#divbreathingfrequency").addClass("has-error");
-                                        showDivDialog($("#breathingfrequency-dialog"));
-                                        return false;
-                                    } else {
-                                        $("#divbreathingfrequency").removeClass("has-error");
+
+                                    function showDivDialog(divDialog) {
+                                        divDialog.dialog({
+                                            autoOpen: false,
+                                            width: 400,
+                                            modal: true,
+                                            resizable: false,
+                                            buttons: [{
+                                                    text: "Volver",
+                                                    click: function () {
+                                                        $(this).dialog("close");
+                                                    }
+                                                }]
+                                        });
+                                        divDialog.dialog("open");
                                     }
-                                    if ($.trim($('#temperature').val()) === '0' || $.trim($('#temperature').val()) === '') {
-                                        $("#divtemperature").addClass("has-error");
-                                        showDivDialog($("#temperature-dialog"));
-                                        return false;
-                                    } else {
-                                        $("#divtemperature").removeClass("has-error");
-                                    }
-                                    if ($.trim($('#nextdate').val()) !== '' && !validateDate($('#nextdate').val())) {
-                                        $("#divnextdate").addClass("has-error");
-                                        showDivDialog($("#nextdate-dialog"));
-                                        return false;
-                                    } else {
-                                        $("#divnextdate").removeClass("has-error");
-                                    }
-                                }
 
-                                function validateDate(date) {
-                                    var dateWithoutSpace = $.trim(date);
-                                    var array = dateWithoutSpace.split("/");
-                                    var arrayDay = array[0].split("");
-                                    var arrayMonth = array[1].split("");
-                                    var arrayYear = array[2].split("");
-                                    return arrayDay[0] !== 'd' && arrayDay[1] !== 'd' && arrayMonth[0] !== 'm' && arrayMonth[1] !== 'm' && arrayYear[0] !== 'y' && arrayYear[1] !== 'y' && arrayYear[2] !== 'y' && arrayYear[3] !== 'y';
-                                }
 
-                                function showDivDialog(divDialog) {
-                                    divDialog.dialog({
-                                        autoOpen: false,
-                                        width: 400,
-                                        modal: true,
-                                        resizable: false,
-                                        buttons: [{
-                                                text: "Volver",
-                                                click: function () {
-                                                    $(this).dialog("close");
-                                                }
-                                            }]
+                                    $(document).ready(function () {
+                                        $("#weight").keydown(function (e) {
+                                            validateDecimalInput(e);
+                                        });
                                     });
-                                    divDialog.dialog("open");
-                                }
 
-
-                                $(document).ready(function () {
-                                    $("#weight").keydown(function (e) {
-                                        validateDecimalInput(e);
+                                    $(document).ready(function () {
+                                        $("#heartrate").keydown(function (e) {
+                                            validateIntegerInput(e);
+                                        });
                                     });
-                                });
 
-                                $(document).ready(function () {
-                                    $("#heartrate").keydown(function (e) {
-                                        validateIntegerInput(e);
+                                    $(document).ready(function () {
+                                        $("#breathingfrequency").keydown(function (e) {
+                                            validateIntegerInput(e);
+                                        });
                                     });
-                                });
 
-                                $(document).ready(function () {
-                                    $("#breathingfrequency").keydown(function (e) {
-                                        validateIntegerInput(e);
+                                    $(document).ready(function () {
+                                        $("#temperature").keydown(function (e) {
+                                            validateDecimalInput(e);
+                                        });
                                     });
-                                });
 
-                                $(document).ready(function () {
-                                    $("#temperature").keydown(function (e) {
-                                        validateDecimalInput(e);
+                                    $(document).ready(function () {
+                                        $("#trc").keydown(function (e) {
+                                            validateIntegerInput(e);
+                                        });
                                     });
-                                });
 
-                                $(document).ready(function () {
-                                    $("#trc").keydown(function (e) {
-                                        validateIntegerInput(e);
+                                    $(document).ready(function () {
+                                        $("#dh").keydown(function (e) {
+                                            validateIntegerInput(e);
+                                        });
                                     });
-                                });
 
-                                $(document).ready(function () {
-                                    $("#dh").keydown(function (e) {
-                                        validateIntegerInput(e);
+                                    $(document).ready(function () {
+                                        $("#formulanumber").keydown(function (e) {
+                                            validateIntegerInput(e);
+                                        });
                                     });
-                                });
-
-                                $(document).ready(function () {
-                                    $("#formulanumber").keydown(function (e) {
-                                        validateIntegerInput(e);
-                                    });
-                                });
         </script>
     </body>
 </html>

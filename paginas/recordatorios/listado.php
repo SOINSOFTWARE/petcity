@@ -78,7 +78,7 @@ include_once './php/list/before_load.php';
                                 <div class="box-body table-responsive">
                                     <div class="row">
                                         <form action="listado.php" method="post" role="form">
-                                            <div class="col-lg-2">
+                                            <div class="col-lg-4">
                                                 <div id="divnotificationdate" class="form-group">
                                                     <div class="input-group date input-group-sm">
                                                         <div class="input-group-addon">

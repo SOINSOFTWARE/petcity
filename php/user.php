@@ -72,15 +72,21 @@ class UserTable {
     public function selectForLogin($email, $password) {
         $inDb = FALSE;
         if ($this->conn != NULL) {
-            $sql = "SELECT co.id AS comId, co.name AS comName, us.name, us.lastname, us.email, co.photo FROM user us JOIN company co ON us.idcompany = co.id WHERE us.email = '$email' AND us.password = '$password' AND co.paid = 1";
+            $sql = "SELECT co.id AS comId, "
+                    . "co.name AS comName, "
+                    . "us.name, "
+                    . "us.lastname, "
+                    . "us.email, "
+                    . "co.photo, "
+                    . "co.actualcustomid "
+                    . "FROM user us "
+                    . "JOIN company co ON us.idcompany = co.id "
+                    . "WHERE us.email = '$email' AND us.password = '$password' AND co.paid = 1";
             $results = mysqli_query($this->conn, $sql);
-            if ($rows = mysqli_fetch_array($results)) {
+            $rows = mysqli_fetch_array($results);
+            if ($rows !== NULL) {
                 $inDb = TRUE;
-                $_SESSION['petcity_username'] = $rows['name'] . " " . $rows['lastname'];
-                $_SESSION['petcity_login'] = $rows['email'];
-                $_SESSION['petcity_companyid'] = $rows['comId'];
-                $_SESSION['petcity_company'] = $rows['comName'];
-                $_SESSION['petcity_company_photo'] = $rows['photo'];
+                $this->save_session($rows);
             }
         }
         return $inDb;
@@ -116,6 +122,15 @@ class UserTable {
         $headers .= 'From: crodriguez@soinsoftware.com' . "\r\n";
 
         return mail($to, $subject, $message, $headers);
+    }
+
+    public function save_session($rows) {
+        $_SESSION['petcity_username'] = $rows['name'] . " " . $rows['lastname'];
+        $_SESSION['petcity_login'] = $rows['email'];
+        $_SESSION['petcity_companyid'] = $rows['comId'];
+        $_SESSION['petcity_company'] = $rows['comName'];
+        $_SESSION['petcity_company_photo'] = $rows['photo'];
+        $_SESSION['petcity_actualcustomid'] = $rows['actualcustomid'];
     }
 
 }

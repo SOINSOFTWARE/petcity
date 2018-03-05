@@ -23,8 +23,16 @@ class CompanyTable {
     public function update($company) {
         $id = $company->getId();
         $photo = $company->getPhoto();
-        $initial = $company->getInitialCustomId();
-        $actual = $company->getActualCustomId();
+        if ($company->getInitialCustomId() !== NULL && $company->getInitialCustomId() != '') {
+            $initial = $company->getInitialCustomId();
+        } else {
+            $initial = 'null';
+        }
+        if ($company->getActualCustomId() !== NULL && $company->getActualCustomId() != '') {
+            $actual = $company->getActualCustomId();
+        } else {
+            $actual = 'null';
+        }
         $sql = "UPDATE company SET "
                 . "photo='$photo', "
                 . "initialcustomid=$initial, "

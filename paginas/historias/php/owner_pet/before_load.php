@@ -2,10 +2,12 @@
 
 include_once '../phpfragments/validations.php';
 include_once './php/owner_pet/data_loader.php';
+$company_table = new CompanyTable();
 $clinichistory = new ClinicHistoryTable();
 $owner = new OwnerTable();
 $pet = new PetTable();
 $success_saved = FALSE;
+$record_custom_id = $current_clinic_history_id;
 if (is_viewing_object()) {
     $id_clinic_history = filter_input(INPUT_POST, 'idclinichistory');
     $results = $clinichistory->selectById($id_clinic_history);
@@ -37,8 +39,8 @@ if (is_viewing_object()) {
         $born_date = format_string_date($rows['borndate'], "m/Y");
     }
 } else if (is_creating_new_object() || is_updating_object()) {
-    $id_clinic_history = filter_input(INPUT_POST, 'idhistory');
     $record_custom_id = filter_input(INPUT_POST, 'recordcustomid');
+    $id_clinic_history = filter_input(INPUT_POST, 'idhistory');
     $id_owner = filter_input(INPUT_POST, 'idowner');
     $document = str_replace("_", "", filter_input(INPUT_POST, 'ownerdocument'));
     $owner_name = filter_input(INPUT_POST, 'ownername');
@@ -74,7 +76,11 @@ if (is_viewing_object()) {
                 $id_pet = $pet->selectLastInsertId();
                 $is_clinic_history_saved = $clinichistory->insert($id_pet, $companyId, $record_custom_id);
                 if ($is_clinic_history_saved === TRUE) {
-                    $id_clinic_history = $clinichistory->selectLastInsertId();
+                    if ($record_custom_id == $current_clinic_history_id) {
+                        $id_clinic_history = $clinichistory->selectLastInsertId();
+                        $company_table->updateActualCustomId($companyId, $record_custom_id + 1);
+                        $_SESSION['petcity_actualcustomid'] = $record_custom_id + 1;
+                    }
                 }
             } else {
                 $is_clinic_history_saved = $clinichistory->update($id_clinic_history, $record_custom_id);
@@ -82,7 +88,7 @@ if (is_viewing_object()) {
             if ($is_clinic_history_saved === TRUE) {
                 $success_saved = TRUE;
             } else {
-                saveError($clinichistorysaved->getError());
+                saveError($clinichistory->getError());
             }
         } else {
             saveError($pet->getError());

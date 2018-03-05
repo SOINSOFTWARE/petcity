@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once '../session.php';
+include_once '../../php/company.php';
 include_once '../../php/clinichistory.php';
 include_once '../../php/owner.php';
 include_once '../../php/pet.php';
@@ -68,9 +69,9 @@ include_once './php/owner_pet/before_load.php';
                                                             <div class="col-md-4">
                                                                 <div id="divclinichistory" class="form-group">
                                                                     <label for="recordcustomid">N&uacute;mero</label>
-                                                                    <input type="number" class="form-control" id="recordcustomid" name="recordcustomid" 
-                                                                           placeholder="N&uacute;mero de historia" 
+                                                                    <input type="number" class="form-control" placeholder="N&uacute;mero de historia" 
                                                                            value="<?php echo get_string_value($record_custom_id); ?>" />
+                                                                    <input type="hidden" id="recordcustomid" name="recordcustomid" value="<?php echo get_string_value($record_custom_id); ?>" />
                                                                 </div>
                                                             </div>
                                                         </div>

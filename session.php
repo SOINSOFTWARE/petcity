@@ -7,4 +7,5 @@
 	$userName = $_SESSION['petcity_username'];
 	$email = $_SESSION['petcity_login'];
         $company_photo = $_SESSION['petcity_company_photo'];
+        $current_clinic_history_id = $_SESSION['petcity_actualcustomid'];
 ?>
