@@ -22,4 +22,5 @@ $formulanumber = (filter_input(INPUT_POST, 'formulanumber') !== NULL && filter_i
 $formula = filter_input(INPUT_POST, 'formula');
 $recomendations = filter_input(INPUT_POST, 'recomendations');
 $observations = filter_input(INPUT_POST, 'observations');
-
+$dateobj = DateTime::createFromFormat("d/m/Y H:i:s", $generaldatadate . ' 00:00:00');
+$generaldatadateToSQL = $dateobj->format("Y-m-d");

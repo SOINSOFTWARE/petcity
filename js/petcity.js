@@ -124,3 +124,34 @@ function validateDecimalInput(e) {
         e.preventDefault();
     }
 }
+function addErrorCss(divFormGroup, divDialog) {
+    divFormGroup.addClass("has-error");
+    showRequiredDialog(divDialog);
+}
+function removeErrorCss(divFormGroup) {
+    divFormGroup.removeClass("has-error");
+}
+function changeVisibility(divFormGroup, displayVal) {
+    divFormGroup.css("display", displayVal);
+}
+function showRequiredDialog(divDialog) {
+    divDialog.dialog({
+        autoOpen: false,
+        width: 400,
+        modal: true,
+        resizable: false,
+        buttons: [{
+                text: "Volver",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }]
+    });
+    divDialog.dialog("open");
+}
+function isEmptyNumberRequired(inputField) {
+    return $.trim(inputField.val()) === '0' || $.trim(inputField.val()) === '';
+}
+function isEmptyStringRequired(inputField) {
+    return $.trim(inputField.val()) === '';
+}

@@ -7,7 +7,7 @@ class VaccineConsultation {
     function __construct($id, $id_general_data, $apply_vaccine, $id_vaccine, $batch, $expiration, $id_pet) {
         $this->id = $id;
         $this->id_general_data = $id_general_data;
-        $this->apply_vaccine = $apply_vaccine;
+        $this->apply_vaccine = $apply_vaccine !== NULL ? intval($apply_vaccine) : 0;
         $this->id_vaccine = $id_vaccine;
         $this->batch = $batch;
         $this->expiration = $expiration;
@@ -15,23 +15,23 @@ class VaccineConsultation {
     }
 
     public function getIdGeneralData() {
-        if ($this->id_general_data !== NULL) {
+        if ($this->id_general_data !== NULL && $this->id_general_data > 0) {
             return $this->id_general_data;
         } else {
             return 'null';
         }
     }
 
-    public function isApplyVaccine() {
+    public function getApplyVaccine() {
         if ($this->apply_vaccine !== NULL) {
             return $this->apply_vaccine;
         } else {
-            return FALSE;
+            return 0;
         }
     }
 
     public function getIdVaccine() {
-        if ($this->id_vaccine !== NULL) {
+        if ($this->id_vaccine !== NULL && $this->id_vaccine > 0) {
             return $this->id_vaccine;
         } else {
             return 'null';
@@ -55,10 +55,18 @@ class VaccineConsultation {
     }
     
     public function getIdPet() {
-        if ($this->id_pet !== NULL) {
+        if ($this->id_pet !== NULL && $this->id_pet > 0) {
             return $this->id_pet;
         } else {
             return 'null';
+        }
+    }
+    
+    public function isApplyVaccine() {
+        if ($this->apply_vaccine !== NULL) {
+            return ($this->apply_vaccine == 1);
+        } else {
+            return FALSE;
         }
     }
 

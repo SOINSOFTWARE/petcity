@@ -14,15 +14,29 @@ function is_viewing_object() {
 }
 
 function get_numeric_value($numeric_var) {
-    if ($numeric_var === NULL) {
+    if (!isset($numeric_var) || $numeric_var === NULL) {
         $numeric_var = 0;
     }
     return $numeric_var;
 }
 
 function get_string_value($string_var) {
-    if ($string_var === NULL) {
+    if (!isset($string_var) || $string_var === NULL) {
         $string_var = '';
     }
     return $string_var;
+}
+
+function get_boolean_from_db_value($boolean_db_var) {
+    if (!isset($boolean_db_var) || $boolean_db_var === NULL || intval($boolean_db_var) == 1) {
+        return FALSE;
+    }
+    return TRUE;
+}
+
+function get_boolean_for_db_value($boolean_var) {
+    if (!isset($boolean_var) || $boolean_var === NULL || !boolval($boolean_var)) {
+        return 1;
+    }
+    return 0;
 }

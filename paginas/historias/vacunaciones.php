@@ -63,109 +63,119 @@ include_once './php/vaccine/before_load.php';
                             <div class="col-xs-12">
                                 <div class="box">
                                     <div class="box-body">
-                                        <?php if (isset($_POST['idclinichistory'])) {
-                                            ?>
-                                            <input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo $_POST['idclinichistory']; ?>" />
-                                        <?php } ?>
-                                        <input type="hidden" id="idvaccineconsultation" name="idvaccineconsultation" value="<?php
-                                        if (isset($id)) {
-                                            echo $id;
-                                        } else {
-                                            0;
-                                        }
-                                        ?>"/>
-                                        <input type="hidden" id="idgeneraldata" name="idgeneraldata" value="<?php
-                                        if (isset($idgeneraldata)) {
-                                            echo $idgeneraldata;
-                                        } else {
-                                            0;
-                                        }
-                                        ?>">
-                                        <input type="hidden" id="idpet" name="idpet" value="<?php
-                                        if (isset($idpet)) {
-                                            echo $idpet;
-                                        }
-                                        ?>"/>
-                                               <?php
-                                               include_once '../phpfragments/generaldata.php';
-                                               ?>
+                                        <input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo get_numeric_value($id_clinic_history); ?>" />
+                                        <input type="hidden" id="idvaccineconsultation" name="idvaccineconsultation" value="<?php echo get_numeric_value($vaccine_consultation->id); ?>"/>
+                                        <input type="hidden" id="idgeneraldata" name="idgeneraldata" value="<?php echo get_numeric_value($vaccine_consultation->id_general_data); ?>"/>
+                                        <input type="hidden" id="idpet" name="idpet" value="<?php echo get_numeric_value($vaccine_consultation->id_pet); ?>"/>
+                                        <?php include_once '../phpfragments/generaldata.php'; ?>
                                         <div class="row">
                                             <div class="col-xs-6">
                                                 <div class="form-group">
                                                     <label for="anamnesis">Anamnesis</label>
-                                                    <textarea class="form-control" id="anamnesis" name="anamnesis" rows="5" maxlength="400" required><?php
-                                                        if (isset($anamnesis)) {
-                                                            echo $anamnesis;
-                                                        }
-                                                        ?></textarea>
+                                                    <textarea class="form-control" id="anamnesis" name="anamnesis" rows="5" maxlength="400" required><?php echo get_string_value($anamnesis); ?></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <div class="form-group">
                                                     <label for="findings">Hallazgos</label>
-                                                    <textarea class="form-control" id="findings" name="findings" rows="5" maxlength="400" required><?php
-                                                        if (isset($findings)) {
-                                                            echo $findings;
-                                                        }
-                                                        ?></textarea>
+                                                    <textarea class="form-control" id="findings" name="findings" rows="5" maxlength="400" required><?php echo get_string_value($findings); ?></textarea>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-xs-4">
-                                                <div class="checkbox">
-                                                    <label> &iquest;Apta para vacunaci&oacute;n?
-                                                        <input type="checkbox" id="vaccineapplication" name="vaccineapplication"
-                                                        <?php
-                                                        if (isset($vaccineapplication) && ($vaccineapplication || $vaccineapplication === TRUE)) {
-                                                            echo "checked";
-                                                        }
-                                                        ?>
-                                                               />
-                                                    </label>
+                                                <div class="form-group">
+                                                    <div class="checkbox">
+                                                        <label> &iquest;Apta para vacunaci&oacute;n?
+                                                            <input type="checkbox" id="vaccineapplication" name="vaccineapplication" value="1"
+                                                            <?php
+                                                            if ($vaccine_consultation->isApplyVaccine()) {
+                                                                echo "checked";
+                                                            }
+                                                            ?> />
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div class="col-xs-4">
+                                                <div id="divappliednumber" class="form-group" style="display: <?php
+                                                if ($vaccine_consultation->isApplyVaccine()) {
+                                                    echo 'block;';
+                                                } else {
+                                                    echo 'none;';
+                                                }
+                                                ?>">
+                                                    <label for="appliednumberselector">N&uacute;mero de vacunas</label>
+                                                    <select id="appliednumberselector" name="appliednumberselector" class="form-control">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
                                         </div>
-                                        <div id="divvaccinedata" class="row" style="display: <?php
-                                        if (isset($vaccineapplication) && ($vaccineapplication || $vaccineapplication === TRUE)) {
+                                        <div id="divvaccinedata1" class="row" style="display: <?php
+                                        if ($vaccine_consultation->isApplyVaccine()) {
                                             echo 'block;';
                                         } else {
                                             echo 'none;';
                                         }
                                         ?>">
                                             <div class="col-xs-4">
-                                                <div id="divvaccine" class="form-group">
-                                                    <label for="vaccine">Vacuna aplicada</label>
-                                                    <select id="vaccine" name="vaccine" class="form-control">
+                                                <div id="divvaccine1" class="form-group">
+                                                    <label for="vaccineselector1">Vacuna aplicada</label>
+                                                    <select id="vaccineselector1" name="vaccineselector1" class="form-control">
                                                         <option value="0">Seleccione uno...</option>
-                                                        <?php createVaccineOptions($results, $vaccine); ?>
+                                                        <?php createVaccineOptions($results, $vaccine_consultation->id_vaccine); ?>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
-                                                <div id="divbatch" class="form-group">
-                                                    <label for="batch">Lote</label>
-                                                    <input type="text" class="form-control" id="batch" name="batch" placeholder="Lote" maxlength="40" value="<?php
-                                                    if (isset($batch)) {
-                                                        echo $batch;
-                                                    }
-                                                    ?>">
+                                                <div id="divbatch1" class="form-group">
+                                                    <label for="batch1">Lote</label>
+                                                    <input type="text" class="form-control" id="batch1" name="batch1" placeholder="Lote" maxlength="40" value="<?php echo get_string_value($vaccine_consultation->batch); ?>" />
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
-                                                <div id="divexpiration" class="form-group">
-                                                    <label for="expiration">Fecha de expiraci&oacute;n</label>
-                                                    <input type="text" class="form-control" id="expiration" name="expiration" placeholder="Expiraci&oacute;n" maxlength="40" value="<?php
-                                                    if (isset($expiration)) {
-                                                        echo $expiration;
-                                                    }
-                                                    ?>">
+                                                <div id="divexpiration1" class="form-group">
+                                                    <label for="expiration1">Fecha de expiraci&oacute;n</label>
+                                                    <input type="text" class="form-control" id="expiration1" name="expiration1" placeholder="Expiraci&oacute;n" maxlength="40" value="<?php echo get_string_value($vaccine_consultation->expiration); ?>" />
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php
-                                        include_once '../phpfragments/generaldatatreatment.php';
-                                        ?>
+                                        <div id="divvaccinedata2" class="row" style="display: <?php
+                                        if ($vaccine_consultation->isApplyVaccine()) {
+                                            echo 'block;';
+                                        } else {
+                                            echo 'none;';
+                                        }
+                                        ?>">
+                                            <div class="col-xs-4">
+                                                <div id="divvaccine2" class="form-group">
+                                                    <label for="vaccineselector2">Vacuna aplicada</label>
+                                                    <select id="vaccineselector2" name="vaccineselector2" class="form-control">
+                                                        <option value="0">Seleccione uno...</option>
+                                                        <?php createVaccineOptions($results, $vaccine_consultation->id_vaccine); ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <div id="divbatch1" class="form-group">
+                                                    <label for="batch2">Lote</label>
+                                                    <input type="text" class="form-control" id="batch2" name="batch2" placeholder="Lote" maxlength="40" value="<?php echo get_string_value($vaccine_consultation->batch); ?>" />
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <div id="divexpiration2 class="form-group">
+                                                    <label for="expiration2">Fecha de expiraci&oacute;n</label>
+                                                    <input type="text" class="form-control" id="expiration2" name="expiration2" placeholder="Expiraci&oacute;n" maxlength="40" value="<?php echo get_string_value($vaccine_consultation->expiration); ?>" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php include_once '../phpfragments/generaldatatreatment.php'; ?>
                                     </div>
                                     <div class="box-footer">
                                         <div class="row">
@@ -185,46 +195,7 @@ include_once './php/vaccine/before_load.php';
                 </section>
             </aside>
         </div>
-        <div id="date-dialog" title="Error" style="display: none">
-            <p>
-                <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>La fecha de la vacunaci&oacute;n no es valida.
-            </p>
-        </div>
-        <div id="weight-dialog" title="Error" style="display: none">
-            <p>
-                <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>Indique el peso de la mascota.
-            </p>
-        </div>
-        <div id="heartrate-dialog" title="Error" style="display: none">
-            <p>
-                <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>Indique la frecuencia cardiaca de la mascota.
-            </p>
-        </div>
-        <div id="breathingfrequency-dialog" title="Error" style="display: none">
-            <p>
-                <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>Indique la frecuencia respiratoria de la mascota.
-            </p>
-        </div>
-        <div id="temperature-dialog" title="Error" style="display: none">
-            <p>
-                <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>Indique la temperatura de la mascota.
-            </p>
-        </div>
-        <div id="vaccine-dialog" title="Error" style="display: none">
-            <p>
-                <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>Seleccione un producto de vacunaci&oacute;n.
-            </p>
-        </div>
-        <div id="batch-dialog" title="Error" style="display: none">
-            <p>
-                <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>Indique el lote del producto de vacunaci&oacute;n.
-            </p>
-        </div>
-        <div id="expiration-dialog" title="Error" style="display: none">
-            <p>
-                <span class="ui-icon ui-icon-cancel" style="float:left; margin:2px 7px 20px 0;"></span>Indique la fecha de expiraci&oacute;n del producto de vacunaci&oacute;n.
-            </p>
-        </div>
+        <?php include_once './php/vaccine/required_field_dialogs.php'; ?>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
         <script src="../../js/bootstrap.min.js" type="text/javascript"></script>
         <script src="../../js/AdminLTE/app.js" type="text/javascript"></script>
@@ -235,152 +206,7 @@ include_once './php/vaccine/before_load.php';
         <script src="../../js/plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
         <script src="../../js/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
         <script src="../../js/jquery-ui.min.js" type="text/javascript"></script>
-        <script type="text/javascript">
-                            $(function () {
-                                $('#generaldatadate').datepicker({
-                                    dateFormat: 'dd/mm/yy',
-                                    autoclose: true
-                                });
-                            });
-                            $(document).ready(function () {
-                                $("#generaldatadate").keydown(function (e) {
-                                    return false;
-                                });
-                            });
-
-                            $('#vaccineapplication').on("ifChecked", function (event) {
-                                changeVisibility($('#divvaccinedata'), "block");
-                            });
-
-                            $("#vaccineapplication").on("ifUnchecked", function (event) {
-                                changeVisibility($('#divvaccinedata'), "none");
-                                $('#vaccine').val('0');
-                                $('#batch').val('');
-                                $('#expiration').val('');
-                            });
-
-                            function changeVisibility(input, displayVal) {
-                                input.css("display", displayVal);
-                            }
-
-                            function validate() {
-                                if ($.trim($('#generaldatadate').val()) === '') {
-                                    $("#divgeneraldatadate").addClass("has-error");
-                                    showDivDialog($("#date-dialog"));
-                                    return false;
-                                } else {
-                                    $("#divgeneraldatadate").removeClass("has-error");
-                                }
-                                if ($.trim($('#weight').val()) === '0' || $.trim($('#weight').val()) === '') {
-                                    $("#divweight").addClass("has-error");
-                                    showDivDialog($("#weight-dialog"));
-                                    return false;
-                                } else {
-                                    $("#divweight").removeClass("has-error");
-                                }
-                                if ($.trim($('#heartrate').val()) === '0' || $.trim($('#heartrate').val()) === '') {
-                                    $("#divheartrate").addClass("has-error");
-                                    showDivDialog($("#heartrate-dialog"));
-                                    return false;
-                                } else {
-                                    $("#divheartrate").removeClass("has-error");
-                                }
-                                if ($.trim($('#breathingfrequency').val()) === '0' || $.trim($('#breathingfrequency').val()) === '') {
-                                    $("#divbreathingfrequency").addClass("has-error");
-                                    showDivDialog($("#breathingfrequency-dialog"));
-                                    return false;
-                                } else {
-                                    $("#divbreathingfrequency").removeClass("has-error");
-                                }
-                                if ($.trim($('#temperature').val()) === '0' || $.trim($('#temperature').val()) === '') {
-                                    $("#divtemperature").addClass("has-error");
-                                    showDivDialog($("#temperature-dialog"));
-                                    return false;
-                                } else {
-                                    $("#divtemperature").removeClass("has-error");
-                                }
-                                if ($('#vaccineapplication').is(":checked")) {
-                                    if ($.trim($('#vaccine').val()) === '0') {
-                                        $("#divvaccine").addClass("has-error");
-                                        showDivDialog($("#vaccine-dialog"));
-                                        return false;
-                                    } else {
-                                        $("#divvaccine").removeClass("has-error");
-                                    }
-                                    if ($.trim($('#batch').val()) === '') {
-                                        $("#divbatch").addClass("has-error");
-                                        showDivDialog($("#batch-dialog"));
-                                        return false;
-                                    } else {
-                                        $("#divbatch").removeClass("has-error");
-                                    }
-                                    if ($.trim($('#expiration').val()) === '' || !validateDate($('#expiration').val())) {
-                                        $("#divexpiration").addClass("has-error");
-                                        showDivDialog($("#expiration-dialog"));
-                                        return false;
-                                    } else {
-                                        $("#divexpiration").removeClass("has-error");
-                                    }
-                                }
-                            }
-
-                            function showDivDialog(divDialog) {
-                                divDialog.dialog({
-                                    autoOpen: false,
-                                    width: 400,
-                                    modal: true,
-                                    resizable: false,
-                                    buttons: [{
-                                            text: "Volver",
-                                            click: function () {
-                                                $(this).dialog("close");
-                                            }
-                                        }]
-                                });
-                                divDialog.dialog("open");
-                            }
-
-                            $(document).ready(function () {
-                                $("#weight").keydown(function (e) {
-                                    validateDecimalInput(e);
-                                });
-                            });
-
-                            $(document).ready(function () {
-                                $("#heartrate").keydown(function (e) {
-                                    validateIntegerInput(e);
-                                });
-                            });
-
-                            $(document).ready(function () {
-                                $("#breathingfrequency").keydown(function (e) {
-                                    validateIntegerInput(e);
-                                });
-                            });
-
-                            $(document).ready(function () {
-                                $("#temperature").keydown(function (e) {
-                                    validateDecimalInput(e);
-                                });
-                            });
-
-                            $(document).ready(function () {
-                                $("#trc").keydown(function (e) {
-                                    validateIntegerInput(e);
-                                });
-                            });
-
-                            $(document).ready(function () {
-                                $("#dh").keydown(function (e) {
-                                    validateIntegerInput(e);
-                                });
-                            });
-
-                            $(document).ready(function () {
-                                $("#formulanumber").keydown(function (e) {
-                                    validateIntegerInput(e);
-                                });
-                            });
-        </script>
+        <script src="../../js/paginas/historias/general_data.js" type="text/javascript"></script>
+        <script src="../../js/paginas/historias/vacunaciones.js" type="text/javascript"></script>
     </body>
 </html>

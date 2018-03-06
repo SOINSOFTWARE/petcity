@@ -17,7 +17,7 @@ class VaccineConsultationTable {
 
     public function insert($vaccine_consultation) {
         $id_general_data = $vaccine_consultation->getIdGeneralData();
-        $apply_vaccine = $vaccine_consultation->isApplyVaccine();
+        $apply_vaccine = $vaccine_consultation->getApplyVaccine();
         $id_vaccine = $vaccine_consultation->getIdVaccine();
         $batch = $vaccine_consultation->getBatch();
         $expiration = $vaccine_consultation->getExpiration();
@@ -29,7 +29,7 @@ class VaccineConsultationTable {
 
     public function update($vaccine_consultation) {
         $id = $vaccine_consultation->id;
-        $apply_vaccine = $vaccine_consultation->isApplyVaccine();
+        $apply_vaccine = $vaccine_consultation->getApplyVaccine();
         $id_vaccine = $vaccine_consultation->getIdVaccine();
         $batch = $vaccine_consultation->getBatch();
         $expiration = $vaccine_consultation->getExpiration();
