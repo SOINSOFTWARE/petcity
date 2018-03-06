@@ -4,129 +4,12 @@ include_once '../session.php';
 include_once '../../php/vaccine.php';
 include_once '../../php/generaldata.php';
 include_once '../../php/vaccineconsultation.php';
+include_once '../../php/entity/vaccineconsultation.php';
 include_once '../../php/errorlog.php';
 include_once '../phpfragments/vaccine_select.php';
 include_once '../phpfragments/custom_date.php';
-
-$idpet = (isset($_POST['idpet'])) ? $_POST['idpet'] : 0;
-$vaccine = 0;
-$generalDataTable = new GeneralDataTable();
-$vacConsultationtable = new VaccineConsultationTable();
-
-if (isset($_POST['save'])) {
-    $id = $_POST['id'];
-    $idgeneraldata = $_POST['idgeneraldata'];
-    $idpet = $_POST['idpet'];
-    $generaldatadate = $_POST['generaldatadate'];
-    $weight = $_POST['weight'];
-    $corporalcondition = $_POST['corporalcondition'];
-    $heartrate = $_POST['heartrate'];
-    $breathingfrequency = $_POST['breathingfrequency'];
-    $temperature = $_POST['temperature'];
-    $heartbeat = $_POST['heartbeat'];
-    $linfonodulos = $_POST['linfonodulos'];
-    $mucous = $_POST['mucous'];
-    $trc = $_POST['trc'];
-    $dh = $_POST['dh'];
-    $mood = $_POST['mood'];
-    $tusigo = $_POST['tusigo'];
-    $anamnesis = $_POST['anamnesis'];
-    $findings = $_POST['findings'];
-    $clinicaltreatment = $_POST['clinicaltreatment'];
-    $formulanumber = $_POST['formulanumber'];
-    $formula = $_POST['formula'];
-    $recomendations = $_POST['recomendations'];
-    $observations = $_POST['observations'];
-
-    $formulanumber = ($formulanumber != '') ? $formulanumber : 0;
-
-    $vaccineapplication = (isset($_POST['vaccineapplication'])) ? $_POST['vaccineapplication'] : FALSE;
-    $applyvaccine = ($vaccineapplication || $vaccineapplication === TRUE) ? 1 : 0;
-    $vaccine = $_POST['vaccine'];
-    $idvaccine = ($vaccine > 0) ? $vaccine : null;
-    $batch = $_POST['batch'];
-    $expiration = $_POST['expiration'];
-
-    $external = $generaldatadate . ' 00:00:00';
-    $format = "d/m/Y H:i:s";
-    $dateobj = DateTime::createFromFormat($format, $external);
-    $generaldatadateToSQL = $dateobj->format("Y-m-d");
-
-    if (intval($id) === 0) {
-        $generaldatasaved = $generalDataTable->insert($generaldatadateToSQL, $heartrate, $breathingfrequency, $temperature, $heartbeat, $corporalcondition, $linfonodulos, $mucous, $trc, $dh, $weight, $mood, $tusigo, $anamnesis, $findings, $clinicaltreatment, $formulanumber, $formula, $recomendations, $observations, $companyId);
-        if ($generaldatasaved === TRUE) {
-            $idgeneraldata = $generalDataTable->selectLastInsertId();
-            if ($vaccine > 0) {
-                $saved = $vacConsultationtable->insert($idgeneraldata, $applyvaccine, $idvaccine, $batch, $expiration, $idpet);
-            } else {
-                $saved = $vacConsultationtable->insertNonVaccine($idgeneraldata, $applyvaccine, $idpet);
-            }
-            if ($saved === TRUE) {
-                $id = $vacConsultationtable->selectLastInsertId();
-            }
-        } else {
-            $errorLog = new ErrorLogTable();
-            $errorLog->insert($generalDataTable->getError());
-        }
-    } else {
-        $generaldatasaved = $generalDataTable->update($idgeneraldata, $generaldatadateToSQL, $heartrate, $breathingfrequency, $temperature, $heartbeat, $corporalcondition, $linfonodulos, $mucous, $trc, $dh, $weight, $mood, $tusigo, $anamnesis, $findings, $clinicaltreatment, $formulanumber, $formula, $recomendations, $observations);
-        if ($generaldatasaved === TRUE) {
-            if ($vaccine > 0) {
-                $saved = $vacConsultationtable->update($id, $applyvaccine, $idvaccine, $batch, $expiration);
-            } else {
-                $saved = $vacConsultationtable->updateNonVaccine($id);
-            }
-        } else {
-            $errorLog = new ErrorLogTable();
-            $errorLog->insert($generalDataTable->getError());
-        }
-    }
-
-    if ($saved === FALSE) {
-        $errorLog = new ErrorLogTable();
-        $errorLog->insert($vacConsultationtable->getError());
-    }
-}
-if (isset($_POST['view'])) {
-    $id = $_POST['idvaccineconsultation'];
-    $results = $vacConsultationtable->selectById($id);
-    if ($rows = mysqli_fetch_array($results)) {
-        $idpet = $rows['idpet'];
-        $applyvaccine = $rows['applyvaccine'];
-        $vaccineapplication = ($applyvaccine || $applyvaccine == 1) ? TRUE : FALSE;
-        $vaccine = $rows['idvaccine'];
-        $batch = $rows['batch'];
-        $expiration = $rows['expiration'];
-        $idgeneraldata = $rows['idgeneraldata'];
-
-        $resultsGeneralData = $generalDataTable->selectById($idgeneraldata);
-        if ($rowsGeneralData = mysqli_fetch_array($resultsGeneralData)) {
-            $generaldatadate = format_string_date($rowsGeneralData['generaldatadate'], "d/m/Y");
-            $weight = $rowsGeneralData['weight'];
-            $corporalcondition = $rowsGeneralData['corporalcondition'];
-            $heartrate = $rowsGeneralData['heartrate'];
-            $breathingfrequency = $rowsGeneralData['breathingfrequency'];
-            $temperature = $rowsGeneralData['temperature'];
-            $heartbeat = $rowsGeneralData['heartbeat'];
-            $linfonodulos = $rowsGeneralData['linfonodulos'];
-            $mucous = $rowsGeneralData['mucous'];
-            $trc = $rowsGeneralData['trc'];
-            $dh = $rowsGeneralData['dh'];
-            $mood = $rowsGeneralData['mood'];
-            $tusigo = $rowsGeneralData['tusigo'];
-            $anamnesis = $rowsGeneralData['anamnesis'];
-            $findings = $rowsGeneralData['findings'];
-            $clinicaltreatment = $rowsGeneralData['clinicaltreatment'];
-            $formulanumber = $rowsGeneralData['formulanumber'];
-            $formula = $rowsGeneralData['formula'];
-            $recomendations = $rowsGeneralData['recomendations'];
-            $observations = $rowsGeneralData['observations'];
-        }
-    }
-}
-
-$vaccinetable = new VaccineTable();
-$results = $vaccinetable->select($companyId);
+include_once '../phpfragments/message_dialog.php';
+include_once './php/vaccine/before_load.php';
 ?>
 <html>
     <head>
@@ -149,8 +32,6 @@ $results = $vaccinetable->select($companyId);
                 <section class="sidebar">
                     <?php
                     include '../user-panel.php';
-                    ?>
-                    <?php
                     include 'menu.php';
                     ?>
                 </section>
@@ -165,70 +46,28 @@ $results = $vaccinetable->select($companyId);
                         <li>
                             <a href="../../">Historias cl&iacute;nicas</a>
                         </li>
+                        <li>
+                            Historia cl&iacute;nica por mascota
+                        </li>
                         <li class="active">
                             Vacunaci&oacute;n por mascota
                         </li>
                     </ol>
+                    <br/>
+                    <?php include_once '../phpfragments/backward_button.php'; ?>
                 </section>
                 <section class="content">
-                    <div class="row">
-                        <?php if (isset($_POST['idclinichistory'])) {
-                            ?>
-                            <div class="col-xs-12">
-                                <div class="box">
-                                    <div class="box-body">
-                                        <form action="historia.php" method="post" role="form">
-                                            <input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo $_POST['idclinichistory']; ?>" />
-                                            <button type="submit" id="backward" name="backward" class="btn btn-success">
-                                                <i class="fa fa-reply"></i> Historia
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php } ?>
-                    </div>
+                    <?php include_once './php/vaccine/after_crud_operation_messages.php'; ?>
                     <div class="row">
                         <form action="vacunaciones.php" method="post" role="form" onsubmit="return validate()">
                             <div class="col-xs-12">
                                 <div class="box">
-                                    <?php
-                                    if (isset($generaldatasaved) && isset($saved)) {
-                                        if ($saved) {
-                                            echo '<div class="alert alert-success alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Datos guardados!</b> La vacunaci&oacute;n ha sido guardada exitosamente.
-</div>';
-                                        } else {
-                                            echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar guardar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-                                        }
-                                    } else if (isset($generaldatasaved) || isset($saved)) {
-                                        echo '<div class="alert alert-danger alert-dismissable">
-<i class="fa fa-times"></i>
-<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-<b>Error!</b> Ocurri&oacute; un error al intentar guardar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
-</div>';
-                                    }
-                                    ?>
-                                    <div class="box-header">
-                                        <h3 class="box-title">Vacunaci&oacute;n</h3>
-                                    </div>
                                     <div class="box-body">
-                                        <button type="submit" id="save" name="save" class="btn btn-primary">
-                                            <i class="fa fa-save"></i> Guardar
-                                        </button>
-                                        <br />
-                                        <br />
                                         <?php if (isset($_POST['idclinichistory'])) {
                                             ?>
                                             <input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo $_POST['idclinichistory']; ?>" />
                                         <?php } ?>
-                                        <input type="hidden" id="id" name="id" value="<?php
+                                        <input type="hidden" id="idvaccineconsultation" name="idvaccineconsultation" value="<?php
                                         if (isset($id)) {
                                             echo $id;
                                         } else {
@@ -313,25 +152,31 @@ $results = $vaccinetable->select($companyId);
                                                     ?>">
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4">
+                                            <div class="col-xs-4">
                                                 <div id="divexpiration" class="form-group">
                                                     <label for="expiration">Fecha de expiraci&oacute;n</label>
-                                                    <div class="input-group date input-group-sm">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control pull-right" id="expiration" name="expiration" value="<?php
-                                                        if (isset($expiration)) {
-                                                            echo $expiration;
-                                                        }
-                                                        ?>" required />
-                                                    </div>
+                                                    <input type="text" class="form-control" id="expiration" name="expiration" placeholder="Expiraci&oacute;n" maxlength="40" value="<?php
+                                                    if (isset($expiration)) {
+                                                        echo $expiration;
+                                                    }
+                                                    ?>">
                                                 </div>
                                             </div>
                                         </div>
                                         <?php
                                         include_once '../phpfragments/generaldatatreatment.php';
                                         ?>
+                                    </div>
+                                    <div class="box-footer">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <button type="submit" id="save" name="save" class="btn btn-primary pull-right">
+                                                        <i class="fa fa-save"></i> Guardar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -396,18 +241,9 @@ $results = $vaccinetable->select($companyId);
                                     dateFormat: 'dd/mm/yy',
                                     autoclose: true
                                 });
-                                $('#expiration').datepicker({
-                                    dateFormat: 'dd/mm/yy',
-                                    autoclose: true
-                                });
                             });
                             $(document).ready(function () {
                                 $("#generaldatadate").keydown(function (e) {
-                                    return false;
-                                });
-                            });
-                            $(document).ready(function () {
-                                $("#expiration").keydown(function (e) {
                                     return false;
                                 });
                             });
@@ -428,7 +264,7 @@ $results = $vaccinetable->select($companyId);
                             }
 
                             function validate() {
-                                if (!validateDate($('#generaldatadate').val())) {
+                                if ($.trim($('#generaldatadate').val()) === '') {
                                     $("#divgeneraldatadate").addClass("has-error");
                                     showDivDialog($("#date-dialog"));
                                     return false;
@@ -486,15 +322,6 @@ $results = $vaccinetable->select($companyId);
                                         $("#divexpiration").removeClass("has-error");
                                     }
                                 }
-                            }
-
-                            function validateDate(date) {
-                                var dateWithoutSpace = $.trim(date);
-                                var array = dateWithoutSpace.split("/");
-                                var arrayDay = array[0].split("");
-                                var arrayMonth = array[1].split("");
-                                var arrayYear = array[2].split("");
-                                return arrayDay[0] !== 'd' && arrayDay[1] !== 'd' && arrayMonth[0] !== 'm' && arrayMonth[1] !== 'm' && arrayYear[0] !== 'y' && arrayYear[1] !== 'y' && arrayYear[2] !== 'y' && arrayYear[3] !== 'y';
                             }
 
                             function showDivDialog(divDialog) {
