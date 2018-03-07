@@ -58,24 +58,24 @@ include_once './php/vaccine/before_load.php';
                 </section>
                 <section class="content">
                     <?php include_once './php/vaccine/after_crud_operation_messages.php'; ?>
-                    <div class="row">
-                        <form action="vacunaciones.php" method="post" role="form" onsubmit="return validate()">
-                            <div class="col-xs-12">
-                                <div class="box">
-                                    <div class="box-body">
+                    <form action="vacunaciones.php" method="post" role="form" onsubmit="return validate()">
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
                                         <input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo get_numeric_value($id_clinic_history); ?>" />
-                                        <input type="hidden" id="idvaccineconsultation" name="idvaccineconsultation" value="<?php echo get_numeric_value($vaccine_consultation->id); ?>"/>
-                                        <input type="hidden" id="idgeneraldata" name="idgeneraldata" value="<?php echo get_numeric_value($vaccine_consultation->id_general_data); ?>"/>
-                                        <input type="hidden" id="idpet" name="idpet" value="<?php echo get_numeric_value($vaccine_consultation->id_pet); ?>"/>
+                                        <input type="hidden" id="idvaccineconsultation" name="idvaccineconsultation" value="<?php echo get_numeric_value($vaccine_array[0]->id); ?>"/>
+                                        <input type="hidden" id="idgeneraldata" name="idgeneraldata" value="<?php echo get_numeric_value($vaccine_array[0]->id_general_data); ?>"/>
+                                        <input type="hidden" id="idpet" name="idpet" value="<?php echo get_numeric_value($vaccine_array[0]->id_pet); ?>"/>
                                         <?php include_once '../phpfragments/generaldata.php'; ?>
                                         <div class="row">
-                                            <div class="col-xs-6">
+                                            <div class="col-xs-4">
                                                 <div class="form-group">
                                                     <label for="anamnesis">Anamnesis</label>
                                                     <textarea class="form-control" id="anamnesis" name="anamnesis" rows="5" maxlength="400" required><?php echo get_string_value($anamnesis); ?></textarea>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-6">
+                                            <div class="col-xs-4">
                                                 <div class="form-group">
                                                     <label for="findings">Hallazgos</label>
                                                     <textarea class="form-control" id="findings" name="findings" rows="5" maxlength="400" required><?php echo get_string_value($findings); ?></textarea>
@@ -86,112 +86,35 @@ include_once './php/vaccine/before_load.php';
                                             <div class="col-xs-4">
                                                 <div class="form-group">
                                                     <div class="checkbox">
-                                                        <label> &iquest;Apta para vacunaci&oacute;n?
-                                                            <input type="checkbox" id="vaccineapplication" name="vaccineapplication" value="1"
-                                                            <?php
-                                                            if ($vaccine_consultation->isApplyVaccine()) {
-                                                                echo "checked";
-                                                            }
-                                                            ?> />
-                                                        </label>
+                                                        <label> &iquest;Apta para vacunaci&oacute;n?</label>
+                                                        <input type="checkbox" id="vaccineapplication" name="vaccineapplication" value="1"
+                                                        <?php
+                                                        if ($vaccine_array[0]->isApplyVaccine()) {
+                                                            echo " checked ";
+                                                        }
+                                                        ?> />
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-4">
-                                                <div id="divappliednumber" class="form-group" style="display: <?php
-                                                if ($vaccine_consultation->isApplyVaccine()) {
-                                                    echo 'block;';
-                                                } else {
-                                                    echo 'none;';
-                                                }
-                                                ?>">
-                                                    <label for="appliednumberselector">N&uacute;mero de vacunas</label>
-                                                    <select id="appliednumberselector" name="appliednumberselector" class="form-control">
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                        <option value="4">4</option>
-                                                        <option value="5">5</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
                                         </div>
-                                        <div id="divvaccinedata1" class="row" style="display: <?php
-                                        if ($vaccine_consultation->isApplyVaccine()) {
-                                            echo 'block;';
-                                        } else {
-                                            echo 'none;';
-                                        }
-                                        ?>">
-                                            <div class="col-xs-4">
-                                                <div id="divvaccine1" class="form-group">
-                                                    <label for="vaccineselector1">Vacuna aplicada</label>
-                                                    <select id="vaccineselector1" name="vaccineselector1" class="form-control">
-                                                        <option value="0">Seleccione uno...</option>
-                                                        <?php createVaccineOptions($results, $vaccine_consultation->id_vaccine); ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-4">
-                                                <div id="divbatch1" class="form-group">
-                                                    <label for="batch1">Lote</label>
-                                                    <input type="text" class="form-control" id="batch1" name="batch1" placeholder="Lote" maxlength="40" value="<?php echo get_string_value($vaccine_consultation->batch); ?>" />
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-4">
-                                                <div id="divexpiration1" class="form-group">
-                                                    <label for="expiration1">Fecha de expiraci&oacute;n</label>
-                                                    <input type="text" class="form-control" id="expiration1" name="expiration1" placeholder="Expiraci&oacute;n" maxlength="40" value="<?php echo get_string_value($vaccine_consultation->expiration); ?>" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="divvaccinedata2" class="row" style="display: <?php
-                                        if ($vaccine_consultation->isApplyVaccine()) {
-                                            echo 'block;';
-                                        } else {
-                                            echo 'none;';
-                                        }
-                                        ?>">
-                                            <div class="col-xs-4">
-                                                <div id="divvaccine2" class="form-group">
-                                                    <label for="vaccineselector2">Vacuna aplicada</label>
-                                                    <select id="vaccineselector2" name="vaccineselector2" class="form-control">
-                                                        <option value="0">Seleccione uno...</option>
-                                                        <?php createVaccineOptions($results, $vaccine_consultation->id_vaccine); ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-4">
-                                                <div id="divbatch1" class="form-group">
-                                                    <label for="batch2">Lote</label>
-                                                    <input type="text" class="form-control" id="batch2" name="batch2" placeholder="Lote" maxlength="40" value="<?php echo get_string_value($vaccine_consultation->batch); ?>" />
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-4">
-                                                <div id="divexpiration2 class="form-group">
-                                                    <label for="expiration2">Fecha de expiraci&oacute;n</label>
-                                                    <input type="text" class="form-control" id="expiration2" name="expiration2" placeholder="Expiraci&oacute;n" maxlength="40" value="<?php echo get_string_value($vaccine_consultation->expiration); ?>" />
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <?php include_once './php/vaccine/vaccine_data.php'; ?>
                                         <?php include_once '../phpfragments/generaldatatreatment.php'; ?>
                                     </div>
-                                    <div class="box-footer">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <button type="submit" id="save" name="save" class="btn btn-primary pull-right">
-                                                        <i class="fa fa-save"></i> Guardar
-                                                    </button>
-                                                </div>
-                                            </div>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <button type="submit" id="save" name="save" class="btn btn-primary pull-right">
+                                                <i class="fa fa-save"></i> Guardar
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </section>
             </aside>
         </div>

@@ -47,8 +47,7 @@ if (filter_input(INPUT_POST, 'save') !== NULL) {
 }
 $loaded_vc = $vacConsultationtable->selectById($id);
 if ($loaded_vc !== NULL) {
-    $vaccine_consultation = $loaded_vc;
-    $idgeneraldata = $vaccine_consultation->id_general_data;
+    $idgeneraldata = $loaded_vc->id_general_data;
     $resultsGeneralData = $generalDataTable->selectById($idgeneraldata);
     $rowsGeneralData = mysqli_fetch_array($resultsGeneralData);
     if ($rowsGeneralData !== NULL) {
@@ -72,7 +71,18 @@ if ($loaded_vc !== NULL) {
         $formula = $rowsGeneralData['formula'];
         $recomendations = $rowsGeneralData['recomendations'];
         $observations = $rowsGeneralData['observations'];
+        $vaccine_array = $vacConsultationtable->selectByIdGeneralData($idgeneraldata);
+        $applied_number = 0;
+        if ($vaccine_array !== NULL && count($vaccine_array) > 0) {
+            $applied_number = count($vaccine_array);
+        } else {
+            $vaccine_array[0] = new VaccineConsultation(0, 0, 0, 0, NULL, NULL, 0);
+        }
     }
+} else {
+    $anamnesis = "";
+    $findings = "";
+    $vaccine_array[0] = new VaccineConsultation(0, 0, 0, 0, NULL, NULL, 0);
 }
 
 $vaccinetable = new VaccineTable();

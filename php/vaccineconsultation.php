@@ -66,6 +66,19 @@ class VaccineConsultationTable {
         }
         return NULL;
     }
+    
+    public function selectByIdGeneralData($id_general_data) {
+        $sql = "SELECT * FROM vaccineconsultation WHERE idgeneraldata = $id_general_data";
+        $results = mysqli_query($this->conn, $sql);
+        $vaccine_array = NULL;
+        while ($row = mysqli_fetch_array($results)) {
+            if ($vaccine_array === NULL) {
+                $vaccine_array = [];
+            }
+            $vaccine_array[] = new VaccineConsultation($row["id"], $row["idgeneraldata"], $row["applyvaccine"], $row["idvaccine"], $row["batch"], $row["expiration"], $row["idpet"]);
+        }
+        return $vaccine_array;
+    }
 
     public function selectLastInsertId() {
         return mysqli_insert_id($this->conn);
