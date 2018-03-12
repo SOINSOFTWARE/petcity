@@ -5,84 +5,90 @@ $generalDataTable = new GeneralDataTable();
 $vacConsultationtable = new VaccineConsultationTable();
 if (filter_input(INPUT_POST, 'idvaccineconsultation') !== NULL) {
     $id = filter_input(INPUT_POST, 'idvaccineconsultation');
+} else if (filter_input(INPUT_POST, 'idvaccineconsultation1') !== NULL) {
+    $id = filter_input(INPUT_POST, 'idvaccineconsultation1');
 } else {
     $id = 0;
 }
 $id_clinic_history = filter_input(INPUT_POST, 'idclinichistory');
+$id_pet = filter_input(INPUT_POST, 'idpet');
+$applied_number = 0;
 $generaldatadate = date('d/m/Y');
+$anamnesis = "";
+$findings = "";
 
 if (filter_input(INPUT_POST, 'save') !== NULL) {
     include_once './php/general_data/before_load.php';
-    $apply_vaccine = filter_input(INPUT_POST, 'vaccineapplication');
-    $idvaccine = filter_input(INPUT_POST, 'vaccineselector');
-    $batch = filter_input(INPUT_POST, 'batch');
-    $expiration = filter_input(INPUT_POST, 'expiration');
-    $vaccine_consultation = new VaccineConsultation($id, $idgeneraldata, $apply_vaccine, $idvaccine, $batch, $expiration, $idpet);
-
-    if (intval($id) === 0) {
-        $generaldatasaved = $generalDataTable->insert($generaldatadateToSQL, $heartrate, $breathingfrequency, $temperature, $heartbeat, $corporalcondition, $linfonodulos, $mucous, $trc, $dh, $weight, $mood, $tusigo, $anamnesis, $findings, $clinicaltreatment, $formulanumber, $formula, $recomendations, $observations, $companyId);
-        if ($generaldatasaved === TRUE) {
-            $idgeneraldata = $generalDataTable->selectLastInsertId();
-            $vaccine_consultation->id_general_data = $idgeneraldata;
-            $saved = $vacConsultationtable->insert($vaccine_consultation);
-            if ($saved === TRUE) {
-                $id = $vacConsultationtable->selectLastInsertId();
-                $vaccine_consultation->id = $id;
+    try {
+        $saved_general_data = saveGeneralData($general_data, $generalDataTable);
+        $apply_vaccine = filter_input(INPUT_POST, 'vaccineapplication');
+        $applied_number = filter_input(INPUT_POST, 'appliednumberselector');
+        for ($i = 1; $i <= $applied_number; $i++) {
+            $id_vaccine_consultation = filter_input(INPUT_POST, 'idvaccineconsultation' . $i);
+            $id_vaccine = filter_input(INPUT_POST, 'vaccineselector' . $i);
+            $batch = filter_input(INPUT_POST, 'batch' . $i);
+            $expiration = filter_input(INPUT_POST, 'expiration' . $i);
+            $vaccine_consultation = new VaccineConsultation($id_vaccine_consultation, $saved_general_data->id, $apply_vaccine, $id_vaccine, $batch, $expiration, $id_pet);
+            if ($vaccine_consultation->id === 0) {
+                $saved = $vacConsultationtable->insert($vaccine_consultation);
+                if ($saved) {
+                    $vaccine_consultation->id = $vacConsultationtable->selectLastInsertId();
+                    $id = $vaccine_consultation->id;
+                }
+            } else {
+                $saved = $vacConsultationtable->update($vaccine_consultation);
+            }
+            if (!$saved) {
+                saveError($vacConsultationtable->getError());
+                break;
             }
         }
-    } else {
-        $generaldatasaved = $generalDataTable->update($idgeneraldata, $generaldatadateToSQL, $heartrate, $breathingfrequency, $temperature, $heartbeat, $corporalcondition, $linfonodulos, $mucous, $trc, $dh, $weight, $mood, $tusigo, $anamnesis, $findings, $clinicaltreatment, $formulanumber, $formula, $recomendations, $observations);
-        if ($generaldatasaved === TRUE) {
-            $saved = $vacConsultationtable->update($vaccine_consultation);
-        }
-    }
-
-    if (isset($generaldatasaved) && $generaldatasaved === FALSE) {
+    } catch (Exception $ex) {
         saveError($generalDataTable->getError());
-    }
-
-    if (isset($saved) && $saved === FALSE) {
-        saveError($vacConsultationtable->getError());
+        $generaldatasaved = FALSE;
     }
 }
 $loaded_vc = $vacConsultationtable->selectById($id);
 if ($loaded_vc !== NULL) {
     $idgeneraldata = $loaded_vc->id_general_data;
-    $resultsGeneralData = $generalDataTable->selectById($idgeneraldata);
-    $rowsGeneralData = mysqli_fetch_array($resultsGeneralData);
-    if ($rowsGeneralData !== NULL) {
-        $generaldatadate = format_string_date($rowsGeneralData['generaldatadate'], "d/m/Y");
-        $weight = $rowsGeneralData['weight'];
-        $corporalcondition = $rowsGeneralData['corporalcondition'];
-        $heartrate = $rowsGeneralData['heartrate'];
-        $breathingfrequency = $rowsGeneralData['breathingfrequency'];
-        $temperature = $rowsGeneralData['temperature'];
-        $heartbeat = $rowsGeneralData['heartbeat'];
-        $linfonodulos = $rowsGeneralData['linfonodulos'];
-        $mucous = $rowsGeneralData['mucous'];
-        $trc = $rowsGeneralData['trc'];
-        $dh = $rowsGeneralData['dh'];
-        $mood = $rowsGeneralData['mood'];
-        $tusigo = $rowsGeneralData['tusigo'];
-        $anamnesis = $rowsGeneralData['anamnesis'];
-        $findings = $rowsGeneralData['findings'];
-        $clinicaltreatment = $rowsGeneralData['clinicaltreatment'];
-        $formulanumber = $rowsGeneralData['formulanumber'];
-        $formula = $rowsGeneralData['formula'];
-        $recomendations = $rowsGeneralData['recomendations'];
-        $observations = $rowsGeneralData['observations'];
-        $vaccine_array = $vacConsultationtable->selectByIdGeneralData($idgeneraldata);
-        $applied_number = 0;
+    $general_data = $generalDataTable->selectByIdObject($idgeneraldata);
+    if ($general_data !== NULL) {
+        $generaldatadate = format_string_date($general_data->date, "d/m/Y");
+        $weight = $general_data->weight;
+        $corporalcondition = $general_data->corporal_condition;
+        $heartrate = $general_data->heart_rate;
+        $breathingfrequency = $general_data->breathing_frequency;
+        $temperature = $general_data->temperature;
+        $heartbeat = $general_data->heart_beat;
+        $linfonodulos = $general_data->linfonodulos;
+        $mucous = $general_data->mucous;
+        $trc = $general_data->trc;
+        $dh = $general_data->dh;
+        $mood = $general_data->mood;
+        $tusigo = $general_data->tusigo;
+        $anamnesis = $general_data->anamnesis;
+        $findings = $general_data->findings;
+        $clinicaltreatment = $general_data->clinical_treatment;
+        $formulanumber = $general_data->formula_number;
+        $formula = $general_data->formula;
+        $recomendations = $general_data->recomendations;
+        $observations = $general_data->observations;
+        $vaccine_array = $vacConsultationtable->selectByIdGeneralData($general_data->id);
         if ($vaccine_array !== NULL && count($vaccine_array) > 0) {
             $applied_number = count($vaccine_array);
-        } else {
-            $vaccine_array[0] = new VaccineConsultation(0, 0, 0, 0, NULL, NULL, 0);
         }
     }
-} else {
-    $anamnesis = "";
-    $findings = "";
-    $vaccine_array[0] = new VaccineConsultation(0, 0, 0, 0, NULL, NULL, 0);
+}
+
+if ($vaccine_array !== NULL && count($vaccine_array) == 0) {
+    $vaccine_array[0] = new VaccineConsultation(0, 0, 0, 0, NULL, NULL, $id_pet);
+    $vaccine_array[1] = new VaccineConsultation(0, 0, 0, 0, NULL, NULL, $id_pet);
+    $vaccine_array[2] = new VaccineConsultation(0, 0, 0, 0, NULL, NULL, $id_pet);
+}else if ($vaccine_array !== NULL && count($vaccine_array) == 1) {
+    $vaccine_array[1] = new VaccineConsultation(0, 0, 0, 0, NULL, NULL, $id_pet);
+    $vaccine_array[2] = new VaccineConsultation(0, 0, 0, 0, NULL, NULL, $id_pet);
+} else if ($vaccine_array !== NULL && count($vaccine_array) == 2) {
+    $vaccine_array[2] = new VaccineConsultation(0, 0, 0, 0, NULL, NULL, $id_pet);
 }
 
 $vaccinetable = new VaccineTable();

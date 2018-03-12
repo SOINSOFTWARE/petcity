@@ -3,6 +3,7 @@ session_start();
 include_once '../session.php';
 include_once '../../php/vaccine.php';
 include_once '../../php/generaldata.php';
+include_once '../../php/entity/generaldata.php';
 include_once '../../php/vaccineconsultation.php';
 include_once '../../php/entity/vaccineconsultation.php';
 include_once '../../php/errorlog.php';
@@ -64,7 +65,6 @@ include_once './php/vaccine/before_load.php';
                                 <div class="row">
                                     <div class="col-md-12">
                                         <input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo get_numeric_value($id_clinic_history); ?>" />
-                                        <input type="hidden" id="idvaccineconsultation" name="idvaccineconsultation" value="<?php echo get_numeric_value($vaccine_array[0]->id); ?>"/>
                                         <input type="hidden" id="idgeneraldata" name="idgeneraldata" value="<?php echo get_numeric_value($vaccine_array[0]->id_general_data); ?>"/>
                                         <input type="hidden" id="idpet" name="idpet" value="<?php echo get_numeric_value($vaccine_array[0]->id_pet); ?>"/>
                                         <?php include_once '../phpfragments/generaldata.php'; ?>
