@@ -16,7 +16,7 @@ $applied_number = 0;
 $generaldatadate = date('d/m/Y');
 $anamnesis = "";
 $findings = "";
-
+$vaccine_array = NULL;
 if (filter_input(INPUT_POST, 'save') !== NULL) {
     include_once './php/general_data/before_load.php';
     try {
@@ -80,7 +80,7 @@ if ($loaded_vc !== NULL) {
     }
 }
 
-if ($vaccine_array !== NULL && count($vaccine_array) == 0) {
+if ($vaccine_array === NULL || count($vaccine_array) == 0) {
     $vaccine_array[0] = new VaccineConsultation(0, 0, 0, 0, NULL, NULL, $id_pet);
     $vaccine_array[1] = new VaccineConsultation(0, 0, 0, 0, NULL, NULL, $id_pet);
     $vaccine_array[2] = new VaccineConsultation(0, 0, 0, 0, NULL, NULL, $id_pet);
