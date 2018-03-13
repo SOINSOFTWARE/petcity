@@ -68,7 +68,7 @@ class VaccineConsultationTable {
     }
     
     public function selectByIdGeneralData($id_general_data) {
-        $sql = "SELECT * FROM vaccineconsultation WHERE idgeneraldata = $id_general_data";
+        $sql = "SELECT * FROM vaccineconsultation WHERE enabled = 1 AND idgeneraldata = $id_general_data";
         $results = mysqli_query($this->conn, $sql);
         $vaccine_array = NULL;
         while ($row = mysqli_fetch_array($results)) {
