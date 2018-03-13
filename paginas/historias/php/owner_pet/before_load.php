@@ -64,6 +64,10 @@ if (is_viewing_object()) {
     $pet_photo = upload_photo_to_server($companyId, filter_input(INPUT_POST, 'petphoto'));
     $history = filter_input(INPUT_POST, 'history');
     $full_born_date = get_full_born_date($born_date);
+    
+    if (intval($id_breed) == -1) {
+        $id_breed = save_pet_breed($id_pet_type, $pet_breed, $companyId);
+    }
 
     $is_owner_saved = save_owner_data($owner, $id_owner, $document, $owner_name, $last_name, $owner_email, $address, $phone1, $phone2, $companyId);
     if ($is_owner_saved === TRUE) {
@@ -144,4 +148,14 @@ function upload_photo_to_server($companyId, $pet_photo) {
     } else {
         return $pet_photo;
     }
+}
+
+function save_pet_breed($id_pet_type, $name, $companyId) {
+    include_once '../../php/breed.php';
+    $breed = new BreedTable();
+    $success_saved = $breed->insert($name, $id_pet_type, $companyId);
+    if (!$success_saved)  {
+        saveError($breed->getError());
+    }
+    return $breed->selectLastInsertId();
 }
