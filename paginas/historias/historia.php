@@ -35,6 +35,10 @@ if (isset($_POST['idclinichistory'])) {
         $idbreed = $rows['idbreed'];
         $petbreedname = $rows['breedname'];
         $pet_photo = $rows['photo'];
+        $pet_born_date = DateTime::createFromFormat("Y-m-d H:i:s", $rows['borndate']);
+        $curr_date = new DateTime("now");
+        $diff = $pet_born_date->diff($curr_date);
+        $pet_age = $diff->y . ' a&ntilde;os y ' . $diff->m . ' meses';
     }
 }
 $mdconsultable = new MedicalConsultationTable();
@@ -316,6 +320,32 @@ if (isset($_POST['deletesurgery'])) {
                                                 ?>" disabled>
                                             </div>
                                             <div class="form-group">
+                                                <label for="ownerdocument">Documento propietario</label>
+                                                <input type="text" class="form-control" id="ownerdocument" name="ownerdocument" value="<?php
+                                                if (isset($document)) {
+                                                    echo $document;
+                                                }
+                                                ?>" disabled>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ownerfullname">Nombre propietario</label>
+                                                <input type="text" class="form-control" id="ownerfullname" name="ownerfullname" value="<?php
+                                                if (isset($ownername) && isset($lastName)) {
+                                                    echo $ownername . ' ' . $lastName;
+                                                }
+                                                ?>" disabled>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone2">Celular</label>
+                                                <input type="text" class="form-control" id="phone2" name="phone2" value="<?php
+                                                if (isset($phone2)) {
+                                                    echo $phone2;
+                                                }
+                                                ?>" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <div class="form-group">
                                                 <label for="petname">Nombre de la mascota</label>
                                                 <input type="text" class="form-control" id="petname" name="petname" value="<?php
                                                 if (isset($petname)) {
@@ -339,29 +369,11 @@ if (isset($_POST['deletesurgery'])) {
                                                 }
                                                 ?>" disabled>
                                             </div>
-                                        </div>
-                                        <div class="col-xs-4">
                                             <div class="form-group">
-                                                <label for="ownerdocument">Documento propietario</label>
-                                                <input type="text" class="form-control" id="ownerdocument" name="ownerdocument" value="<?php
-                                                if (isset($document)) {
-                                                    echo $document;
-                                                }
-                                                ?>" disabled>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="ownerfullname">Nombre propietario</label>
-                                                <input type="text" class="form-control" id="ownerfullname" name="ownerfullname" value="<?php
-                                                if (isset($ownername) && isset($lastName)) {
-                                                    echo $ownername . ' ' . $lastName;
-                                                }
-                                                ?>" disabled>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="phone2">Celular</label>
-                                                <input type="text" class="form-control" id="phone2" name="phone2" value="<?php
-                                                if (isset($phone2)) {
-                                                    echo $phone2;
+                                                <label for="petage">Edad:</label>
+                                                <input type="text" class="form-control" id="petage" name="petage" value="<?php
+                                                if (isset($pet_age)) {
+                                                    echo $pet_age;
                                                 }
                                                 ?>" disabled>
                                             </div>

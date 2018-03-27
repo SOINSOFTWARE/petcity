@@ -37,4 +37,100 @@ class Pet {
         $this->id_company = $id_company;
     }
 
+    public function getName() {
+        if ($this->name !== NULL) {
+            return "'" . $this->name . "'";
+        } else {
+            return "''";
+        }
+    }
+
+    public function getColor() {
+        if ($this->color !== NULL) {
+            return "'" . $this->color . "'";
+        } else {
+            return "''";
+        }
+    }
+
+    public function getSex() {
+        if ($this->sex !== NULL) {
+            return "'" . $this->sex . "'";
+        } else {
+            return "''";
+        }
+    }
+
+    public function getBornDate() {
+        if ($this->born_date !== NULL) {
+            return "'" . $this->born_date . "'";
+        } else {
+            return 'null';
+        }
+    }
+
+    public function getBornPlace() {
+        if ($this->born_place !== NULL) {
+            return "'" . $this->born_place . "'";
+        } else {
+            return "''";
+        }
+    }
+
+    public function getPhoto() {
+        if ($this->photo !== NULL) {
+            return "'" . $this->photo . "'";
+        } else {
+            return 'null';
+        }
+    }
+
+    public function getHistory() {
+        if ($this->history !== NULL) {
+            return "'" . $this->history . "'";
+        } else {
+            return 'null';
+        }
+    }
+
+    public function getIdReproduction() {
+        if ($this->id_reproduction !== NULL) {
+            return $this->id_reproduction;
+        } else {
+            return 0;
+        }
+    }
+
+    public function getIdPetType() {
+        if ($this->id_pet_type !== NULL) {
+            return $this->id_pet_type;
+        } else {
+            return 0;
+        }
+    }
+
+    public function getIdBreed() {
+        if ($this->id_breed !== NULL) {
+            return $this->id_breed;
+        } else {
+            return 0;
+        }
+    }
+
+    public function getIdOwner() {
+        if ($this->id_owner !== NULL) {
+            return $this->id_owner;
+        } else {
+            return 0;
+        }
+    }
+
+    public function getIdCompany() {
+        if ($this->id_company !== NULL) {
+            return $this->id_company;
+        } else {
+            return 0;
+        }
+    }
+
 }

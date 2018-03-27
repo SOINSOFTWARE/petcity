@@ -14,14 +14,57 @@ class PetTable {
         mysqli_select_db($this->conn, DB_NAME);
     }
 
-    public function insert($name, $color, $sex, $borndate, $bornplace, $photo, $history, $idreproduction, $idpettype, $idbreed, $idowner, $idcompany) {
-        $sql = "INSERT pet(name,color,sex,borndate,bornplace,photo,history,idreproduction,idpettype,idbreed,idowner,idcompany) VALUES('$name', '$color', '$sex', '$borndate', '$bornplace', '$photo', '$history', $idreproduction, $idpettype, $idbreed, $idowner, $idcompany)";
+    private function insert($name, $color, $sex, $born_date, $born_place, $photo, $history, $id_reproduction, $id_pet_type, $id_breed, $id_owner, $id_company) {
+        $sql = "INSERT pet(name,color,sex,borndate,bornplace,photo,history,idreproduction,idpettype,idbreed,idowner,idcompany) "
+                . "VALUES($name,$color,$sex,$born_date,$born_place,$photo,$history,$id_reproduction,$id_pet_type,$id_breed,$id_owner,$id_company)";
         return $this->conn->query($sql);
     }
 
-    public function update($id, $name, $color, $sex, $borndate, $bornplace, $photo, $history, $idreproduction, $idpettype, $idbreed) {
-        $sql = "UPDATE pet SET name = '$name', color = '$color', sex = '$sex', borndate = '$borndate', bornplace = '$bornplace', photo = '$photo', history = '$history', idreproduction = $idreproduction, idpettype = $idpettype, idbreed = $idbreed WHERE id = $id";
+    private function update($id, $name, $color, $sex, $born_date, $born_place, $photo, $history, $id_reproduction, $id_pet_type, $id_breed) {
+        $sql = "UPDATE pet "
+                . "SET name = $name,"
+                . "color = $color,"
+                . "sex = $sex,"
+                . "borndate = $born_date,"
+                . "bornplace = $born_place,"
+                . "photo = $photo,"
+                . "history = $history,"
+                . "idreproduction = $id_reproduction,"
+                . "idpettype = $id_pet_type,"
+                . "idbreed = $id_breed"
+                . " WHERE id = $id";
         return $this->conn->query($sql);
+    }
+
+    public function insertObject($pet_data) {
+        $name = $pet_data->getName();
+        $color = $pet_data->getColor();
+        $sex = $pet_data->getSex();
+        $born_date = $pet_data->getBornDate();
+        $born_place = $pet_data->getBornPlace();
+        $photo = $pet_data->getPhoto();
+        $history = $pet_data->getHistory();
+        $id_reproduction = $pet_data->getIdReproduction();
+        $id_pet_type = $pet_data->getIdPetType();
+        $id_breed = $pet_data->getIdBreed();
+        $id_owner = $pet_data->getIdOwner();
+        $id_company = $pet_data->getIdCompany();
+        return $this->insert($name, $color, $sex, $born_date, $born_place, $photo, $history, $id_reproduction, $id_pet_type, $id_breed, $id_owner, $id_company);
+    }
+
+    public function updateObject($pet_data) {
+        $name = $pet_data->getName();
+        $color = $pet_data->getColor();
+        $sex = $pet_data->getSex();
+        $born_date = $pet_data->getBornDate();
+        $born_place = $pet_data->getBornPlace();
+        $photo = $pet_data->getPhoto();
+        $history = $pet_data->getHistory();
+        $id_reproduction = $pet_data->getIdReproduction();
+        $id_pet_type = $pet_data->getIdPetType();
+        $id_breed = $pet_data->getIdBreed();
+        $id = $pet_data->id;
+        return $this->update($id, $name, $color, $sex, $born_date, $born_place, $photo, $history, $id_reproduction, $id_pet_type, $id_breed);
     }
 
     public function delete($id) {
@@ -50,5 +93,3 @@ class PetTable {
     }
 
 }
-
-?>

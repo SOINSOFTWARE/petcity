@@ -14,14 +14,30 @@ class ClinicHistoryTable {
         mysqli_select_db($this->conn, DB_NAME);
     }
 
-    public function insert($idpet, $idcompany, $record_custom_id) {
-        $sql = "INSERT clinichistory(idpet,idcompany,recordcustomid) VALUES($idpet,$idcompany,$record_custom_id)";
+    private function insert($id_pet, $id_company, $record_custom_id) {
+        $sql = "INSERT clinichistory(idpet,idcompany,recordcustomid) "
+                . "VALUES($id_pet,$id_company,$record_custom_id)";
         return $this->conn->query($sql);
     }
     
-    public function update($id, $record_custom_id) {
-        $sql = "UPDATE clinichistory SET recordcustomid = $record_custom_id WHERE id = $id";
+    private function update($id, $record_custom_id) {
+        $sql = "UPDATE clinichistory "
+                . "SET recordcustomid = $record_custom_id"
+                . " WHERE id = $id";
         return $this->conn->query($sql);
+    }
+    
+    public function insertObject($clinic_history) {
+        $id_pet = $clinic_history->getIdPet();
+        $id_company = $clinic_history->getIdCompany();
+        $record_custom_id = $clinic_history->getRecordCustomId();
+        return $this->insert($id_pet, $id_company, $record_custom_id);
+    }
+    
+    public function updateObject($clinic_history) {
+        $record_custom_id = $clinic_history->getRecordCustomId();
+        $id = $clinic_history->id;
+        return $this->update($id, $record_custom_id);
     }
 
     public function delete($id) {

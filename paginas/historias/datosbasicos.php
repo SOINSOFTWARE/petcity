@@ -58,7 +58,6 @@ include_once './php/owner_pet/before_load.php';
                     <?php include_once './php/owner_pet/after_crud_operation_messages.php'; ?>
                     <form action="datosbasicos.php" method="post" role="form" onsubmit="return validate()" enctype="multipart/form-data">
                         <input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo get_numeric_value($clinic_history->id); ?>" />
-                        <input type="hidden" id="recordcustomid" name="recordcustomid" value="<?php echo get_string_value($clinic_history->record_custom_id); ?>" />
                         <input type="hidden" id="idowner" name="idowner" value="<?php echo get_numeric_value($clinic_history->pet->owner->id); ?>" />
                         <input type="hidden" id="idpet" name="idpet" value="<?php echo get_numeric_value($clinic_history->pet->id); ?>" />
                         <input type="hidden" id="petphoto" name="petphoto" value="<?php echo get_string_value($clinic_history->pet->photo); ?>" />
@@ -79,7 +78,7 @@ include_once './php/owner_pet/before_load.php';
                                                             <div class="col-md-4">
                                                                 <div id="divclinichistory" class="form-group">
                                                                     <label for="recordcustomid">N&uacute;mero</label>
-                                                                    <input type="number" class="form-control" placeholder="N&uacute;mero de historia" 
+                                                                    <input type="number" class="form-control" id="recordcustomid" name="recordcustomid" placeholder="N&uacute;mero de historia" 
                                                                            value="<?php echo get_string_value($clinic_history->record_custom_id); ?>" />
                                                                 </div>
                                                             </div>
@@ -227,7 +226,7 @@ include_once './php/owner_pet/before_load.php';
                                                             <label for="petborndate">Fecha de nacimiento</label>
                                                             <input type="text" class="form-control" id="petborndate" name="petborndate" 
                                                                    placeholder="Fecha de nacimiento" data-inputmask="'alias': 'mm/yyyy'"
-                                                                   value="<?php echo get_string_value($clinic_history->pet->born_date); ?>" required data-mask />
+                                                                   value="<?php echo format_string_date(get_string_value($clinic_history->pet->born_date), "m/Y"); ?>" required data-mask />
                                                         </div>
                                                         <div id="divpetbornplace" class="form-group">
                                                             <label for="petbornplace">Procedencia</label>

@@ -24,4 +24,68 @@ class Owner {
         $this->id_company = $id_company;
     }
 
+    public function getDocument() {
+        if ($this->document !== NULL) {
+            return "'" . $this->document . "'";
+        } else {
+            return "''";
+        }
+    }
+
+    public function getName() {
+        if ($this->name !== NULL) {
+            return "'" . $this->name . "'";
+        } else {
+            return "''";
+        }
+    }
+
+    public function getLastName() {
+        if ($this->last_name !== NULL) {
+            return "'" . $this->last_name . "'";
+        } else {
+            return "''";
+        }
+    }
+
+    public function getEmail() {
+        if ($this->email !== NULL) {
+            return "'" . $this->email . "'";
+        } else {
+            return 'null';
+        }
+    }
+
+    public function getAddress() {
+        if ($this->address !== NULL) {
+            return "'" . $this->address . "'";
+        } else {
+            return 'null';
+        }
+    }
+
+    public function getPhone() {
+        if ($this->phone1 !== NULL) {
+            return "'" . $this->phone1 . "'";
+        } else {
+            return "''";
+        }
+    }
+
+    public function getPhone2() {
+        if ($this->phone2 !== NULL) {
+            return "'" . $this->phone2 . "'";
+        } else {
+            return 'null';
+        }
+    }
+
+    public function getIdCompany() {
+        if ($this->id_company !== NULL) {
+            return $this->id_company;
+        } else {
+            return 0;
+        }
+    }
+
 }
