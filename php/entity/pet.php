@@ -1,5 +1,7 @@
 <?php
 
+include_once 'owner.php';
+
 class Pet {
 
     public $id;
@@ -15,6 +17,9 @@ class Pet {
     public $id_breed;
     public $id_owner;
     public $id_company;
+    public $type_name;
+    public $breed_name;
+    public $owner;
 
     function __construct($id, $name, $color, $sex, $born_date, $born_place, $photo, $history, $id_reproduction, $id_pet_type, $id_breed, $id_owner, $id_company) {
         $this->id = $id;

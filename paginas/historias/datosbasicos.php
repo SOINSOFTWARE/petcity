@@ -5,6 +5,9 @@ include_once '../../php/company.php';
 include_once '../../php/clinichistory.php';
 include_once '../../php/owner.php';
 include_once '../../php/pet.php';
+include_once '../../php/entity/clinichistory.php';
+include_once '../../php/entity/owner.php';
+include_once '../../php/entity/pet.php';
 include_once '../../php/errorlog.php';
 include_once '../phpfragments/custom_date.php';
 include_once '../phpfragments/message_dialog.php';
@@ -49,11 +52,18 @@ include_once './php/owner_pet/before_load.php';
                         </li>
                     </ol>
                     <br/>
-                    <?php include_once './php/owner_pet/backward_button.php'; ?>
+                    <?php include_once '../phpfragments/backward_button.php'; ?>
                 </section>
                 <section class="content">
                     <?php include_once './php/owner_pet/after_crud_operation_messages.php'; ?>
                     <form action="datosbasicos.php" method="post" role="form" onsubmit="return validate()" enctype="multipart/form-data">
+                        <input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo get_numeric_value($clinic_history->id); ?>" />
+                        <input type="hidden" id="recordcustomid" name="recordcustomid" value="<?php echo get_string_value($clinic_history->record_custom_id); ?>" />
+                        <input type="hidden" id="idowner" name="idowner" value="<?php echo get_numeric_value($clinic_history->pet->owner->id); ?>" />
+                        <input type="hidden" id="idpet" name="idpet" value="<?php echo get_numeric_value($clinic_history->pet->id); ?>" />
+                        <input type="hidden" id="petphoto" name="petphoto" value="<?php echo get_string_value($clinic_history->pet->photo); ?>" />
+                        <input type="hidden" id="pettype" name="pettype" value="<?php echo get_numeric_value($clinic_history->pet->id_pet_type); ?>" />
+                        <input type="hidden" id="petbreed" name="petbreed" value="<?php echo get_numeric_value($clinic_history->pet->id_breed); ?>" />
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="box">
@@ -70,8 +80,7 @@ include_once './php/owner_pet/before_load.php';
                                                                 <div id="divclinichistory" class="form-group">
                                                                     <label for="recordcustomid">N&uacute;mero</label>
                                                                     <input type="number" class="form-control" placeholder="N&uacute;mero de historia" 
-                                                                           value="<?php echo get_string_value($record_custom_id); ?>" />
-                                                                    <input type="hidden" id="recordcustomid" name="recordcustomid" value="<?php echo get_string_value($record_custom_id); ?>" />
+                                                                           value="<?php echo get_string_value($clinic_history->record_custom_id); ?>" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -87,24 +96,22 @@ include_once './php/owner_pet/before_load.php';
                                                     </div>
                                                     <div class="box-body">
                                                         <div id="divownerdocument" class="form-group">
-                                                            <input type="hidden" id="idowner" name="idowner" 
-                                                                   value="<?php echo get_numeric_value($id_owner); ?>" />
                                                             <label for="ownerdocument">N&uacute;mero de documento</label>
                                                             <input type="number" class="form-control" id="ownerdocument" name="ownerdocument" 
                                                                    placeholder="N&uacute;mero de documento" 
-                                                                   value="<?php echo get_string_value($document); ?>" required data-mask />
+                                                                   value="<?php echo get_string_value($clinic_history->pet->owner->document); ?>" required data-mask />
                                                         </div>
                                                         <div id="divownername" class="form-group">
                                                             <label for="ownername">Nombre(s)</label>
                                                             <input type="text" class="form-control" id="ownername" name="ownername" 
                                                                    placeholder="Nombre(s)" maxlength="50" 
-                                                                   value="<?php echo get_string_value($owner_name); ?>" required />
+                                                                   value="<?php echo get_string_value($clinic_history->pet->owner->name); ?>" required />
                                                         </div>
                                                         <div id="divownerlastname" class="form-group">
                                                             <label for="ownerlastname">Apellido(s)</label>
                                                             <input type="text" class="form-control" id="ownerlastname" name="ownerlastname" 
                                                                    placeholder="Apellido(s)" maxlength="50" 
-                                                                   value="<?php echo get_string_value($last_name); ?>" required />
+                                                                   value="<?php echo get_string_value($clinic_history->pet->owner->last_name); ?>" required />
                                                         </div>
                                                         <div id="divowneremail" class="form-group">
                                                             <label for="owneremail">Email</label>
@@ -112,7 +119,7 @@ include_once './php/owner_pet/before_load.php';
                                                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                                                                 <input type="email" class="form-control" id="owneremail" name="owneremail" 
                                                                        placeholder="ejemplo@email.com" maxlength="150" 
-                                                                       value="<?php echo get_string_value($owner_email); ?>" required />
+                                                                       value="<?php echo get_string_value($clinic_history->pet->owner->email); ?>" required />
                                                             </div>
                                                         </div>
                                                         <div id="divowneraddress" class="form-group">
@@ -121,7 +128,7 @@ include_once './php/owner_pet/before_load.php';
                                                                 <span class="input-group-addon"><i class="fa fa-home"></i></span>
                                                                 <input type="text" class="form-control" id="owneraddress" name="owneraddress" 
                                                                        placeholder="Direcci&oacute;n" maxlength="100" 
-                                                                       value="<?php echo get_string_value($address); ?>" required />
+                                                                       value="<?php echo get_string_value($clinic_history->pet->owner->address); ?>" required />
                                                             </div>
                                                         </div>
                                                         <div id="divownerphone2" class="form-group">
@@ -130,7 +137,7 @@ include_once './php/owner_pet/before_load.php';
                                                                 <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
                                                                 <input type="text" class="form-control" id="ownerphone2" name="ownerphone2"
                                                                        placeholder="Celular" data-inputmask='"mask": "9999999999"'
-                                                                       value="<?php echo get_string_value($phone2); ?>" required data-mask />
+                                                                       value="<?php echo get_string_value($clinic_history->pet->owner->phone2); ?>" required data-mask />
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
@@ -139,7 +146,7 @@ include_once './php/owner_pet/before_load.php';
                                                                 <span class="input-group-addon"><i class="fa fa-phone"></i></span>
                                                                 <input type="text" class="form-control" id="ownerphone" name="ownerphone"
                                                                        placeholder="Tel&eacute;fono" data-inputmask='"mask": "9999999"' 
-                                                                       value="<?php echo get_string_value($phone1); ?>" data-mask />
+                                                                       value="<?php echo get_string_value($clinic_history->pet->owner->phone1); ?>" data-mask />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -152,13 +159,11 @@ include_once './php/owner_pet/before_load.php';
                                                     </div>
                                                     <div class="box-body">
                                                         <div class="form-group">
-                                                            <input type="hidden" id="petphoto" name="petphoto" 
-                                                                   value="<?php echo get_string_value($pet_photo); ?>" />
                                                                    <?php
-                                                                   if (get_string_value($pet_photo) != '') {
+                                                                   if (get_string_value($clinic_history->pet->photo) != '') {
                                                                        echo '<div class="form-group">';
                                                                        echo '<img src="';
-                                                                       echo $pet_photo;
+                                                                       echo $clinic_history->pet->photo;
                                                                        echo '" class="img-rounded" alt="Foto de la mascota" width="250px" />';
                                                                        echo '</div>';
                                                                        echo '<label for="pet_photo_file">Cambiar foto</label>';
@@ -170,34 +175,27 @@ include_once './php/owner_pet/before_load.php';
                                                                    ?>
                                                         </div>
                                                         <div id="divpetname" class="form-group">
-                                                            <input type="hidden" id="idpet" name="idpet" 
-                                                                   value="<?php echo get_numeric_value($id_pet); ?>" />
                                                             <label for="petname">Nombre</label>
                                                             <input type="text" class="form-control" id="petname" name="petname" 
                                                                    placeholder="Nombre" maxlength="60" 
-                                                                   value="<?php echo get_string_value($pet_name); ?>" required />
+                                                                   value="<?php echo get_string_value($clinic_history->pet->name); ?>" required />
                                                         </div>
                                                         <div id="divpettype" class="form-group">
                                                             <button type="button" id="pettypebtn" name="pettypebtn" class="btn btn-warning" onclick="showPetType();">
-                                                                <i class="fa fa-search"></i>
+                                                                <i class="fa fa-search"></i> Seleccione la especie y raza de la mascota
                                                             </button>
-                                                            <label for="pettypebtn"> Seleccione la especie y raza de la mascota</label>
                                                         </div>
                                                         <div class="form-group">
-                                                            <input type="hidden" id="pettype" name="pettype" 
-                                                                   value="<?php echo get_numeric_value($id_pet_type); ?>" />
                                                             <label for="pettype">Especie</label>
                                                             <input type="text" class="form-control" id="pettypename" name="pettypename"
                                                                    placeholder="Caninos..." 
-                                                                   value="<?php echo get_string_value($pet_type); ?>" readonly />
+                                                                   value="<?php echo get_string_value($clinic_history->pet->type_name); ?>" readonly />
                                                         </div>
                                                         <div class="form-group">
-                                                            <input type="hidden" id="petbreed" name="petbreed" 
-                                                                   value="<?php echo get_numeric_value($id_breed); ?>" />
                                                             <label for="petbreed">Raza</label>
                                                             <input type="text" class="form-control" id="petbreedname" name="petbreedname"
                                                                    placeholder="Raza de la mascota" 
-                                                                   value="<?php echo get_string_value($pet_breed); ?>" readonly />
+                                                                   value="<?php echo get_string_value($clinic_history->pet->breed_name); ?>" readonly />
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="petreproduction">Estado reproductivo</label>
@@ -209,19 +207,19 @@ include_once './php/owner_pet/before_load.php';
                                                             <label for="petcolor">Color</label>
                                                             <input type="text" class="form-control" id="petcolor" name="petcolor"
                                                                    placeholder="Color" maxlength="45" 
-                                                                   value="<?php echo get_string_value($color); ?>" required />
+                                                                   value="<?php echo get_string_value($clinic_history->pet->color); ?>" required />
                                                         </div>
                                                         <div class="form-group">
                                                             <div class="radio">
                                                                 <label>
                                                                     <input type="radio" id="petsex1" name="petsex" value="M" 
-                                                                           <?php print_checked_if_needed($sex, "M"); ?> />
+                                                                           <?php print_checked_if_needed($clinic_history->pet->sex, "M"); ?> />
                                                                     Macho</label>
                                                             </div>
                                                             <div class="radio">
                                                                 <label>
                                                                     <input type="radio" id="petsex2" name="petsex" value="F" 
-                                                                           <?php print_checked_if_needed($sex, "F"); ?> />
+                                                                           <?php print_checked_if_needed($clinic_history->pet->sex, "F"); ?> />
                                                                     Hembra</label>
                                                             </div>
                                                         </div>
@@ -229,18 +227,18 @@ include_once './php/owner_pet/before_load.php';
                                                             <label for="petborndate">Fecha de nacimiento</label>
                                                             <input type="text" class="form-control" id="petborndate" name="petborndate" 
                                                                    placeholder="Fecha de nacimiento" data-inputmask="'alias': 'mm/yyyy'"
-                                                                   value="<?php echo get_string_value($born_date); ?>" required data-mask />
+                                                                   value="<?php echo get_string_value($clinic_history->pet->born_date); ?>" required data-mask />
                                                         </div>
                                                         <div id="divpetbornplace" class="form-group">
                                                             <label for="petbornplace">Procedencia</label>
                                                             <input type="text" class="form-control" id="petbornplace" name="petbornplace"
                                                                    placeholder="Lugar en el cual se adquiri&oacute; la mascota"  maxlength="60"
-                                                                   value="<?php echo get_string_value($born_place); ?>" required />
+                                                                   value="<?php echo get_string_value($clinic_history->pet->born_place); ?>" required />
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="history">Antecedentes - Enfermedades anteriores</label>
                                                             <textarea placeholder="Enfermedades anteriores, hospitalizaciones, propietarios anteriores, reacciones adversas, y todos los datos de importancia de la mascota"
-                                                                      class="form-control" id="history" name="history" rows="8" maxlength="650"><?php echo get_string_value($history); ?></textarea>
+                                                                      class="form-control" id="history" name="history" rows="8" maxlength="650"><?php echo get_string_value($clinic_history->pet->history); ?></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -251,12 +249,9 @@ include_once './php/owner_pet/before_load.php';
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <button type="submit" id="<?php print_id_for_form($id_clinic_history); ?>" name="<?php print_id_for_form($id_clinic_history); ?>" 
-                                                            class="btn btn-primary pull-right">
+                                                    <button type="submit" id="save" name="save" class="btn btn-primary pull-right">
                                                         <i class="fa fa-save"></i> Guardar
                                                     </button>
-                                                    <input type="hidden" id="idhistory" name="idhistory" 
-                                                           value="<?php echo get_numeric_value($id_clinic_history); ?>" />
                                                 </div>
                                             </div>
                                         </div>

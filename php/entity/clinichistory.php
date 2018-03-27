@@ -1,11 +1,14 @@
 <?php
 
+include_once 'pet.php';
+
 class ClinicHistory {
 
     public $id;
     public $id_pet;
     public $id_company;
     public $record_custom_id;
+    public $pet;
 
     function __construct($id, $id_pet, $id_company, $record_custom_id) {
         $this->id = $id;

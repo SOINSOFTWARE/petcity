@@ -3,44 +3,18 @@
 include_once '../phpfragments/validations.php';
 include_once './php/owner_pet/data_loader.php';
 $company_table = new CompanyTable();
-$clinichistory = new ClinicHistoryTable();
-$owner = new OwnerTable();
-$pet = new PetTable();
+$clinichistory_table = new ClinicHistoryTable();
+$owner_table = new OwnerTable();
+$pet_table = new PetTable();
 $success_saved = FALSE;
-$record_custom_id = $current_clinic_history_id;
-if (is_viewing_object()) {
-    $id_clinic_history = filter_input(INPUT_POST, 'idclinichistory');
-    $results = $clinichistory->selectById($id_clinic_history);
-    $rows = mysqli_fetch_array($results);
-    if ($rows !== NULL) {
-        $record_custom_id = $rows['recordcustomid'];
-
-        $id_owner = $rows['idowner'];
-        $document = $rows['document'];
-        $owner_name = $rows['ownername'];
-        $last_name = $rows['lastname'];
-        $owner_email = $rows['email'];
-        $address = $rows['address'];
-        $phone1 = $rows['phone'];
-        $phone2 = $rows['phone2'];
-
-        $id_pet = $rows['idpet'];
-        $pet_name = $rows['petname'];
-        $id_pet_type = $rows['idpettype'];
-        $pet_type = $rows['pettypename'];
-        $id_breed = $rows['idbreed'];
-        $pet_breed = $rows['breedname'];
-        $id_reproduction = $rows['idreproduction'];
-        $color = $rows['color'];
-        $sex = $rows['sex'];
-        $born_place = $rows['bornplace'];
-        $pet_photo = $rows['photo'];
-        $history = $rows['history'];
-        $born_date = format_string_date($rows['borndate'], "m/Y");
-    }
-} else if (is_creating_new_object() || is_updating_object()) {
+$id_clinic_history = filter_input(INPUT_POST, 'idclinichistory');
+$owner = new Owner(0, '', '', '', '', '', '', '', $companyId);
+$pet = new Pet(0, '', '', 'M', '', '', '', '', '', 0, 0, 0, $companyId);
+$pet->owner = $owner;
+$clinic_history = new ClinicHistory($id_clinic_history, 0, $companyId, $current_clinic_history_id);
+$clinic_history->pet = $pet;
+if (is_creating_new_object() || is_updating_object()) {
     $record_custom_id = filter_input(INPUT_POST, 'recordcustomid');
-    $id_clinic_history = filter_input(INPUT_POST, 'idhistory');
     $id_owner = filter_input(INPUT_POST, 'idowner');
     $document = str_replace("_", "", filter_input(INPUT_POST, 'ownerdocument'));
     $owner_name = filter_input(INPUT_POST, 'ownername');
@@ -64,42 +38,45 @@ if (is_viewing_object()) {
     $pet_photo = upload_photo_to_server($companyId, filter_input(INPUT_POST, 'petphoto'));
     $history = filter_input(INPUT_POST, 'history');
     $full_born_date = get_full_born_date($born_date);
-    
+
     if (intval($id_breed) == -1) {
         $id_breed = save_pet_breed($id_pet_type, $pet_breed, $companyId);
     }
 
-    $is_owner_saved = save_owner_data($owner, $id_owner, $document, $owner_name, $last_name, $owner_email, $address, $phone1, $phone2, $companyId);
+    $is_owner_saved = save_owner_data($owner_table, $id_owner, $document, $owner_name, $last_name, $owner_email, $address, $phone1, $phone2, $companyId);
     if ($is_owner_saved === TRUE) {
         if (is_creating_new_object()) {
-            $id_owner = $owner->selectLastInsertId();
+            $id_owner = $owner_table->selectLastInsertId();
         }
-        $is_pet_saved = save_pet_data($pet, $id_pet, $pet_name, $color, $sex, $full_born_date, $born_place, $pet_photo, $history, $id_reproduction, $id_pet_type, $id_breed, $id_owner, $companyId);
+        $is_pet_saved = save_pet_data($pet_table, $id_pet, $pet_name, $color, $sex, $full_born_date, $born_place, $pet_photo, $history, $id_reproduction, $id_pet_type, $id_breed, $id_owner, $companyId);
         if ($is_pet_saved === TRUE) {
             if (is_creating_new_object()) {
-                $id_pet = $pet->selectLastInsertId();
-                $is_clinic_history_saved = $clinichistory->insert($id_pet, $companyId, $record_custom_id);
+                $id_pet = $pet_table->selectLastInsertId();
+                $is_clinic_history_saved = $clinichistory_table->insert($id_pet, $companyId, $record_custom_id);
                 if ($is_clinic_history_saved === TRUE) {
                     if ($record_custom_id == $current_clinic_history_id) {
-                        $id_clinic_history = $clinichistory->selectLastInsertId();
+                        $id_clinic_history = $clinichistory_table->selectLastInsertId();
                         $company_table->updateActualCustomId($companyId, $record_custom_id + 1);
                         $_SESSION['petcity_actualcustomid'] = $record_custom_id + 1;
                     }
                 }
             } else {
-                $is_clinic_history_saved = $clinichistory->update($id_clinic_history, $record_custom_id);
+                $is_clinic_history_saved = $clinichistory_table->update($id_clinic_history, $record_custom_id);
             }
             if ($is_clinic_history_saved === TRUE) {
                 $success_saved = TRUE;
             } else {
-                saveError($clinichistory->getError());
+                saveError($clinichistory_table->getError());
             }
         } else {
-            saveError($pet->getError());
+            saveError($pet_table->getError());
         }
     } else {
-        saveError($owner->getError());
+        saveError($owner_table->getError());
     }
+}
+if (!is_null($id_clinic_history)) {
+    $clinic_history = load_clinic_history($clinichistory_table, $id_clinic_history, $clinic_history);
 }
 
 function saveError($log) {
@@ -154,8 +131,43 @@ function save_pet_breed($id_pet_type, $name, $companyId) {
     include_once '../../php/breed.php';
     $breed = new BreedTable();
     $success_saved = $breed->insert($name, $id_pet_type, $companyId);
-    if (!$success_saved)  {
+    if (!$success_saved) {
         saveError($breed->getError());
     }
     return $breed->selectLastInsertId();
+}
+
+function load_clinic_history($clinichistory_table, $id_clinic_history, $clinic_history) {
+    $results = $clinichistory_table->selectById($id_clinic_history);
+    $rows = mysqli_fetch_array($results);
+    if ($rows !== NULL) {
+        $clinic_history->pet->owner->id = $rows['idowner'];
+        $clinic_history->pet->owner->document = $rows['document'];
+        $clinic_history->pet->owner->name = $rows['ownername'];
+        $clinic_history->pet->owner->last_name = $rows['lastname'];
+        $clinic_history->pet->owner->email = $rows['email'];
+        $clinic_history->pet->owner->address = $rows['address'];
+        $clinic_history->pet->owner->phone1 = $rows['phone'];
+        $clinic_history->pet->owner->phone2 = $rows['phone2'];
+
+        $clinic_history->pet->id = $rows['idpet'];
+        $clinic_history->pet->id_owner = $rows['idowner'];
+        $clinic_history->pet->name = $rows['petname'];
+        $clinic_history->pet->id_pet_type = $rows['idpettype'];
+        $clinic_history->pet->type_name = $rows['pettypename'];
+        $clinic_history->pet->id_breed = $rows['idbreed'];
+        $clinic_history->pet->breed_name = $rows['breedname'];
+        $clinic_history->pet->id_reproduction = $rows['idreproduction'];
+        $clinic_history->pet->color = $rows['color'];
+        $clinic_history->pet->sex = $rows['sex'];
+        $clinic_history->pet->born_place = $rows['bornplace'];
+        $clinic_history->pet->photo = $rows['photo'];
+        $clinic_history->pet->history = $rows['history'];
+        $clinic_history->pet->born_date = $rows['borndate'];
+        # format_string_date($rows['borndate'], "m/Y");
+        
+        $clinic_history->id_pet = $rows['idpet'];
+        $clinic_history->record_custom_id = $rows['recordcustomid'];
+    }
+    return $clinic_history;
 }
