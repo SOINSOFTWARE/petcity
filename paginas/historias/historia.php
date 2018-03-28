@@ -9,6 +9,7 @@ include_once '../../php/vaccineconsultation.php';
 include_once '../../php/adversereactions.php';
 include_once '../../php/hospitalization.php';
 include_once '../../php/surgery.php';
+include_once '../../php/externalfiles.php';
 include_once '../../php/errorlog.php';
 include_once '../phpfragments/custom_date.php';
 include_once '../phpfragments/validations.php';
@@ -102,6 +103,15 @@ if (isset($_POST['deletesurgery'])) {
     if ($surgerydeleted === FALSE) {
         $errorLog = new ErrorLogTable();
         $errorLog->insert($surgerytable->getError());
+    }
+}
+$externalfilestable = new ExternalFilesTable();
+if (isset($_POST['deleteextfile'])) {
+    $idextfile = $_POST['idexternalfile'];
+    $extfiledeleted = $externalfilestable->delete($idextfile);
+    if ($extfiledeleted === FALSE) {
+        $errorLog = new ErrorLogTable();
+        $errorLog->insert($externalfilestable->getError());
     }
 }
 ?>
@@ -257,6 +267,21 @@ if (isset($_POST['deletesurgery'])) {
 </div>';
                                     }
                                 }
+                                if (isset($extfiledeleted)) {
+                                    if ($extfiledeleted) {
+                                        echo '<div class="alert alert-success alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Datos eliminados!</b> El archivo externo ha sido eliminado exitosamente.
+</div>';
+                                    } else {
+                                        echo '<div class="alert alert-danger alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Error!</b> Ocurri&oacute; un error al intentar eliminar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
+</div>';
+                                    }
+                                }
                                 if (isset($_POST['send'])) {
                                     $results = $notification->selectById($_POST['idnotification']);
                                     if ($rows = mysqli_fetch_array($results)) {
@@ -273,6 +298,8 @@ if (isset($_POST['deletesurgery'])) {
                                     }
                                 }
                                 ?>
+
+
                             </div>
                         </div>
                     </div>
@@ -408,6 +435,9 @@ if (isset($_POST['deletesurgery'])) {
                                     <li>
                                         <a href="#tab_7" data-toggle="tab">Notas</a>
                                     </li>
+                                    <li>
+                                        <a href="#tab_8" data-toggle="tab">Archivo externos</a>
+                                    </li>
                                     <li class="pull-right">
                                         <a href="#" class="text-muted"><i class="fa fa-table"></i></a>
                                     </li>
@@ -421,6 +451,7 @@ if (isset($_POST['deletesurgery'])) {
                                     include_once 'tabhospitalizationlist.php';
                                     include_once 'tabsurgerylist.php';
                                     include_once 'tabnotelist.php';
+                                    include_once 'tabexternalfileslist.php';
                                     ?>
                                 </div>
                             </div>
