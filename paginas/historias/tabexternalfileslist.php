@@ -30,7 +30,7 @@
                             <tr>								
                                 <th style="text-align:center; width: 85%">Nombre</th>								
                                 <th style="text-align:center; width: 5%">Ver</th>
-                                <th style="text-align:center; width: 5%">Enviar</th>
+                                <th style="text-align:center; width: 5%">Descargar</th>
                                 <th style="text-align:center; width: 5%">Eliminar</th>
                             </tr>
                         </thead>
