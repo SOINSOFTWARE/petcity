@@ -436,7 +436,7 @@ if (isset($_POST['deleteextfile'])) {
                                         <a href="#tab_7" data-toggle="tab">Notas</a>
                                     </li>
                                     <li>
-                                        <a href="#tab_8" data-toggle="tab">Archivo externos</a>
+                                        <a href="#tab_8" data-toggle="tab">Archivos externos</a>
                                     </li>
                                     <li class="pull-right">
                                         <a href="#" class="text-muted"><i class="fa fa-table"></i></a>
