@@ -13,12 +13,9 @@ if (filter_input(INPUT_POST, 'idvaccineconsultation') !== NULL) {
 $id_clinic_history = filter_input(INPUT_POST, 'idclinichistory');
 $id_pet = filter_input(INPUT_POST, 'idpet');
 $applied_number = 0;
-$generaldatadate = date('d/m/Y');
-$anamnesis = "";
-$findings = "";
 $vaccine_array = NULL;
+include_once './php/general_data/before_load.php';
 if (filter_input(INPUT_POST, 'save') !== NULL) {
-    include_once './php/general_data/before_load.php';
     try {
         $saved_general_data = saveGeneralData($general_data, $generalDataTable);
         $apply_vaccine = filter_input(INPUT_POST, 'vaccineapplication');
@@ -53,26 +50,6 @@ if ($loaded_vc !== NULL) {
     $idgeneraldata = $loaded_vc->id_general_data;
     $general_data = $generalDataTable->selectByIdObject($idgeneraldata);
     if ($general_data !== NULL) {
-        $generaldatadate = format_string_date($general_data->date, "d/m/Y");
-        $weight = $general_data->weight;
-        $corporalcondition = $general_data->corporal_condition;
-        $heartrate = $general_data->heart_rate;
-        $breathingfrequency = $general_data->breathing_frequency;
-        $temperature = $general_data->temperature;
-        $heartbeat = $general_data->heart_beat;
-        $linfonodulos = $general_data->linfonodulos;
-        $mucous = $general_data->mucous;
-        $trc = $general_data->trc;
-        $dh = $general_data->dh;
-        $mood = $general_data->mood;
-        $tusigo = $general_data->tusigo;
-        $anamnesis = $general_data->anamnesis;
-        $findings = $general_data->findings;
-        $clinicaltreatment = $general_data->clinical_treatment;
-        $formulanumber = $general_data->formula_number;
-        $formula = $general_data->formula;
-        $recomendations = $general_data->recomendations;
-        $observations = $general_data->observations;
         $vaccine_array = $vacConsultationtable->selectByIdGeneralData($general_data->id);
         if ($vaccine_array !== NULL && count($vaccine_array) > 0) {
             $applied_number = count($vaccine_array);

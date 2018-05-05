@@ -65,20 +65,20 @@ include_once './php/vaccine/before_load.php';
                                 <div class="row">
                                     <div class="col-md-12">
                                         <input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo get_numeric_value($id_clinic_history); ?>" />
-                                        <input type="hidden" id="idgeneraldata" name="idgeneraldata" value="<?php echo get_numeric_value($vaccine_array[0]->id_general_data); ?>"/>
+                                        <input type="hidden" id="idgeneraldata" name="idgeneraldata" value="<?php echo get_numeric_value($general_data->id); ?>"/>
                                         <input type="hidden" id="idpet" name="idpet" value="<?php echo get_numeric_value($vaccine_array[0]->id_pet); ?>"/>
                                         <?php include_once '../phpfragments/generaldata.php'; ?>
                                         <div class="row">
                                             <div class="col-xs-4">
                                                 <div class="form-group">
                                                     <label for="anamnesis">Anamnesis</label>
-                                                    <textarea class="form-control" id="anamnesis" name="anamnesis" rows="5" maxlength="400" required><?php echo get_string_value($anamnesis); ?></textarea>
+                                                    <textarea class="form-control" id="anamnesis" name="anamnesis" rows="5" maxlength="400" required><?php echo get_string_value($general_data->anamnesis); ?></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
                                                 <div class="form-group">
                                                     <label for="findings">Hallazgos</label>
-                                                    <textarea class="form-control" id="findings" name="findings" rows="5" maxlength="400" required><?php echo get_string_value($findings); ?></textarea>
+                                                    <textarea class="form-control" id="findings" name="findings" rows="5" maxlength="400" required><?php echo get_string_value($general_data->findings); ?></textarea>
                                                 </div>
                                             </div>
                                         </div>
