@@ -5,6 +5,7 @@ include_once '../../php/generaldata.php';
 include_once '../../php/medicalconsultation.php';
 include_once '../../php/medicalcontrol.php';
 include_once '../../php/medicalexam.php';
+include_once '../../php/evidencefiles.php';
 include_once '../../php/errorlog.php';
 include_once '../phpfragments/custom_date.php';
 
@@ -96,7 +97,7 @@ if (isset($_POST['save'])) {
     }
 }
 
-if (isset($_POST['view']) || isset($_POST['deletecontrol']) || isset($_POST['deleteexam'])) {
+if (isset($_POST['view']) || isset($_POST['deletecontrol']) || isset($_POST['deleteexam'])|| isset($_POST['deleteevidence'])) {
     $id = $_POST['idconsultation'];
     $results = $mdconsultable->selectById($id);
     if ($rows = mysqli_fetch_array($results)) {
@@ -160,6 +161,16 @@ if (isset($id) && intval($id) > 0) {
         if ($examdeleted === FALSE) {
             $errorLog = new ErrorLogTable();
             $errorLog->insert($mdexamtable->getError());
+        }
+    }
+    
+    $evidencefilestable = new EvidenceFilesTable();
+    if (isset($_POST['deleteevidence'])) {
+        $idevidencefile = $_POST['idevidencefile'];
+        $evidencedeleted = $evidencefilestable->delete($idevidencefile);
+        if ($evidencedeleted === FALSE) {
+            $errorLog = new ErrorLogTable();
+            $errorLog->insert($evidencefilestable->getError());
         }
     }
 }
@@ -274,6 +285,21 @@ if (isset($id) && intval($id) > 0) {
 <i class="fa fa-times"></i>
 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
 <b>Datos eliminados!</b> El ex&aacute;men ha sido eliminado exitosamente.
+</div>';
+                                                        } else {
+                                                            echo '<div class="alert alert-danger alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Error!</b> Ocurri&oacute; un error al intentar eliminar los datos, contacte a Soin Software (3007200405 - 4620915 en Bogot&aacute;).
+</div>';
+                                                        }
+                                                    }
+                                                    if (isset($evidencedeleted)) {
+                                                        if ($evidencedeleted) {
+                                                            echo '<div class="alert alert-success alert-dismissable">
+<i class="fa fa-times"></i>
+<button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+<b>Datos eliminados!</b> La evidencia ha sido eliminado exitosamente.
 </div>';
                                                         } else {
                                                             echo '<div class="alert alert-danger alert-dismissable">
@@ -465,6 +491,9 @@ if (isset($id) && intval($id) > 0) {
                                         <li>
                                             <a href="#tab_2" data-toggle="tab">Ex&aacute;menes</a>
                                         </li>
+                                        <li>
+                                            <a href="#tab_3" data-toggle="tab">Evidencias</a>
+                                        </li>
                                         <li class="pull-right">
                                             <a href="#" class="text-muted"><i class="fa fa-table"></i></a>
                                         </li>
@@ -473,6 +502,7 @@ if (isset($id) && intval($id) > 0) {
                                         <?php
                                         include_once 'tabmedcontrollist.php';
                                         include_once 'tabmedexamlist.php';
+                                        include_once 'tabevidencefileslist.php';
                                         ?>
                                     </div>
                                 </div>
