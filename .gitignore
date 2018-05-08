@@ -1,12 +1,6 @@
 *.DS_Store
 
-exams/1/3/5308PPC-ID-CO-616F1 Permisos Oficiales V2.pdf
-pets/1/14450IMG.jpg
-pets/1/16923Carlos.jpg
-pets/1/4477IMG_0002.jpg
-pets/1/30412tarjeta propiedad 2.jpg
-pets/1/2090tarjeta propiedad 1.jpg
-pets/1/27463soat.jpg
-pets/1/16607tarjeta propiedad 1.jpg
-pets/1/32628tarjeta propiedad 1.jpg
-pets/1/27925soat.jpg
+exams/*
+pets/*
+externalfiles/*
+evidencefiles/*
