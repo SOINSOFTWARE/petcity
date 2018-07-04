@@ -10,16 +10,8 @@
 					<div class="row">
 						<div class="col-xs-4">
 							<form action="control.php" method="post" role="form">
-								<input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php
-								if (isset($idclinichistory)) {
-									echo $idclinichistory;
-								}
-								?>" />
-								<input type="hidden" id="idconsultation" name="idconsultation" value="<?php
-								if (isset($id)) {
-									echo $id;
-								}
-								?>" />
+								<input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo get_numeric_value($id_clinic_history); ?>" />
+								<input type="hidden" id="idconsultation" name="idconsultation" value="<?php echo get_numeric_value($medical_consultation->id); ?>" />
 								<input type="hidden" id="idmedicalcontrol" name="idmedicalcontrol" value="0" />
 								<button type="submit" id="submit" name="submit" class="btn btn-primary">
 									<i class="fa fa-plus"></i> Nuevo

@@ -22,4 +22,60 @@ class MedicalControl {
         $this->next_date = $next_date;
     }
 
+    public function getIdMedicalConsultation() {
+        if ($this->id_medical_consultation !== NULL) {
+            return $this->id_medical_consultation;
+        } else {
+            return 0;
+        }
+    }
+    
+    public function getIdGeneralData() {
+        if ($this->id_general_data !== NULL) {
+            return $this->id_general_data;
+        } else {
+            return 0;
+        }
+    }
+    
+    public function getEvolution() {
+        if ($this->evolution !== NULL) {
+            return "'" . $this->evolution . "'";
+        } else {
+            return "''";
+        }
+    }
+    
+    public function getDiagnosisRecomendations() {
+        if ($this->diagnosis_recomendations !== NULL) {
+            return "'" . $this->diagnosis_recomendations . "'";
+        } else {
+            return 'null';
+        }
+    }
+    
+    public function getDiagnosisSamples() {
+        if ($this->diagnosis_samples !== NULL) {
+            return "'" . $this->diagnosis_samples . "'";
+        } else {
+            return 'null';
+        }
+    }
+    
+    public function getDiagnosisExams() {
+        if ($this->diagnosis_exams !== NULL) {
+            return "'" . $this->diagnosis_exams . "'";
+        } else {
+            return 'null';
+        }
+    }
+    
+    public function getNextDate() {
+        if ($this->next_date !== NULL && $this->next_date !== '') {
+            $dateobj = DateTime::createFromFormat("d/m/Y H:i:s", $this->next_date . ' 00:00:00');
+            return "'" . $dateobj->format("Y-m-d") . "'";
+        } else {
+            return 'null';
+        }
+    }
 }
