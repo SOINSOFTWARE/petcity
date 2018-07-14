@@ -14,7 +14,7 @@
     <div class="col-xs-4">
         <div id="divweight" class="form-group">
             <label for="weight">Peso de la mascota (Kg)</label>
-            <input type="number" class="form-control" id="weight" name="weight" placeholder="KG" step="0.01" autocomplete="off" 
+            <input type="text" class="form-control" id="weight" name="weight" placeholder="KG" autocomplete="off" 
                    value="<?php echo get_string_value($general_data->weight); ?>" required />
         </div>
     </div>
@@ -44,7 +44,7 @@
     <div class="col-xs-4">
         <div id="divtemperature" class="form-group">
             <label for="temperature">Temperatura (&#8728;C)</label>
-            <input type="number" class="form-control" id="temperature" name="temperature" placeholder="Temperatura" step=".01" autocomplete="off" 
+            <input type="text" class="form-control" id="temperature" name="temperature" placeholder="Temperatura" autocomplete="off" 
                    value="<?php echo get_string_value($general_data->temperature); ?>" required />
         </div>
     </div>
