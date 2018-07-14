@@ -2,7 +2,11 @@
 
 class EvidenceFiles {
 
-    public $id, $id_medical_consultation, $name, $file_path;
+    public $id;
+    public $id_medical_consultation;
+    public $name;
+    public $file_path;
+    public $description;
 
     function __construct($id, $id_medical_consultation, $name, $file_path) {
         $this->id = intval($id);
@@ -30,6 +34,14 @@ class EvidenceFiles {
     public function getFilePath() {
         if ($this->file_path !== NULL && $this->file_path !== '') {
             return "'" . $this->file_path . "'";
+        } else {
+            return 'null';
+        }
+    }
+    
+    public function getDescription() {
+        if ($this->description !== NULL && $this->description !== '') {
+            return "'" . $this->description . "'";
         } else {
             return 'null';
         }
