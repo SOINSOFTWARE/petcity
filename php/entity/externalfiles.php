@@ -6,6 +6,7 @@ class ExternalFiles {
     public $id_clinic_history;
     public $name;
     public $file_path;
+    public $file_date;
     public $description;
 
     function __construct($id, $id_clinic_history, $name, $file_path) {
@@ -34,6 +35,15 @@ class ExternalFiles {
     public function getFilePath() {
         if ($this->file_path !== NULL && $this->file_path !== '') {
             return "'" . $this->file_path . "'";
+        } else {
+            return 'null';
+        }
+    }
+    
+    public function getFileDate() {
+        if ($this->file_date !== NULL && $this->file_date !== '') {
+            $dateobj = DateTime::createFromFormat("d/m/Y H:i:s", $this->file_date . ' 00:00:00');
+            return "'" . $dateobj->format("Y-m-d") . "'";
         } else {
             return 'null';
         }

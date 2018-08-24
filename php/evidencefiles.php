@@ -15,18 +15,26 @@ class EvidenceFilesTable {
         mysqli_select_db($this->conn, DB_NAME);
     }
 
-    public function insert($evidence_files) {
-        $id_medical_consultation = $evidence_files->getIdMedicalConsultation();
-        $name = $evidence_files->getName();
-        $file_path = $evidence_files->getFilePath();
-        $sql = "INSERT evidencefiles(idmedicalconsultation,name,filepath) "
-                . "VALUES($id_medical_consultation, $name, $file_path)";
+    public function insert($evidence_file) {
+        $id_medical_consultation = $evidence_file->getIdMedicalConsultation();
+        $name = $evidence_file->getName();
+        $file_path = $evidence_file->getFilePath();
+        $file_date = $evidence_file->getFileDate();
+        $description = $evidence_file->getDescription();
+        $sql = "INSERT evidencefiles(idmedicalconsultation,name,filepath,filedate,description) "
+                . "VALUES($id_medical_consultation, $name, $file_path, $file_date, $description)";
         return $this->conn->query($sql);
     }
 
-    public function update($id, $name) {            
+    public function update($evidence_file) {
+        $id = $evidence_file->id;
+        $name = $evidence_file->getName();
+        $file_date = $evidence_file->getFileDate();
+        $description = $evidence_file->getDescription();
         $sql = "UPDATE evidencefiles "
-                . "SET name = '$name '"               
+                . "SET name = $name, "
+                . "filedate = $file_date, "
+                . "description = $description "               
                 . "WHERE id = $id";
         return $this->conn->query($sql);
     }
@@ -37,34 +45,24 @@ class EvidenceFilesTable {
     }
 
     public function selectById($id) {
-        if ($this->conn != NULL) {
-            $sql = "SELECT * FROM evidencefiles WHERE id = $id";
-            return mysqli_query($this->conn, $sql);
+        $sql = "SELECT * FROM evidencefiles WHERE id = $id";
+        $results = mysqli_query($this->conn, $sql);
+        $row = mysqli_fetch_array($results);
+        if ($row !== NULL) {
+            return new EvidenceFiles($row["id"], $row["idmedicalconsultation"], $row["name"], $row["filepath"], $row["filedate"], $row["description"]);
         } else {
             return NULL;
         }
     }
 
-    public function selectByMedicalConsultarion($id_medical_consultation) {
-        $sql = "SELECT * FROM evidencefiles WHERE idmedicalconsultation = $id_medical_consultation";
+    public function selectByMedicalConsultation($id_medical_consultation) {
+        $sql = "SELECT * FROM evidencefiles WHERE idmedicalconsultation = $id_medical_consultation AND enabled = 1";
         $results = mysqli_query($this->conn, $sql);
-        $evidencefiles_array = NULL;
+        $evidencefiles_array = array();
         while ($row = mysqli_fetch_array($results)) {
-            if ($evidencefiles_array === NULL) {
-                $evidencefiles_array = [];
-            }
-            $evidencefiles_array[] = EvidenceFiles($row["id"], $row["idmedicalconsultation"], $row["name"], $row["filepath"]);
+            array_push($evidencefiles_array, new EvidenceFiles($row["id"], $row["idmedicalconsultation"], $row["name"], $row["filepath"], $row["filedate"], $row["description"]));
         }
         return $evidencefiles_array;
-    }
-
-    public function select($id_medical_consultation) {
-        if ($this->conn != NULL) {
-            $sql = "SELECT * FROM evidencefiles WHERE idmedicalconsultation = $id_medical_consultation AND enabled = 1";
-            return mysqli_query($this->conn, $sql);
-        } else {
-            return NULL;
-        }
     }
 
     public function selectLastInsertId() {
@@ -80,5 +78,3 @@ class EvidenceFilesTable {
     }
 
 }
-
-?>

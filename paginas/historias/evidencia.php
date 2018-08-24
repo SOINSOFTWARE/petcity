@@ -18,16 +18,12 @@ include_once './php/evidence_files/before_load.php';
         <link href="../../css/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
     </head>
     <body class="skin-blue">
-        <?php
-        include '../header.php';
-        ?>
+        <?php include '../header.php'; ?>
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <aside class="left-side sidebar-offcanvas">
                 <section class="sidebar">
                     <?php
                     include '../user-panel.php';
-                    ?>
-                    <?php
                     include 'menu.php';
                     ?>
                 </section>
@@ -42,33 +38,15 @@ include_once './php/evidence_files/before_load.php';
                         <li>
                             <a href="../../">Historias cl&iacute;nicas</a>
                         </li>
-                        <li>   <a href="../../">Consulta</a>
-
+                        <li>
+                            <a href="../../">Consulta</a>
                         </li>
-                        <li class="active">
-                            Evidencias
-                        </li>
+                        <li class="active">Evidencias</li>
                     </ol>
+                    <br/>
+                    <?php include_once '../phpfragments/backward_button_consultation.php'; ?>
                 </section>
                 <section class="content">
-                    <div class="row">
-                        <?php if (isset($_POST['idclinichistory'])) {
-                            ?>
-                            <div class="col-xs-12">
-                                <div class="box">
-                                    <div class="box-body">
-                                        <form action="consulta.php" method="post" role="form">
-                                            <input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo $_POST['idclinichistory']; ?>" />
-                                            <input type="hidden" id="idconsultation" name="idconsultation" value="<?php echo $_POST['idconsultation']; ?>" />
-                                            <button type="submit" id="view" name="view" class="btn btn-success">
-                                                <i class="fa fa-reply"></i> Consulta
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php } ?>
-                    </div>
                     <div class="row">
                         <form action="evidencia.php" method="post" role="form" onsubmit="return validate()" enctype="multipart/form-data">
                             <div class="col-xs-12">
@@ -99,39 +77,22 @@ include_once './php/evidence_files/before_load.php';
                                         </button>
                                         <br />
                                         <br />
-                                        <?php if (isset($_POST['idclinichistory'])) {
-                                            ?>
-                                            <input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo $_POST['idclinichistory']; ?>" />
-                                        <?php } ?>
-                                        <?php if (isset($_POST['idconsultation'])) {
-                                            ?>
-                                            <input type="hidden" id="idconsultation" name="idconsultation" value="<?php echo $_POST['idconsultation']; ?>" />
-                                        <?php } ?>
-                                        <input type="hidden" id="id" name="id" value="<?php
-                                        if (isset($id)) {
-                                            echo $id;
-                                        } else {
-                                            0;
-                                        }
-                                        ?>"/>
+                                        <input type="hidden" id="idclinichistory" name="idclinichistory" value="<?php echo get_numeric_value($id_clinic_history); ?>" />
+                                        <input type="hidden" id="idconsultation" name="idconsultation" value="<?php echo get_numeric_value($evidence_file->id_medical_consultation); ?>" />
+                                        <input type="hidden" id="id" name="id" value="<?php echo get_numeric_value($evidence_file->id); ?>"/>
                                         <div class="row">
-
                                             <div class="col-xs-4">
                                                 <div class="form-group">
                                                     <label for="name">Nombre</label>
-                                                    <input type="text" class="form-control" id="name" name="name" placeholder="Nombre de la evidencia" maxlength="100" value="<?php
-                                                    if (isset($name)) {
-                                                        echo $name;
-                                                    }
-                                                    ?>" required>
+                                                    <input type="text" class="form-control" id="name" name="name" placeholder="Nombre de la evidencia" 
+                                                           maxlength="100" value="<?php echo get_string_value($evidence_file->name); ?>" required>
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
                                                 <div class="form-group">
-                                                    <?php if (isset($id) && intval($id) > 0) {
-                                                        ?>
+                                                    <?php if (intval($evidence_file->id) > 0) { ?>
                                                         <label>Archivo adjunto</label><br />
-                                                        <a href="<?php echo $filepath; ?>" class="btn btn-success" target="_blank"><i class="fa fa-download"></i></a>
+                                                        <a href="<?php echo $evidence_file->file_path; ?>" class="btn btn-success" target="_blank"><i class="fa fa-download"></i></a>
                                                     <?php } else { ?>
                                                         <label for="fileToUpload">Adjuntar archivo</label>
                                                         <input type="file" id="fileToUpload" name="fileToUpload" onchange="validateFile()" required>
