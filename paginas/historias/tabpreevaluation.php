@@ -79,7 +79,7 @@
 							<div class="col-xs-4">
 								<div class="form-group">
 									<label for="weight">Peso de la mascota (Kg)</label>
-									<input type="number" class="form-control" id="weight" name="weight" placeholder="KG" step=".01" autocomplete="off" value="<?php
+									<input type="text" class="form-control" id="weight" name="weight" placeholder="KG" autocomplete="off" value="<?php
 									if (isset($weightpreevaluation)) {
 										echo $weightpreevaluation;
 									}

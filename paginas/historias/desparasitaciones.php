@@ -174,7 +174,7 @@ $results = $drenchingtable -> select($companyId);
 											<div class="col-xs-4">
 												<div id="divweight" class="form-group">
 													<label for="weight">Peso de la mascota (Kg)</label>
-													<input type="number" class="form-control" id="weight" name="weight" step=".01" placeholder="Peso de la mascota" value="<?php
+													<input type="text" class="form-control" id="weight" name="weight" placeholder="KG" autocomplete="off" value="<?php
 													if (isset($weight)) {
 														echo $weight;
 													}
@@ -303,11 +303,11 @@ $results = $drenchingtable -> select($companyId);
 				divDialog.dialog("open");
 			}
 
-			$(document).ready(function() {
-				$("#weight").keydown(function(e) {
-					validateDecimalInput(e);
-				});
-			});
+			$(document).ready(function () {
+                            $("#weight").keydown(function (e) {
+                                validateDecimalInput(e);
+                            });
+                        });
 		</script>
 	</body>
 </html>
