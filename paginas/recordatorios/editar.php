@@ -11,7 +11,7 @@ include_once './php/edit/before_load.php';
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Pet City | Recordatorios</title>
+        <title>Pet City | Eventos</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="../../css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -33,13 +33,13 @@ include_once './php/edit/before_load.php';
             </aside>
             <aside class="right-side">
                 <section class="content-header">
-                    <h1> Recordatorio </h1>
+                    <h1> Evento </h1>
                     <ol class="breadcrumb">
                         <li>
                             <a href="../../"><i class="fa fa-medkit"></i> Pet City</a>
                         </li>
                         <li>
-                            <a href="./listado.php"> Recordatorios</a>
+                            <a href="./listado.php"> Eventos</a>
                         </li>
                         <li class="active">
                             Editar

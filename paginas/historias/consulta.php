@@ -1,13 +1,16 @@
 <?php
 session_start();
 include_once '../session.php';
+include_once '../../php/clinichistory.php';
 include_once '../../php/generaldata.php';
 include_once '../../php/medicalconsultation.php';
 include_once '../../php/medicalcontrol.php';
 include_once '../../php/medicalexam.php';
+include_once '../../php/notification.php';
 include_once '../../php/evidencefiles.php';
 include_once '../../php/errorlog.php';
 include_once '../../php/entity/medicalconsultation.php';
+include_once '../../php/entity/notification.php';
 include_once '../phpfragments/custom_date.php';
 include_once '../phpfragments/message_dialog.php';
 include_once './php/consultation/before_load.php';

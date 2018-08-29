@@ -23,6 +23,16 @@ class NotificationTable {
             return NULL;
         }
     }
+    
+    public function insertObject($notification) {
+        $title = $notification->getTitle();
+        $message = $notification->getMessage();
+        $date = $notification->getDate();
+        $idPet = $notification->getIdPet();
+        $sql = "INSERT notification(title,message,notificationdate,idpet) "
+                . "VALUES($title, $message, $date, $idPet)";
+        return $this->conn->query($sql);
+    }
 
     public function update($id, $title, $message, $notificationdate) {
         if ($this->conn != NULL) {

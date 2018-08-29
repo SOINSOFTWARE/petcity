@@ -6,7 +6,7 @@
     </li>
     <li id="refnote">
         <a href="../recordatorios/listado.php">
-            <i class="fa fa-list"></i><span>Recordatorios</span>
+            <i class="fa fa-list"></i><span>Eventos</span>
         </a>
     </li>
     <li id="refconfiguration" class="treeview active">

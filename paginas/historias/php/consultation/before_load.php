@@ -93,5 +93,16 @@ function saveMedicalConsultation($medical_consultation, $medical_consultation_ta
     if (!$saved) {
         throw new Exception();
     }
+    saveNotification($medical_consultation);
     return $medical_consultation;
+}
+
+function saveNotification($medical_consultation) {
+    if ($medical_consultation->next_date !== NULL && $medical_consultation->next_date !== '') {
+        $clinic_history_table = new ClinicHistoryTable();
+        $clinic_history = mysqli_fetch_array($clinic_history_table->selectById($medical_consultation->id_clinic_history));
+        $notification = new Notification(0, 'Controles', 'Pr&oacute;ximo consulta de control', $medical_consultation->next_date, $clinic_history['idpet']);
+        $notification_table = new NotificationTable();
+        $notification_table->insertObject($notification);
+    }
 }
