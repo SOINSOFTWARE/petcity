@@ -3,7 +3,7 @@ session_start();
 include_once '../session.php';
 include_once '../../php/clinichistory.php';
 include_once '../../php/generaldata.php';
-include_once '../../php/medicalconsultation.php';
+include_once '../../php/dao/medicalconsultation.php';
 include_once '../../php/medicalcontrol.php';
 include_once '../../php/medicalexam.php';
 include_once '../../php/notification.php';

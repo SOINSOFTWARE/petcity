@@ -1,18 +1,12 @@
 <?php
 
-include_once 'connection.php';
-include_once 'entity/medicalconsultation.php';
+include_once 'BasicDAO.php';
+include_once '../entity/medicalconsultation.php';
 
-class MedicalConsultationTable {
-
-    private $conn = null;
+class MedicalConsultationTable extends BasicDAO {
 
     function __construct() {
-        $this->conn = mysqli_connect(DB_SERVER, DB_USER, DB_PASS);
-        if (mysqli_connect_errno()) {
-            echo "Failed to connect to MySQL: " . mysqli_connect_error();
-        }
-        mysqli_select_db($this->conn, DB_NAME);
+        $this->connectIfNeeded();
     }
 
     public function insert($medical_consultation) {
@@ -30,7 +24,7 @@ class MedicalConsultationTable {
         $id_company = $medical_consultation->getIdCompany();
         $sql = "INSERT medicalconsultation(idclinichistory,idgeneraldata,motive,presumptivediagnosis,differentialdiagnosis,diagnosisrecomendations,diagnosissamples,diagnosisexams,definitivediagnosis,forecast,nextdate,idcompany) 
 		VALUES($id_clinic_history,$id_general_data,$motive,$presumptive_diagnosis,$differential_diagnosis,$diagnosis_recomendations,$diagnosis_samples,$diagnosis_exams,$definitive_diagnosis,$forecast,$next_date,$id_company)";
-        return $this->conn->query($sql);
+        return $this->executeSentence($sql);
     }
 
     public function update($medical_consultation) {
@@ -55,22 +49,22 @@ class MedicalConsultationTable {
                 . "forecast = $forecast,"
                 . "nextdate = $next_date "
                 . "WHERE id = $id";
-        return $this->conn->query($sql);
+        return $this->executeSentence($sql);
     }
 
     public function delete($id) {
         $sql = "UPDATE medicalconsultation SET enabled = 0 WHERE id = $id";
-        return $this->conn->query($sql);
+        return $this->executeSentence($sql);
     }
 
     public function select($idcompany) {
         $sql = "SELECT * FROM medicalconsultation WHERE idcompany = $idcompany AND enabled = 1 ORDER BY name ASC";
-        return mysqli_query($this->conn, $sql);
+        return $this->executeSentence($sql);
     }
 
     public function selectById($id) {
         $sql = "SELECT * FROM medicalconsultation WHERE id = $id";
-        $results = mysqli_query($this->conn, $sql);
+        $results = $this->executeSentence($sql);
         $row = mysqli_fetch_array($results);
         if ($row !== NULL) {
             return new MedicalConsultation($row["id"], $row["idclinichistory"], $row["idgeneraldata"], $row["motive"], $row["presumptivediagnosis"], $row["differentialdiagnosis"], $row["diagnosisrecomendations"], $row["diagnosissamples"], $row["diagnosisexams"], $row["definitivediagnosis"], $row["forecast"], $row["nextdate"], $row["idcompany"]);
@@ -80,18 +74,6 @@ class MedicalConsultationTable {
 
     public function selectByIdClinicHistory($idclinichistory) {
         $sql = "SELECT md.id AS idconsultation, md.*, gd.* FROM medicalconsultation md JOIN generaldata gd ON md.idgeneraldata = gd.id WHERE md.idclinichistory = $idclinichistory AND md.enabled = 1 ORDER BY gd.generaldatadate DESC";
-        return mysqli_query($this->conn, $sql);
-    }
-
-    public function selectLastInsertId() {
-        return mysqli_insert_id($this->conn);
-    }
-
-    public function getConnection() {
-        return $this->conn;
-    }
-
-    public function getError() {
-        return $this->conn->error;
+        return $this->executeSentence($sql);
     }
 }
